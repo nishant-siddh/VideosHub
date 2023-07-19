@@ -10,7 +10,6 @@ const Navbar = () => {
 
     return (
         <>
-            
             <nav className='pt-14 hidden lg:block'>
                 <ul className='list flex justify-center items-center gap-4 text-gray-400 text-sm '>
                     <Link href='#'><li className='hover:text-primary p-2 cursor-pointer'>All</li></Link>
