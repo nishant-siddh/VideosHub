@@ -4,7 +4,7 @@ import YoutubeLogo from '@/components/Header/YoutubeLogo';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
-const authHeader = () => {
+const AuthHeader = () => {
   const pathname = usePathname();
 
   return (
@@ -23,4 +23,4 @@ const authHeader = () => {
   )
 }
 
-export default authHeader
+export default AuthHeader
