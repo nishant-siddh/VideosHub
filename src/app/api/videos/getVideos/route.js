@@ -6,5 +6,5 @@ connect();
 export async function GET() {
     // const res = await ;
 
-    return new Response(JSON.stringify({res}),{status: 200})
+    return new Response(JSON.stringify({hello: 'world'}),{status: 200})
 }

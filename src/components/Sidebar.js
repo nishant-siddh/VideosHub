@@ -36,36 +36,34 @@ const SideBar = () => {
     ]
 
     const handleClick = async () => {
-        const res = await axios.get('/api/users/userTokenId')
-        router.push(`/channel/${res.data}`)
+        const response = await axios.get('/api/users/userTokenId')
+        router.push(`/channel/${response.data}`)
     }
 
     return (
         <>
-            <aside className={`hidden sm:${isSidebarOpen && 'block'} sm:w-64 xl:w-52 h-screen   `}>
+            <aside className={`hidden sm:${isSidebarOpen && 'block'} sm:w-64 xl:w-52 h-screen`}>
                 <div className="text-white sm:text-[0.7rem] md:text-xs px-3 py-2 !fixed top-12">
                     {/* Sidebar content goes here */}
                     {
                         firstHalf.map((link, index) => {
                             return (
-                                <>
-                                    <Link key={index+1} href='#' className='flex' onClick={() => setSelectedIcon(link.key)} >
-                                        <div className={`${isSidebarOpen && 'flex items-center'} px-3 py-2 hover:bg-zinc-800 hover:border-b-[1px] hover:border-b-primary rounded-lg w-full ${isActive === link.label && 'bg-zinc-700 border-b-[1px] border-b-primary'}`} onClick={() => setIsActive(link.label)} >
-                                            <div className='mr-4 md:mr-6 sm:text-sm md:text-lg'>
-                                                {selectedIcon === link.key
-                                                    ? link.icon.selected
-                                                    : link.icon.unselected
-                                                }
-                                            </div>
-                                            <div className='bg-transparent pr-8'>
-                                                {link.label}
-                                            </div>
+                                <Link key={index} href='#' className='flex' onClick={() => setSelectedIcon(link.key)}>
+                                    <div className={`${isSidebarOpen && 'flex items-center'} px-3 py-2 hover:bg-zinc-800 hover:border-b-[1px] hover:border-b-primary rounded-lg w-full ${isActive === link.label && 'bg-zinc-700 border-b-[1px] border-b-primary'}`} onClick={() => setIsActive(link.label)} >
+                                        <div className='mr-4 md:mr-6 sm:text-sm md:text-lg'>
+                                            {selectedIcon === link.key
+                                                ? link.icon.selected
+                                                : link.icon.unselected
+                                            }
                                         </div>
-                                    </Link>
-                                </>
+                                        <div className='bg-transparent pr-8'>
+                                            {link.label}
+                                        </div>
+                                    </div>
+                                </Link>
                             )
                         })
-                        
+
                     }
                     <div className='cursor-pointer' onClick={handleClick}>Your channel</div>
                 </div>

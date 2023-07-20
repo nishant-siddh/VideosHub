@@ -10,7 +10,7 @@ import appwriteStorage from '@/appwrite/config';
 const ChannelPage = ({ params }) => {
   const param = params.slug;
   const { videosIndex } = useHomeContext();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
   const [userDetail, setUserDetail] = useState({});
   const [channelDetails, setChannelDetails] = useState({});
   const [fileDetail, setFileDetail] = useState({
@@ -22,6 +22,10 @@ const ChannelPage = ({ params }) => {
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  });
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);

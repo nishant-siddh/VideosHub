@@ -3,18 +3,21 @@ import Image from "next/image";
 import profilePicture from '@/Images/profile.jpg';
 import thumbnail from '@/Images/thumbnail.jpg'
 import { useEffect, useState } from "react";
-import { useHomeContext } from "../../ContextAPI/Context/HomeContext";
+import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import Navbar from '@/components/HomePage/Navbar';
 import PreviousAndNextArrows from "@/components/HomePage/PreviousAndNextArrows";
-import Link from "next/link";
 
 export default function Home() {
   const { videosIndex } = useHomeContext();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, [])
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
@@ -619,12 +622,11 @@ export default function Home() {
   return (
     <div className="flex flex-col mx-auto">
       <Navbar />
-      <main className='mt-16 px-2 lg:mt-0'>
-        {Categories.map(category => {
+        {Categories.map((category, index) => {
           const lowerCaseCategory = category.name.toLowerCase()
           return (
-            <>
-              <div key={category.name} className="flex justify-between mt-5">
+            <main key={index} className='mt-16 px-2 lg:mt-0'>
+              <div className="flex justify-between mt-5">
                 <h3 className='ml-4 mb-2'>{category.name}</h3>
 
                 {/* previous and next buttons */}
@@ -640,9 +642,9 @@ export default function Home() {
                       ? 3
                       : windowWidth > 640
                         ? 2
-                        : 1)).map(video => {
+                        : 1)).map((video, index) => {
                           return (
-                            <div key={category.videos.id} className="w-fit">
+                            <div key={index} className="w-fit">
                               {/* video thumbnail */}
                               <div>
                                 <Image src={video.thumbnail} className='rounded-md hover:rounded-none ease-in duration-300 w-96 sm:w-72 md:w-60' alt={video.title} width={200} height={200} />
@@ -670,10 +672,9 @@ export default function Home() {
                           )
                         })}
               </div>
-            </>
+            </main>
           )
         })}
-      </main>
     </div>
   )
 }
