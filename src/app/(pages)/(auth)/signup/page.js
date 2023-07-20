@@ -16,7 +16,6 @@ const SignUp = () => {
         try {
             setLoading(true);
             await axios.post('/api/users/signup', formData);
-            
             router.push("/login");
             
         } catch (error) {
