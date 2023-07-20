@@ -5,12 +5,14 @@ import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { BiError } from 'react-icons/bi';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
 
 const Login = () => {
   const router = useRouter();
   const emailRef = useRef(null);
   const { formDataChange, formData, setAuthStatus, authStatus } = useHomeContext();
+  const { setIsLoggedIn } = useAuthContext()
   const [userDataToRegenerateToken, setUserDataToRegenerateToken] = useState({
     userId: '',
     email: ''
@@ -37,6 +39,7 @@ const Login = () => {
         console.log('inside login function');
         const reqBody = await axios.post('/api/users/login', formData);
         console.log("Login success", reqBody.data);
+        setIsLoggedIn(true);
         router.push('/');
       }
     })()
@@ -118,7 +121,7 @@ const Login = () => {
           <button
             type="submit"
             className='inline-flex w-full items-center justify-center rounded-md bg-primary px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-primary/80 disabled:cursor-not-allowed disabled:opacity-60 cursor-pointer'
-          disabled={authStatus === true}
+            disabled={authStatus === true}
           >
             Login
           </button>

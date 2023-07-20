@@ -1,7 +1,10 @@
 "use client"
 import AuthHeader from '@/components/Auth/authHeader'
 import BlurBackground from '@/components/Auth/BlurBackground'
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext'
 import { Inter } from 'next/font/google'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 const metadata = {
@@ -10,6 +13,15 @@ const metadata = {
 }
 
 export default function RootLayout({ children }) {
+    const router = useRouter();
+    const { isLoggedIn } = useAuthContext();
+
+    useEffect(() => {
+        if(isLoggedIn) {
+            router.replace('/');
+        }
+    }, [isLoggedIn])
+
     return (
         <div className='w-full'>
             <div className="text-primary">

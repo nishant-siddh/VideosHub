@@ -1,16 +1,19 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoMdVideocam } from 'react-icons/io';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
 import SearchForDesktop from './SearchForDesktop';
 import YoutubeLogo from './YoutubeLogo';
-import { useHomeContext } from '../../ContextAPI/Context/HomeContext';
+import { useHomeContext } from '@/ContextAPI/Context/HomeContext';
 import SignUpBtn from '../Auth/SignUpBtn';
+import ProfileCard from './ProfileCard';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
 const Header = () => {
-  const { toggleSidebar, authStatus } = useHomeContext();
+  const { toggleSidebar, setProfileCard } = useHomeContext();
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <>
@@ -37,7 +40,7 @@ const Header = () => {
         <SearchForDesktop />
 
         {
-          authStatus ?
+          isLoggedIn ?
             (
               <div className='flex w-28 justify-around items-center gap-1'>
                 {/* Video icon */}
@@ -51,9 +54,10 @@ const Header = () => {
                 </span>
 
                 {/* Profile icon */}
-                <span className='cursor-pointer'>
+                <span className='cursor-pointer' onClick={setProfileCard}>
                   <CgProfile className='text-primary/80 text-xl' />
                 </span>
+                <ProfileCard />
               </div>
             ) : (
               <SignUpBtn />
