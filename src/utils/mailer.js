@@ -29,7 +29,7 @@ export const sendEmail = async ({ email, emailType, userId }) => {
         });
 
         const mailOptions = {
-            from: 'videoshub.vercel.app',
+            from: 'videoshub@gmail.com',
             to: email,
             subject: emailType === 'VERIFY' ? 'Verify your email' : 'Reset your password',
             html: `<p>Click <a href="${process.env.DOMAIN}/verifyEmail?token=${hashedToken}">here</a> to ${emailType === "VERIFY" ? 'verify your email' : 'reset yout password'} 
