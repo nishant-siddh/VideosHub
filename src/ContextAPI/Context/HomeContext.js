@@ -6,6 +6,7 @@ const HomeContext = createContext();
 
 const initialState = {
     isSidebarOpen: true,
+    c: false,
     videosIndex: {
         games: 0,
         entertainment: 0,
@@ -49,12 +50,12 @@ const HomeContextProvider = ({ children }) => {
         dispatch({ type: 'Set_Auth_Status', payload: boolValue })
     }
 
-    const checkIsLoggedIn = async () => {
-        dispatch({ type: 'Check_Is_Logged_In' })
+    const setProfileCard = () => {
+        dispatch({ type: 'Set_Profile_Card' })
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, toggleSidebar, arrowBtns, formDataChange, setAuthStatus }}>
+        <HomeContext.Provider value={{ ...state, toggleSidebar, arrowBtns, formDataChange, setAuthStatus, setProfileCard }}>
             {children}
         </HomeContext.Provider>
     )

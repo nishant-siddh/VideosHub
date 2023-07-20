@@ -1,36 +1,36 @@
 "use client"
-import { createContext, useContext, useEffect, useReducer } from "react";
-import reducer from "../Reducer/HomeReducer";
+import { createContext, useContext, useReducer } from "react";
+import reducer from "../Reducer/AuthReducer";
 
-const HomeContext = createContext();
+const AuthContext = createContext();
 
 const initialState = {
-    authStatus: false,
+    // authStatus: false,
     isLoggedIn: false
 }
 
-const HomeContextProvider = ({ children }) => {
+const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const setAuthStatus = (boolValue) => {
-        dispatch({ type: 'Set_Auth_Status', payload: boolValue })
-    }
+    // const setAuthStatus = (boolValue) => {
+    //     dispatch({ type: 'Set_Auth_Status', payload: boolValue })
+    // }
 
-    const checkIsLoggedIn = async () => {
-        dispatch({ type: 'Check_Is_Logged_In' })
+    const setIsLoggedIn = (loggedIn) => {
+        dispatch({ type: 'Check_Is_Logged_In', payload: loggedIn })
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, setAuthStatus, checkIsLoggedIn }}>
+        <AuthContext.Provider value={{ ...state, setIsLoggedIn }}>
             {children}
-        </HomeContext.Provider>
+        </AuthContext.Provider>
     )
 }
 
 
 
-const useHomeContext = () => {
-    return useContext(HomeContext)
+const useAuthContext = () => {
+    return useContext(AuthContext)
 }
 
-export { HomeContext, HomeContextProvider, useHomeContext }
+export { AuthContext, AuthContextProvider, useAuthContext }

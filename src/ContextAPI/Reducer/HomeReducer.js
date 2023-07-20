@@ -5,6 +5,12 @@ const HomeReducer = (state, action) => {
                 ...state,
                 isSidebarOpen: !(state.isSidebarOpen),
             }
+
+        case 'Set_Profile_Card':
+            return {
+                ...state,
+                profileCard: !(state.profileCard),
+            }
         
         case 'Arrow_Btns':
             const {category, btnType} = action.payload;
