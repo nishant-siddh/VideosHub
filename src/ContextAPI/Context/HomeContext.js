@@ -6,7 +6,7 @@ const HomeContext = createContext();
 
 const initialState = {
     isSidebarOpen: true,
-    c: false,
+    profileCard: false,
     videosIndex: {
         games: 0,
         entertainment: 0,
@@ -47,15 +47,15 @@ const HomeContextProvider = ({ children }) => {
     }
 
     const setAuthStatus = (boolValue) => {
-        dispatch({ type: 'Set_Auth_Status', payload: boolValue })
+        dispatch({ type: 'Toggle_Auth_Status', payload: boolValue })
     }
 
-    const setProfileCard = () => {
+    const toggleProfileCard = () => {
         dispatch({ type: 'Set_Profile_Card' })
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, toggleSidebar, arrowBtns, formDataChange, setAuthStatus, setProfileCard }}>
+        <HomeContext.Provider value={{ ...state, toggleSidebar, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
             {children}
         </HomeContext.Provider>
     )
