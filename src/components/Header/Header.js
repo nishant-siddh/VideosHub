@@ -12,7 +12,7 @@ import ProfileCard from './ProfileCard';
 import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
 const Header = () => {
-  const { toggleSidebar, setProfileCard } = useHomeContext();
+  const { toggleSidebar, toggleProfileCard } = useHomeContext();
   const { isLoggedIn } = useAuthContext();
 
   return (
@@ -54,7 +54,7 @@ const Header = () => {
                 </span>
 
                 {/* Profile icon */}
-                <span className='cursor-pointer' onClick={setProfileCard}>
+                <span className='cursor-pointer' onClick={toggleProfileCard}>
                   <CgProfile className='text-primary/80 text-xl' />
                 </span>
                 <ProfileCard />
