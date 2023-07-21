@@ -47,11 +47,11 @@ const HomeContextProvider = ({ children }) => {
     }
 
     const setAuthStatus = (boolValue) => {
-        dispatch({ type: 'Toggle_Auth_Status', payload: boolValue })
+        dispatch({ type: 'Set_Auth_Status', payload: boolValue })
     }
 
     const toggleProfileCard = () => {
-        dispatch({ type: 'Set_Profile_Card' })
+        dispatch({ type: 'Toggle_Profile_Card' })
     }
 
     return (

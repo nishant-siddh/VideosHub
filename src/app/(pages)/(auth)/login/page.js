@@ -12,7 +12,7 @@ const Login = () => {
   const router = useRouter();
   const emailRef = useRef(null);
   const { formDataChange, formData, setAuthStatus, authStatus } = useHomeContext();
-  const { setIsLoggedIn } = useAuthContext()
+  const { setIsLoggedIn } = useAuthContext();
   const [userDataToRegenerateToken, setUserDataToRegenerateToken] = useState({
     userId: '',
     email: ''
@@ -23,7 +23,7 @@ const Login = () => {
     e.preventDefault();
 
     // verifying user email on submit
-    if (emailRef.current.value !== '') {
+    if (emailRef.current?.value !== '') {
       setIsEmailInputEmpty(false);
       await handleCheckVerification();
     }
@@ -44,10 +44,11 @@ const Login = () => {
       }
     })()
   }, [authStatus])
-
+  
   const handleCheckVerification = async () => {
     try {
       const user = await axios.post('/api/users/isVerifiedUser', { email: emailRef.current?.value });
+      console.log(user.data.userData, 'this is user form login')
       setUserDataToRegenerateToken(prev => ({ ...prev, userId: user.data.userData._id, email: user.data.userData._id }));
       if (user.data.userData.isVerified) {
         setAuthStatus(true);

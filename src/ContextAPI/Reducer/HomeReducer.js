@@ -6,7 +6,7 @@ const HomeReducer = (state, action) => {
                 isSidebarOpen: !(state.isSidebarOpen),
             }
 
-        case 'Toggle_Auth_Status':
+        case 'Toggle_Profile_Card':
             return {
                 ...state,
                 profileCard: !(state.profileCard),
