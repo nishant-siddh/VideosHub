@@ -6,11 +6,9 @@ import { useEffect, useState } from "react";
 import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import Navbar from '@/components/HomePage/Navbar';
 import PreviousAndNextArrows from "@/components/HomePage/PreviousAndNextArrows";
-import { useAuthContext } from "@/ContextAPI/Context/AuthContext";
 
 export default function Home() {
   const { videosIndex } = useHomeContext();
-  const { isLoggedIn } = useAuthContext();
   const [windowWidth, setWindowWidth] = useState(0);
 
   const handleResize = () => {

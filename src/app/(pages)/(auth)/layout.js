@@ -16,11 +16,9 @@ export default function RootLayout({ children }) {
     const router = useRouter();
     const { isLoggedIn } = useAuthContext();
 
-    useEffect(() => {
-        if(isLoggedIn) {
-            router.replace('/');
-        }
-    }, [isLoggedIn])
+    if (isLoggedIn) {
+        router.replace('/');
+    }
 
     return (
         <div className='w-full'>

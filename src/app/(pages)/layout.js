@@ -17,16 +17,16 @@ const metadata = {
 
 export default function PagesLayout({ children }) {
   const pathname = usePathname();
-  const { isLoggedIn, setIsLoggedIn } = useAuthContext();
+  const { setIsLoggedIn } = useAuthContext();
 
   useEffect(() => {
     (async () => {
       const hasToken = await axios.get('/api/users/isLoggedIn');
-      if (hasToken.data.hasToken !== undefined) {
-        setIsLoggedIn(true);
+      if (hasToken.data.hasToken === undefined) {
+        setIsLoggedIn(false);
       }
       else {
-        setIsLoggedIn(false);
+        setIsLoggedIn(true);
       }
     })()
   }, [])
