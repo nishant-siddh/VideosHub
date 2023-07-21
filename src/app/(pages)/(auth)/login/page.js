@@ -18,6 +18,7 @@ const Login = () => {
     email: ''
   });
   const [isEmailInputEmpty, setIsEmailInputEmpty] = useState(true);
+  // const [isVerified, setIsVerified] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,6 +35,7 @@ const Login = () => {
   }
 
   useEffect(() => {
+    console.log('inside useEffect');
     (async () => {
       if (authStatus) {
         console.log('inside login function');
@@ -44,16 +46,17 @@ const Login = () => {
       }
     })()
   }, [authStatus])
-  
+
   const handleCheckVerification = async () => {
     try {
       const user = await axios.post('/api/users/isVerifiedUser', { email: emailRef.current?.value });
-      console.log(user.data.userData, 'this is user form login')
       setUserDataToRegenerateToken(prev => ({ ...prev, userId: user.data.userData._id, email: user.data.userData._id }));
       if (user.data.userData.isVerified) {
         setAuthStatus(true);
+        console.log('is verfified true');
       } else {
         setAuthStatus(false);
+        console.log('is verfified false');
       }
 
     } catch (error) {
@@ -71,11 +74,12 @@ const Login = () => {
         </h1>
 
         {/* error message if a user is not verified */}
+        {console.log('this is authStatus body', authStatus)}
         {
           (authStatus === false && !isEmailInputEmpty) ? (
             <div className='flex flex-wrap items-center justify-center gap-1 sm:gap-3 text-primary text-sm border-2 border-red-400 p-4'>
               <BiError className='text-2xl sm:text-3xl' />
-              <p className='text-center'>Please verify your email address to login</p>
+              <p className='text-center'>You are not verified, please verify your email</p>
             </div>
           ) : null
         }
@@ -145,4 +149,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login 
