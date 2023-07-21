@@ -22,11 +22,13 @@ export default function PagesLayout({ children }) {
   useEffect(() => {
     (async () => {
       const hasToken = await axios.get('/api/users/isLoggedIn');
-      if (hasToken.data.hasToken === undefined) {
-        setIsLoggedIn(false);
+      if (hasToken.data) {
+        console.log('this is hasToken.data from layout main', hasToken.data);
+        setIsLoggedIn(true);
       }
       else {
-        setIsLoggedIn(true);
+        console.log('this is hasToken.data from layout main', hasToken.data);
+        setIsLoggedIn(false);
       }
     })()
   }, [])
