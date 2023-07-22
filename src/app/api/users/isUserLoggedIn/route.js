@@ -1,8 +1,9 @@
-import { isTokenInCookies } from "@/utils/isTokenInCookies";
+import isTokenInCookies from "@/utils/isTokenInCookies";
 
 export async function GET(req) {
     try {
-        const hasToken = isTokenInCookies(req);
+        console.log('this log is from isLoggedIn');
+        const hasToken = await isTokenInCookies(req);
         console.log(hasToken, 'hasToken from isLoggedIn');
         return new Response((hasToken), {status: 200});
 
