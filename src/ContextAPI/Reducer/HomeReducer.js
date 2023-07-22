@@ -6,6 +6,12 @@ const HomeReducer = (state, action) => {
                 isSidebarOpen: !(state.isSidebarOpen),
             }
 
+        case 'Set_Is_Loading':
+            return {
+                ...state,
+                isLoading: action.payload,
+            }
+
         case 'Toggle_Profile_Card':
             return {
                 ...state,

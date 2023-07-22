@@ -7,6 +7,7 @@ const HomeContext = createContext();
 const initialState = {
     isSidebarOpen: true,
     profileCard: false,
+    isLoading: false,
     videosIndex: {
         games: 0,
         entertainment: 0,
@@ -24,7 +25,7 @@ const initialState = {
         channelDescription: ""
     },
     authStatus: false,
-    isLoggedIn: false
+    isLoggedIn: false,
 }
 
 const HomeContextProvider = ({ children }) => {
@@ -32,6 +33,10 @@ const HomeContextProvider = ({ children }) => {
 
     const toggleSidebar = () => {
         dispatch({ type: 'Toggle_Sidebar' })
+    }
+
+    const setIsLoading = (boolValue) => {
+        dispatch({ type: 'Set_Is_Loading', payload: boolValue })
     }
 
     const arrowBtns = (e) => {
@@ -55,7 +60,7 @@ const HomeContextProvider = ({ children }) => {
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, toggleSidebar, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
+        <HomeContext.Provider value={{ ...state, toggleSidebar, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
             {children}
         </HomeContext.Provider>
     )
