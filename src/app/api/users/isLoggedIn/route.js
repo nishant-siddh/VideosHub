@@ -1,4 +1,4 @@
-import { isTokenInCookies } from "@/utils/isTokenInCookies";
+import isTokenInCookies from "@/utils/isTokenInCookies";
 
 export async function GET(req) {
     try {
