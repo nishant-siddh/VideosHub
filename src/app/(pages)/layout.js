@@ -21,13 +21,15 @@ export default function PagesLayout({ children }) {
 
   useEffect(() => {
     (async () => {
+      console.log('this is pathname from layout main before api calling');
       const hasToken = await axios.get('/api/users/isLoggedIn');
+      console.log('this is hasToken from layout main after calling', hasToken);
       if (hasToken.data) {
-        console.log('this is hasToken.data from layout main', hasToken.data);
+        console.log('this is hasToken.data from layout main for true', hasToken.data);
         setIsLoggedIn(true);
       }
       else {
-        console.log('this is hasToken.data from layout main', hasToken.data);
+        console.log('this is hasToken.data from layout main for false', hasToken.data);
         setIsLoggedIn(false);
       }
     })()

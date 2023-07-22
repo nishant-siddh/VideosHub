@@ -1,6 +1,8 @@
-export function isTokenInCookies(req) {
+const isTokenInCookies = (req) => {
     try {
+        console.log('this log is from isTokenInCookies');
         const hasToken = req.cookies.get('token');
+        console.log(hasToken, 'hasToken from cookies in isTokenInCookies.js');
         return Boolean(hasToken);
         
     } catch (error) {
@@ -8,3 +10,5 @@ export function isTokenInCookies(req) {
         return false;
     }
 }
+
+export default isTokenInCookies;
