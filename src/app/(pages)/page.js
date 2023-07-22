@@ -14,12 +14,9 @@ export default function Home() {
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
-
+  
   useEffect(() => {
     setWindowWidth(window.innerWidth);
-  }, [])
-
-  useEffect(() => {
     window.addEventListener('resize', handleResize);
     
     // Clean up the event listener on component unmount

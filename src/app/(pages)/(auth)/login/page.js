@@ -42,8 +42,13 @@ const Login = () => {
         const reqBody = await axios.post('/api/users/login', formData);
         console.log("Login success", reqBody.data);
         setIsLoggedIn(true);
+        // console.log('before setting auth status');
+        // setAuthStatus(true);
         router.push('/');
       }
+      // else {
+      //   setAuthStatus(false);
+      // }
     })()
   }, [authStatus])
 

@@ -1,8 +1,10 @@
+import { isTokenInCookies } from "@/utils/isTokenInCookies";
+
 export async function GET(req) {
     try {
-        const hasToken = req.cookies.get('token');
-        console.log(Boolean(hasToken), 'hasToken from isLoggedIn route');
-        return new Response(Boolean(hasToken), {status: 200});
+        const hasToken = isTokenInCookies(req);
+        console.log(hasToken, 'hasToken from isLoggedIn');
+        return new Response((hasToken), {status: 200});
 
     } catch (error) {
         console.log(error.message, 'cannot get token from cookies');

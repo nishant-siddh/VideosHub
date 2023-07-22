@@ -7,7 +7,7 @@ client.setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_URL).setProject(process.env.
 export const storage = new Storage(client);
 
 export class AppwriteStorage {
-    async uploadFile(file) {
+    async uploadVideo(file) {
         try {
             const response = await storage.createFile(
                 process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID,
@@ -23,17 +23,17 @@ export class AppwriteStorage {
         }
     }
 
-    async getFile(fileId) {
+    async listVideos() {
         try {
-            const response = await storage.getFile(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID, fileId);
+            const response = await storage.listFiles(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID);
             return response;
         } catch (error) {
-            console.log("Error in retrieving file", error);
+            console.log("Error in retrieving videos", error);
             throw new Error(error);
         }
     }
 
-    async getFileView(fileId) {
+    async getVideoView(fileId) {
         try {
             const response = await storage.getFileView(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID, fileId);
             console.log("File viewed successfully", response);
