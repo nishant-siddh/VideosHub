@@ -1,7 +1,7 @@
-const isTokenInCookies = (req) => {
+const isTokenInCookies = async (req) => {
     try {
         console.log('this log is from isTokenInCookies');
-        const hasToken = req.cookies.get('token');
+        const hasToken = await req.cookies.get('token');
         console.log(hasToken, 'hasToken from cookies in isTokenInCookies.js');
         return Boolean(hasToken);
         
