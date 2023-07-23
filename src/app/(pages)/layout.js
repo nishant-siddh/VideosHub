@@ -4,9 +4,9 @@ import { Inter } from 'next/font/google'
 import Header from '@/components/Header/Header'
 import SideBar from '@/components/Sidebar'
 import { usePathname } from 'next/navigation'
-// import { useEffect } from 'react';
-// import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
-// import axios from 'axios';
+import { useEffect } from 'react';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
+import axios from 'axios';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,23 +17,27 @@ const metadata = {
 
 export default function PagesLayout({ children }) {
   const pathname = usePathname();
-  // const { setIsLoggedIn } = useAuthContext();
+  const { setIsLoggedIn } = useAuthContext();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     console.log('this is pathname from layout main before api calling');
-  //     const hasToken = await axios.get('/api/users/isUserLoggedIn');
-  //     console.log('this is hasToken from layout main after calling', hasToken);
-  //     if (hasToken.data) {
-  //       console.log('this is hasToken.data from layout main for true', hasToken.data);
-  //       setIsLoggedIn(true);
-  //     }
-  //     else {
-  //       console.log('this is hasToken.data from layout main for false', hasToken.data);
-  //       setIsLoggedIn(false);
-  //     }
-  //   })()
-  // }, [])
+  useEffect(() => {
+    (async () => {
+      console.log('this is pathname from layout main before api calling');
+      const hasToken = await axios.get('/api/users/isUserLoggedIn');
+      console.log('this is hasToken from layout main after calling', hasToken);
+      if (hasToken.data) {
+        console.log('this is hasToken.data from layout main for true', hasToken.data);
+        setIsLoggedIn(true);
+      }
+      else {
+        console.log('this is hasToken.data from layout main for false', hasToken.data);
+        setIsLoggedIn(false);
+      }
+    })()
+  }, [])
+
+  useEffect(() => {
+    console.log('this is pathname from layout main');
+  })
 
   return (
     <>
