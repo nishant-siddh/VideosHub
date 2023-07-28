@@ -1,13 +1,12 @@
 import { connect } from '@/dbConfig/dbConfig';
 import Channel from '@/models/channelsDetails';
-import User from '@/models/userModel';
 
 connect();
 
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const channelDetails = await Channel.findById(reqBody.channelId);
+        const channelDetails = await Channel.findById(reqBody.param);
 
         return new Response(JSON.stringify({ message: 'Channel details found', channelData: channelDetails }), { status: 200 });
 

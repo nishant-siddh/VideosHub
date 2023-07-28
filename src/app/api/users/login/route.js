@@ -20,8 +20,10 @@ export async function POST(req) {
 
         const tokenData = {
             id: user._id,
-            username: user.username,
-            email: user.email
+            name: user.name,
+            email: user.email,
+            channelId: user.channelId
+            
         }
 
         const token = await jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });

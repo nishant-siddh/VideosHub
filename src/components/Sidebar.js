@@ -36,7 +36,7 @@ const SideBar = () => {
     ]
 
     const handleClick = async () => {
-        const response = await axios.get('/api/users/userTokenId')
+        const response = await axios.get('/api/channel/channelTokenId')
         router.push(`/channel/${response.data}`)
     }
 

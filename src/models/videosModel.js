@@ -5,12 +5,12 @@ const videoSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        minLength: 20,
         maxLength: 80
     },
     description: {
         type: String,
         trim: true,
-        minLength: 20,
         maxLength: 300
     },
     duration: {
@@ -18,7 +18,19 @@ const videoSchema = mongoose.Schema({
         required: true,
         trim: true
     },
+    videoId: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true
+    },
     videoUrl: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true
+    },
+    thumbnailId: {
         type: String,
         required: true,
         trim: true,
@@ -27,7 +39,8 @@ const videoSchema = mongoose.Schema({
     thumbnailUrl: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     uploadedBy: {
         type: String,
@@ -38,6 +51,11 @@ const videoSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    videoCurrectStatus: {
+        type: String,
+        enum: ['completed', 'draft'],
+        default: 'public'
     },
     comments: [{
         type: String,

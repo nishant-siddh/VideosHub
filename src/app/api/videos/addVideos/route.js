@@ -6,7 +6,7 @@ connect();
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const { title, description, duration, thumbnailUrl, videoUrl, uploadedBy, category, comments, meta } = reqBody;
+        const { title, description, duration, thumbnailUrl, videoUrl, uploadedBy, category, videostatus } = reqBody;
         // console.log(reqBody);
 
         const newVideo = new Video({
@@ -17,8 +17,7 @@ export async function POST(req) {
             videoUrl: videoUrl,
             uploadedBy: uploadedBy,
             category: category,
-            comments: comments,
-            meta: meta
+            videoCurrentStatus: videostatus
         });
 
         await newVideo.save();

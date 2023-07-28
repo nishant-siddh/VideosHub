@@ -4,7 +4,7 @@ const getDataFromToken = async (req) => {
     try {
         const encodedToken = req.cookies.get('token')?.value || "";
         const decodedToken = await jwt.verify(encodedToken, process.env.JWT_SECRET);
-        return decodedToken.id;
+        return decodedToken.channelId;
         
     } catch (error) {
         throw new Error(error.message);
