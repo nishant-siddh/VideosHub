@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { HomeContextProvider } from '@/ContextAPI/Context/HomeContext'
 import { AuthContextProvider } from '@/ContextAPI/Context/AuthContext'
+import { ChannelContextProvider } from '@/ContextAPI/Context/ChannelContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
             <body className={inter.className}>
                 <AuthContextProvider>
                     <HomeContextProvider>
-                        {children}
+                        <ChannelContextProvider>
+                            {children}
+                        </ChannelContextProvider>
                     </HomeContextProvider>
                 </AuthContextProvider>
             </body>

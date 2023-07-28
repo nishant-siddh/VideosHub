@@ -1,25 +1,26 @@
 "use client"
 import axios from 'axios';
-import Image from 'next/image';
-import React, { useState, useEffect } from 'react';
-import profilePicture from '@/Images/profile.jpg';
-import thumbnail from '@/Images/thumbnail.jpg'
-import { useHomeContext } from "../../../../ContextAPI/Context/HomeContext";
+import React, { useState, useEffect, useRef } from 'react';
+import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import appwriteStorage from '@/appwrite/config';
 import UploadBtn from '@/components/Channel/UploadBtn';
+import ChannelHeader from '@/components/Channel/ChannelHeader';
+import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import UploadVideoInterface from '@/components/Channel/UploadVideoInterface';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
   const { videosIndex, isLoading, setIsLoading } = useHomeContext();
+  const {setUserDetails, setChannelDetails } = useChannelContext()
   const [windowWidth, setWindowWidth] = useState(0);
-  const [userDetail, setUserDetail] = useState({});
-  const [channelDetails, setChannelDetails] = useState({});
+  const [modal, setModal] = useState();
   const [videos, setVideos] = useState([]);
   const [videoUrl, setVideoUrl] = useState(null);
 
   // change window width on resize
   useEffect(() => {
     setWindowWidth(window.innerWidth);
+    setModal(document.querySelector('[data-modal]'));
     window.addEventListener('resize', handleResize);
 
     // Clean up the event listener on component unmount
@@ -36,10 +37,10 @@ const ChannelPage = ({ params }) => {
   useEffect(() => {
     (async () => {
       if (param) {
-        const resUser = await axios.post(`/api/users/userDetails`, { param });
-        const resChannel = await axios.post(`/api/channel/channelDetails`, resUser.data.userData);
-        setUserDetail(resUser.data.userData);
+        const resChannel = await axios.post(`/api/channel/channelDetails`, { param });
+        const resUser = await axios.post(`/api/users/userDetails`, {id: resChannel.data.channelData._id});
         setChannelDetails(resChannel.data.channelData);
+        setUserDetails(resUser.data.userData);
       }
     })();
     handleListVideos();
@@ -49,7 +50,6 @@ const ChannelPage = ({ params }) => {
   //   handleListVideos();
   // }, [])
 
-  
 
   const handleListVideos = async () => {
     try {
@@ -676,47 +676,23 @@ const ChannelPage = ({ params }) => {
   return (
     <main className='mt-16 mx-auto px-3 sm:w-3/4 min-w-fit'>
       {/* channel header section  */}
-      <div className='w-full flex flex-col sm:flex-row items-center gap-3'>
-        <div className='w-16 sm:w-28 min-w-fit'>
-          <Image src={profilePicture} className='rounded-full w-16 h-16 max-h-16 sm:w-28 sm:h-28 sm:max-h-28' width={100} height={100} alt='profile image' />
-        </div>
-
-        {/* channel details and subscribe button */}
-        <div className='w-4/5 flex flex-col sm:flex-row items-center justify-between gap-2'>
-          <div className='flex flex-col items-center sm:items-start text-zinc-400'>
-            {/* creator name */}
-            <div className='text-white tracking-wider'>
-              <h1 className='text-xl sm:text-2xl'>{userDetail.name}</h1>
-            </div>
-
-            {/* username and subscribers count and videos count */}
-            <div className='flex flex-wrap justify-center text-xs sm:text-sm gap-1'>
-              <p>@{`${userDetail.name}`.toLowerCase()}</p>
-              <p>{channelDetails.totalSubscribers} Subscribers</p>
-              <p>805 videos</p>
-            </div>
-
-            {/* channel description */}
-            <p1 className='text-xs sm:text-sm mt-1'>{channelDetails.channelDescription}</p1>
-          </div>
-
-          {/* subscribe button */}
-          <button className='bg-primary hover:bg-primary/80 text-white text-xs md:text-sm rounded-lg px-2 py-1' >Subscribe</button>
-        </div>
-      </div>
+      <ChannelHeader />
 
       <hr className='my-4 bg-red-400' />
 
       {/* channel videos section */}
       <div>
-        {/* upload btn */}
         {/* {
           videos.length === 0 && ( */}
-            <UploadBtn handleListVideos={handleListVideos} />
+            <UploadBtn modal={modal} />
+
+            <dialog data-modal className='relative w-1/2 bg-zinc-800'>
+              <UploadVideoInterface />
+            </dialog>
           {/* )
         } */}
 
-        {
+        {/* {
           isLoading
             ? <p>Loading...</p>
             : <div className="grid grid-cols-3 gap-4">
@@ -727,13 +703,13 @@ const ChannelPage = ({ params }) => {
                 </div>
               ))}
             </div>
-        }
+        } */}
 
-        {videoUrl && (
+        {/* {videoUrl && (
           <video src={videoUrl} width="320" height="240" controls autoPlay>
             Your browser does not support the video tag.
           </video>
-        )}
+        )} */}
 
       </div>
     </main>

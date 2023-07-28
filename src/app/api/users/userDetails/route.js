@@ -7,7 +7,7 @@ connect();
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const user = await getUserData({id: reqBody.param});
+        const user = await getUserData({id: reqBody.id});
 
         return new Response(JSON.stringify({message: "User found", userData: user}), { status: 200 })
         

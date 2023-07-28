@@ -2,8 +2,9 @@
 import AuthHeader from '@/components/Auth/authHeader'
 import BlurBackground from '@/components/Auth/BlurBackground'
 import { Inter } from 'next/font/google'
-import { useAuthContext } from '@/ContextAPI/Context/AuthContext'
-import { useRouter } from 'next/navigation'
+// import { useAuthContext } from '@/ContextAPI/Context/AuthContext'
+// import { useRouter } from 'next/navigation'
+// import { useEffect } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 const metadata = {
@@ -12,13 +13,13 @@ const metadata = {
 }
 
 export default function RootLayout({ children }) {
-    const router = useRouter();
-    const { isLoggedIn } = useAuthContext();
+    // const router = useRouter();
+    // const { isLoggedIn } = useAuthContext();
 
-    if (isLoggedIn) {
-        console.log('already logged in no need to go to the auth pages');
-        router.replace('/');
-    }
+    // if (isLoggedIn) {
+    //     console.log('already logged in no need to go to the auth pages');
+    //     router.replace('/');
+    // }
 
     return (
         <div className='w-full'>
