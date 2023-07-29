@@ -32,7 +32,7 @@ export const uploadVideoSchema = yup.object().shape({
             );
         }),
     description: yup.string(),
-    category: yup.string().notOneOf(['Select a category'], 'Please select a category').required('Please select a category')
+    category: yup.string().notOneOf(['disabledValue'], 'Please select a category').required('Please select a category')
 })
 
 export const channelDetailsSchema = yup.object().shape({

@@ -52,11 +52,6 @@ const videoSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    videoCurrectStatus: {
-        type: String,
-        enum: ['completed', 'draft'],
-        default: 'public'
-    },
     comments: [{
         type: String,
         ref: 'Comment'

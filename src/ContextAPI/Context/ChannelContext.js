@@ -12,7 +12,6 @@ const initialState = {
     loading: false,
     isVideoUploaded: false,
     videoTitle: '',
-    videoCurrentStatus: ''
 }
 
 const ChannelContextProvider = ({ children }) => {
@@ -29,9 +28,6 @@ const ChannelContextProvider = ({ children }) => {
     const setChannelDetails = (channelData) => {
         dispatch({ type: 'SET_CHANNEL_DETAIL', payload: channelData })
     }
-    const setVideoCurrentStatus = (status) => {
-        dispatch({ type: 'SET_VIDEO_CURRENT_STATUS', payload: status })
-    }
 
     const setVideoTitle = (fileName) => {
         dispatch({ type: 'SET_FILE_NAME', payload: fileName })
@@ -43,9 +39,8 @@ const ChannelContextProvider = ({ children }) => {
             const response = await appwriteStorage.uploadVideo(file);
             console.log(response, 'this is response from appwrite');
 
-            if(file.type === 'video/mp4') {
+            if (file.type === 'video/mp4') {
                 dispatch({ type: 'SET_UPLOAD_FILE_STATUS', payload: true })
-                setVideoCurrentStatus('draft');
             }
 
         } catch (error) {
@@ -56,8 +51,37 @@ const ChannelContextProvider = ({ children }) => {
         }
     }
 
+    const handleListVideos = async () => {
+        try {
+            dispatch({ type: 'SET_LOADING' })
+            const response = await appwriteStorage.listVideos();
+            // console.log(response);
+            // setVideos(response.files);
+            return response;
+
+        } catch (error) {
+            console.log(error, 'error in listing files');
+        } finally {
+            dispatch({ type: 'SET_LOADING' })
+        }
+    }
+
+    const handleGetVideoView = async (fileId) => {
+        try {
+            dispatch({ type: 'SET_LOADING' })
+            const response = await appwriteStorage.getVideoView(fileId);
+            // console.log(response);
+            // setVideoUrl(response.href);
+        }
+        catch (error) {
+            console.log(error, 'error in getting file view');
+        } finally {
+            dispatch({ type: 'SET_LOADING' })
+        }
+    }
+
     return (
-        <ChannelContext.Provider value={{ ...state, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadVideo, setVideoCurrentStatus }}>
+        <ChannelContext.Provider value={{ ...state, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadVideo, handleListVideos, handleGetVideoView }}>
             {children}
         </ChannelContext.Provider>
     )

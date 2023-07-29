@@ -14,4 +14,4 @@ export async function POST(req) {
         console.log('Error in channel found', error.message);
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
-}
+} 

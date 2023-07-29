@@ -19,14 +19,6 @@ const ChannelReducer = (state, action) => {
                 videoTitle: action.payload
             }
 
-        case 'SET_VIDEO_CURRENT_STATUS':
-            if (state.isVideoUploaded) {
-                return {
-                    ...state,
-                    videoCurrentStatus: action.payload
-                }
-            }
-
         case 'SET_USER_DETAIL':
             return {
                 ...state,

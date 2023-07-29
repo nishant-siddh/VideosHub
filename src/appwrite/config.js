@@ -32,7 +32,6 @@ export class AppwriteStorage {
             throw new Error(error);
         }
     }
-
     async getVideoView(fileId) {
         try {
             const response = await storage.getFileView(process.env.NEXT_PUBLIC_APPWRITE_BUCKET_ID, fileId);
