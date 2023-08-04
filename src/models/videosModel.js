@@ -5,7 +5,7 @@ const videoSchema = mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minLength: 20,
+        minLength: 5,
         maxLength: 80
     },
     description: {
@@ -15,7 +15,6 @@ const videoSchema = mongoose.Schema({
     },
     duration: {
         type: Number,
-        required: true,
         trim: true
     },
     videoId: {
@@ -32,15 +31,18 @@ const videoSchema = mongoose.Schema({
     },
     thumbnailId: {
         type: String,
-        required: true,
         trim: true,
         unique: true
     },
     thumbnailUrl: {
         type: String,
-        required: true,
         trim: true,
         unique: true
+    },
+    videoStatus: {
+        type: String,
+        enum: ['Draft', 'Completed'],
+        default: 'Draft'
     },
     uploadedBy: {
         type: String,

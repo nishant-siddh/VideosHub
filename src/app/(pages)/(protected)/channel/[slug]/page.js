@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import appwriteStorage from '@/appwrite/config';
 import UploadBtn from '@/components/Channel/UploadBtn';
-import ChannelHeader from '@/components/Channel/ChannelHeader';
+import ChannelPageHeader from '@/components/Channel/ChannelPageHeader';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import UploadVideoInterface from '@/components/Channel/UploadVideoInterface';
+import UploadVideoDialogBox from '@/components/Channel/UploadVideoDialogBox';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
@@ -661,7 +661,7 @@ const ChannelPage = ({ params }) => {
   return (
     <main className='mt-16 mx-auto px-3 sm:w-3/4 min-w-fit'>
       {/* channel header section  */}
-      <ChannelHeader />
+      <ChannelPageHeader />
 
       <hr className='my-4 bg-red-400' />
 
@@ -671,9 +671,7 @@ const ChannelPage = ({ params }) => {
           videos.length === 0 && ( */}
             <UploadBtn modal={modal} />
 
-            <dialog data-modal className='w-10/12 sm:w-[70%] md:w-[60%] h-4/5 bg-zinc-800 p-0 rounded-md'>
-              <UploadVideoInterface />
-            </dialog>
+            <UploadVideoDialogBox />
           {/* )
         } */}
 

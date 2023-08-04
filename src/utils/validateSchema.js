@@ -22,7 +22,7 @@ export const resetPasswordSchema = yup.object().shape({
 })
 
 export const uploadVideoSchema = yup.object().shape({
-    title: yup.string().min(20, 'The title must be atleast 20 characters').required('Title is required'),
+    title: yup.string().min(5, 'The title must be atleast 5 characters').required('Title is required'),
     thumbnail: yup.mixed().required('Thumbnail is required')
         .test("type", "Only the following formats are accepted: .jpeg, .jpg, .png", (value) => {
             return value && (

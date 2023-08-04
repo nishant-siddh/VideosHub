@@ -25,7 +25,7 @@ const ChannelHeader = () => {
                     </div>
 
                     {/* channel description */}
-                    <p1 className='text-xs sm:text-sm mt-1'>{channelDetail.channelDescription}</p1>
+                    <p className='text-xs sm:text-sm mt-1'>{channelDetail.channelDescription}</p>
                 </div>
 
                 {/* subscribe button */}

@@ -1,15 +1,17 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { uploadVideoSchema } from '@/utils/validateSchema';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { BiImageAdd } from 'react-icons/bi';
 import { IoIosAdd } from 'react-icons/io';
 
-const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
-    const { channelDetail, videosCategories, addVideoCategory, handleUploadVideo, loading, videoTitle } = useChannelContext();
+const UploadVideoDetailsFrom = () => {
+    const { videosCategories, addVideoCategory, handleUploadFile, loading, setVideoDetails, handleGetFileView, videoTitle, videoDetails, setVideoTitle, setIsVideoUploaded, setFormikValues, handleDeleteFile } = useChannelContext();
     const [addBtnToShowInput, setAddBtnToShowInput] = useState(false);
     const [isOnFocus, setIsOnFocus] = useState(false);
+    const newCategoryInputRef = useRef();
 
 
     // Formik validation schema for this form
@@ -21,14 +23,27 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
             category: 'disabledValue'
         },
         validationSchema: uploadVideoSchema,
-        onSubmit: (values) => {
-            console.log(values, 'this is values from formik');
+        onSubmit: async (values, action) => {
+            document.querySelector('[data-modal]').close();
+            
+            try {
+                const completedRes = await axios.post('/api/videos/addVideos', { values, videoDetails });
+                console.log(completedRes.data, 'video added successfully');
+            } catch (error) {
+                console.log(error, 'error in adding videos');
+            } finally {
+                setVideoDetails('Completed', 'videoCurrentStatus');
+                setVideoTitle('');
+                setIsVideoUploaded(false);
+                action.resetForm();
+            }
+
+
         }
     })
-    console.log(errors, 'this is error from formik');
 
     const handleAddCategory = () => {
-        const category = document.querySelector('#newCategory').value;
+        const category = newCategoryInputRef.current.value;
         if (category) {
             if (category in videosCategories) {
                 alert('Category already exists')
@@ -39,19 +54,31 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
         }
     }
 
-    const handleSaveVideo = (e) => {
-        e.preventDefault();
-        if (values.thumbnail) {
-            handleUploadVideo(values.thumbnail);
+    const handleUploadAndUpdateThumbnailURL = (e) => {
+        const file = e.target.files[0];
+        if (!videoDetails.thumbnailId) {
+            handleUploadFile(file);
         }
-        handleSubmit();
-        // document.querySelector('[data-modal]').close();
+        else {
+            handleDeleteFile(videoDetails.thumbnailId);
+            handleUploadFile(file);
+        }
+        setFieldValue('thumbnail', file)
     }
 
+    useEffect(() => {
+        setFormikValues(values);
+    }, [values])
+
+    useEffect(() => {
+        if (videoDetails.videoId) {
+            handleGetFileView(videoDetails.videoId);
+        }
+    }, [])
 
     return (
         <>
-            <form onSubmit={handleSaveVideo} className='text-white px-6 py-3'>
+            <form onSubmit={handleSubmit} className='text-white px-6 py-3 mt-16'>
 
                 {/* ----------------title, description and video container---------------- */}
                 <div className='relative flex flex-col-reverse lg:flex-row flex-wrap justify-between gap-3'>
@@ -109,12 +136,11 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                         </div>
                     </div>
 
-                    <div className='sticky top-0 lg:w-[45%] mt-2'>
-                        {/* ----------------video container---------------- */}
-                        <video src={temporaryVideoURL} controls className='w-full'></video>
+                    {/* ----------------video container---------------- */}
+                    <div className='w-full lg:w-[45%] mt-2'>
+                        <video src={videoDetails.videoUrl} controls className='w-full max-h-48' poster={videoDetails.thumbnailUrl}></video>
                     </div>
                 </div>
-
 
 
                 {/* ----------------thumbnail upload input---------------- */}
@@ -138,12 +164,13 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                                         )
                                     }
                                 </label>
+
                                 <input
                                     type="file"
                                     name='thumbnail'
                                     id='thumbnail'
                                     className='hidden'
-                                    onChange={e => setFieldValue('thumbnail', e.currentTarget.files[0])}
+                                    onChange={handleUploadAndUpdateThumbnailURL}
                                 />
 
                             </div>
@@ -157,7 +184,7 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                 {/* ----------------username---------------- */}
                 <div className="mt-2 w-fit relative">
                     <p className='mb-3'>Uploaded By</p>
-                    <input type='text' id='username' className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' value={`@${channelDetail.username}`} readOnly />
+                    <input type='text' id='username' className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' value={`@${videoDetails.username}`} readOnly />
                 </div>
 
 
@@ -173,7 +200,7 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                         >
-                            <option value={'disabledValue'} className='bg-zinc-900 text-gray-300' defaultValue disabled>Select a category</option>
+                            <option value={'disabledValue'} className='bg-zinc-900 text-gray-300' defaultValue disabled hidden>Select a category</option>
                             {
                                 videosCategories.map((category, index) => (
                                     <option key={index} className='bg-zinc-900 text-gray-300' value={category}>{category}</option>
@@ -190,7 +217,7 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                     {/* add new category input */}
                     <div className={`${addBtnToShowInput ? 'block' : 'hidden'} flex flex-wrap gap-2 w-fit`} >
 
-                        <input type="text" id='newCategory' className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' placeholder='Enter new category' />
+                        <input type="text" id='newCategory' ref={newCategoryInputRef} className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' placeholder='Enter new category' />
 
                         {/* add and cancel new category button */}
                         <div className='flex gap-3'>
@@ -207,16 +234,17 @@ const UploadVideoDetailsFrom = ({temporaryVideoURL}) => {
                     </div>
                 </div>
 
+                {/* Save button */}
+                <div className='sticky bottom-0 flex justify-end bg-zinc-800 outline outline-zinc-800'>
+                    <button
+                        type='submit'
+                        data-close-modal
+                        className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2'
+                    >Save</button>
+                </div>
             </form>
 
-            {/* Save button */}
-            <div className='sticky bottom-0 flex justify-end bg-zinc-800'>
-                <button
-                    type='submit'
-                    data-close-modal
-                    className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2'
-                >Save</button>
-            </div>
+
         </>
     )
 }
