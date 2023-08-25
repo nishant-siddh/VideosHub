@@ -1,5 +1,4 @@
 import User from "@/models/userModel";
-import { sendEmail } from "@/utils/mailer";
 import { connect } from "@/dbConfig/dbConfig";
 
 connect();

@@ -14,17 +14,17 @@ export default function Home() {
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
-  
+
   useEffect(() => {
     setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
-    
+
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-  
+
   const Categories = [
     {
       name: 'Games',
@@ -619,59 +619,59 @@ export default function Home() {
   return (
     <div className="flex flex-col mx-auto">
       <Navbar />
-        {Categories.map((category, index) => {
-          const lowerCaseCategory = category.name.toLowerCase()
-          return (
-            <main key={index} className='mt-16 px-2 lg:mt-0'>
-              <div className="flex justify-between mt-5">
-                <h3 className='ml-4 mb-2'>{category.name}</h3>
+      {Categories.map((category, index) => {
+        const lowerCaseCategory = category.name.toLowerCase()
+        return (
+          <main key={index} className='mt-16 px-2 lg:mt-0'>
+            <div className="flex justify-between mt-5">
+              <h3 className='ml-4 mb-2'>{category.name}</h3>
 
-                {/* previous and next buttons */}
-                <PreviousAndNextArrows lowerCaseCategory={lowerCaseCategory} windowWidth={windowWidth} {...category} />
+              {/* previous and next buttons */}
+              <PreviousAndNextArrows lowerCaseCategory={lowerCaseCategory} windowWidth={windowWidth} {...category} />
 
-              </div>
+            </div>
 
-              <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4'>
-                {category.videos.slice(videosIndex[lowerCaseCategory], videosIndex[lowerCaseCategory] +
-                  (windowWidth > 1024
-                    ? 4
-                    : windowWidth > 768
-                      ? 3
-                      : windowWidth > 640
-                        ? 2
-                        : 1)).map((video, index) => {
-                          return (
-                            <div key={index} className="w-fit">
-                              {/* video thumbnail */}
-                              <div>
-                                <Image src={video.thumbnail} className='rounded-md hover:rounded-none ease-in duration-300 w-96 sm:w-72 md:w-60' alt={video.title} width={200} height={200} />
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4'>
+              {category.videos.slice(videosIndex[lowerCaseCategory], videosIndex[lowerCaseCategory] +
+                (windowWidth > 1024
+                  ? 4
+                  : windowWidth > 768
+                    ? 3
+                    : windowWidth > 640
+                      ? 2
+                      : 1)).map((video, index) => {
+                        return (
+                          <div key={index} className="w-fit">
+                            {/* video thumbnail */}
+                            <div>
+                              <Image src={video.thumbnail} className='rounded-md hover:rounded-none ease-in duration-300 w-96 sm:w-72 md:w-60' alt={video.title} width={200} height={200} />
+                            </div>
+
+                            {/* vidoes title and creator profile picture */}
+                            <div className='flex items-start gap-2 mt-2'>
+                              <div className="w-8 min-w-fit">
+                                <Image src={video.channel.profilePicture} className='rounded-full w-8 h-8 max-h-8' alt={video.channel.name} width={40} height={40} />
                               </div>
 
-                              {/* vidoes title and creator profile picture */}
-                              <div className='flex items-start gap-2 mt-2'>
-                                <div className="w-8 min-w-fit">
-                                  <Image src={video.channel.profilePicture} className='rounded-full w-8 h-8 max-h-8' alt={video.channel.name} width={40} height={40} />
-                                </div>
-
-                                <div className='max-w-xs sm:max-w-xs md:max-w-[13rem] xl:max-w-[12rem]'>
-                                  <h4 className='text-sm font-semibold'>{video.title}</h4>
-                                  <div>
-                                    <p className='text-xs text-gray-400'>{video.channel.name}</p>
-                                    <div className="flex text-xs text-gray-400">
-                                      <p>{video.views} views</p>&nbsp;
-                                      <span>.</span>
-                                      &nbsp;<p>{video.createdAt}</p>
-                                    </div>
+                              <div className='max-w-xs sm:max-w-xs md:max-w-[13rem] xl:max-w-[12rem]'>
+                                <h4 className='text-sm font-semibold'>{video.title}</h4>
+                                <div>
+                                  <p className='text-xs text-gray-400'>{video.channel.name}</p>
+                                  <div className="flex text-xs text-gray-400">
+                                    <p>{video.views} views</p>&nbsp;
+                                    <span>.</span>
+                                    &nbsp;<p>{video.createdAt}</p>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          )
-                        })}
-              </div>
-            </main>
-          )
-        })}
+                          </div>
+                        )
+                      })}
+            </div>
+          </main>
+        )
+      })}
     </div>
   )
 }

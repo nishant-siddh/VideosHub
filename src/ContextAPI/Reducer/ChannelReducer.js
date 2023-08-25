@@ -46,66 +46,12 @@ const ChannelReducer = (state, action) => {
                 }
             }
 
-        // case 'SET_USERNAME_TO_VIDEOSDETAILS':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             username: state.channelDetail.username
-        //         }
-        //     }
-
-        // case 'SET_VIDEO_CURRENT_STATUS':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             videoCurrentStatus: action.payload
-        //         }
-        //     }
-
-        // case 'SET_VIDEO_ID':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             videoId: action.payload
-        //         }
-        //     }
-
-        // case 'SET_VIDEO_URL':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             videoUrl: action.payload
-        //         }
-        //     }
-
-        // case 'SET_THUMBNAIL_ID':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             thumbnailId: action.payload
-        //         }
-        //     }
-
-        // case 'SET_THUMBNAIL_URL':
-        //     return {
-        //         ...state,
-        //         videoDetails: {
-        //             ...state.videoDetails,
-        //             thumbnailUrl: action.payload
-        //         }
-        //     }
-
         case 'SET_VIDEO_DETAILS':
             return {
                 ...state,
                 videoDetails: {
                     ...state.videoDetails,
-                    [action.payload.toChange]: action.payload.videoDetails
+                    [action.payload.toChange]: action.payload.videoDetail
                 }
             }
 

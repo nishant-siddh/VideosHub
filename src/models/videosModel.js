@@ -31,22 +31,16 @@ const videoSchema = mongoose.Schema({
     },
     thumbnailId: {
         type: String,
-        trim: true,
-        unique: true
     },
     thumbnailUrl: {
         type: String,
-        trim: true,
-        unique: true
     },
     videoStatus: {
         type: String,
-        enum: ['Draft', 'Completed'],
-        default: 'Draft'
     },
     uploadedBy: {
         type: String,
-        ref: 'User',
+        ref: 'Channel',
         required: true
     },
     category: {

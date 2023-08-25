@@ -13,13 +13,6 @@ const metadata = {
 }
 
 export default function RootLayout({ children }) {
-    // const router = useRouter();
-    // const { isLoggedIn } = useAuthContext();
-
-    // if (isLoggedIn) {
-    //     console.log('already logged in no need to go to the auth pages');
-    //     router.replace('/');
-    // }
 
     return (
         <div className='w-full'>

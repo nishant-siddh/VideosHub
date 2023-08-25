@@ -6,24 +6,21 @@ import UploadVideoInterface from './UploadVideoInterface';
 import axios from 'axios';
 
 const UploadVideoDialogBox = () => {
-  const { setVideoTitle, isVideoUploaded, setIsVideoUploaded, videoDetails, formikValues } = useChannelContext();
+  const { setVideoTitle, isVideoUploaded, setIsVideoUploaded, videoDetails, formikValues, setVideoDetails } = useChannelContext();
   const dialogRef = useRef();
 
-  // const videoDetails = {
-  //   videoId,
-  //   videoUrl,
-  //   thumbnailId: `${formikValues.thumbnail}`,
-  //   thumbnailUrl: '',
-  //   username,
-  //   videoCurrentStatus
-  // }
 
   const handleDialogClose = async () => {
     dialogRef.current.close();
     setVideoTitle('');
     setIsVideoUploaded(false);
-    const draftRes = await axios.post('/api/videos/addVideos', { values: formikValues, videoDetails });
-    console.log(draftRes.data, 'this is draft res');
+    if (isVideoUploaded) {
+      const draftRes = await axios.post('/api/videos/addVideos', { values: formikValues, videoDetails });
+      console.log(draftRes.data, 'this is draft res');
+    }
+
+    setVideoDetails('', 'thumbnailId');
+    setVideoDetails('', 'thumbnailUrl');
   }
 
   return (

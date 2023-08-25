@@ -1,4 +1,5 @@
 import { connect } from "@/dbConfig/dbConfig";
+import Channel from "@/models/channelsDetails";
 import Video from "@/models/videosModel";
 
 connect();
@@ -7,7 +8,6 @@ export async function POST(req) {
     try {
         const reqBody = await req.json();
         const { values, videoDetails } = reqBody;
-        console.log(videoDetails, 'videoDetail', values, 'this is detials from the add videos api');
 
         const newVideo = new Video({
             title: values.title,
@@ -20,6 +20,10 @@ export async function POST(req) {
             category: values.category,
             videoStatus: videoDetails.videoCurrentStatus
         });
+
+        const videosInChannel = await Channel.findOne({ username: videoDetails.username });
+        videosInChannel.videosId.push(newVideo._id);
+        await videosInChannel.save();
 
         await newVideo.save();
 

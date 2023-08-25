@@ -21,8 +21,7 @@ export async function POST(req) {
         // create a channel for the user in the channel collection
         try {
             const channelRes = await axios.post(process.env.DOMAIN + '/api/channel', reqBody);
-            console.log(channelRes.data.message);
-            channelId = channelRes.data.channel;
+            channelId = channelRes.data.channel._id;
             
         } catch (error) {
             console.log("Channel creation error", error.message);

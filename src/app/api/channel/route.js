@@ -17,7 +17,7 @@ export async function POST(req) {
             username,
             channelDescription
         })
-
+        
         await newChannel.save();
 
         const channelDetails = await Channel.findOne({ username });

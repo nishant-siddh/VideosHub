@@ -19,7 +19,7 @@ const initialState = {
         thumbnailId: '',
         thumbnailUrl: '',
         username: '',
-        videoCurrentStatus: '',
+        videoCurrentStatus: 'Draft',
     },
 
     formikValues: {}
@@ -28,6 +28,10 @@ const initialState = {
 
 const ChannelContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    const setLoading = () => {
+        dispatch({ type: 'SET_LOADING' })
+    }
 
     const setUserDetails = (userData) => {
         dispatch({ type: 'SET_USER_DETAIL', payload: userData })
@@ -45,7 +49,6 @@ const ChannelContextProvider = ({ children }) => {
         dispatch({ type: 'SET_FILE_NAME', payload: fileName })
     }
 
-    
     const setIsVideoUploaded = (status) => {
         dispatch({ type: 'SET_IS_VIDEO_UPLOADED', payload: status })
     }
@@ -54,29 +57,18 @@ const ChannelContextProvider = ({ children }) => {
         dispatch({ type: 'SET_FORMIK_VALUES', payload: values })
     }
 
-    const setVideoDetails = (videoDetails, toChange) => {
-        dispatch({ type: 'SET_VIDEO_DETAILS', payload: {videoDetails, toChange} })
+    const setVideoDetails = (videoDetail, toChange) => {
+        dispatch({ type: 'SET_VIDEO_DETAILS', payload: { videoDetail, toChange } })
     }
-
-    // const setThumbnailId = (thumbnailId) => {
-    //     dispatch({ type: 'SET_THUMBNAIL_ID', payload: thumbnailId })
-    // }
-
-    // const setVideoCurrentStatus = (status) => {
-    //     dispatch({ type: 'SET_VIDEO_CURRENT_STATUS', payload: status })
-    // }
 
     const handleUploadFile = async (file) => {
         try {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
             const response = await appwriteStorage.uploadFile(file);
 
             if (file.type === 'video/mp4') {
                 setIsVideoUploaded(true);
                 setVideoDetails(response.$id, 'videoId');
-                // dispatch({ type: 'SET_VIDEO_ID', payload: response.$id })
-                // setVideoCurrentStatus('Draft');
-                setVideoDetails('Draft', 'videoCurrentStatus')
             }
 
             if (file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png') {
@@ -87,26 +79,26 @@ const ChannelContextProvider = ({ children }) => {
         } catch (error) {
             console.log(error, 'error in uploading file');
         } finally {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
     const handleListFile = async () => {
         try {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
             const response = await appwriteStorage.listFiles();
             return response;
 
         } catch (error) {
             console.log(error, 'error in listing files');
         } finally {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
     const handleGetFileView = async (fileId) => {
         try {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
             const response = await appwriteStorage.getFileView(fileId);
             // dispatch({ type: 'SET_VIDEO_URL', payload: response.href })
             setVideoDetails(response.href, 'videoUrl');
@@ -114,43 +106,42 @@ const ChannelContextProvider = ({ children }) => {
         catch (error) {
             console.log(error, 'error in getting file view');
         } finally {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
     const handleGetFilePreview = async (fileId) => {
         try {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
             const response = await appwriteStorage.getFilePreview(fileId);
             setVideoDetails(response.href, 'thumbnailUrl');
+            // return response.href;
         }
         catch (error) {
             console.log(error, 'error in getting file preview');
         } finally {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
-    const handleDeleteFile= async (fileId, file) => {
+    const handleDeleteFile = async (fileId) => {
         try {
-            dispatch({ type: 'SET_LOADING' })
-            const response = await appwriteStorage.deleteFile(fileId);
-            return response.href;
+            setLoading();
+            await appwriteStorage.deleteFile(fileId);
         }
         catch (error) {
             console.log(error, 'error in deleting file');
         } finally {
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
     useEffect(() => {
-        // dispatch({ type: 'SET_USERNAME_TO_VIDEOSDETAILS' })
         setVideoDetails(state.channelDetail.username, 'username');
     }, [state.channelDetail.username])
 
     return (
-        <ChannelContext.Provider value={{ ...state, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadFile, handleListFile, handleGetFileView, handleGetFilePreview, setIsVideoUploaded, setFormikValues, handleDeleteFile, setVideoDetails }}>
+        <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadFile, handleListFile, handleGetFileView, handleGetFilePreview, setIsVideoUploaded, setFormikValues, handleDeleteFile, setVideoDetails }}>
             {children}
         </ChannelContext.Provider>
     )

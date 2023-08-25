@@ -23,7 +23,6 @@ export async function POST(req) {
             name: user.name,
             email: user.email,
             channelId: user.channelId
-            
         }
 
         const token = await jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });

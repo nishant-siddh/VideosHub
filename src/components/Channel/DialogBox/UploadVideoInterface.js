@@ -1,7 +1,7 @@
 import React from 'react'
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { MdUpload } from 'react-icons/md';
-import UplaodLoader from '../UplaodLoader';
+import UplaodLoader from '@/components/UplaodLoader';
 
 const UploadVideoInterface = () => {
     const { setVideoTitle, handleUploadFile, loading, videoTitle } = useChannelContext();
@@ -32,7 +32,7 @@ const UploadVideoInterface = () => {
                         className='bg-zinc-900 text-gray-100 px-5 py-2 rounded-md mt-5 hover:bg-gray-100 hover:text-zinc-900 transition duration-300 disabled:cursor-not-allowed disabled:opacity-50'
                         onClick={() => handleUploadFile(document.querySelector('#video').files[0])}
                     >
-                        Upload Files
+                        {loading ? 'Uploading' : 'Upload Video'}
                     </button>
                 </div>
             </div>
