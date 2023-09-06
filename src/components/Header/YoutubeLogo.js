@@ -8,7 +8,7 @@ const YoutubeLogo = ({page}) => {
       <Link href={page === 'dashboard' ? '/dashboard' : '/'}>
         <div className='flex w-[6.5rem] jusitfy-center md:justify-evenly items-center py-2'>
           <BsYoutube className='text-primary text-xl'/>
-          <h1 className='text-white tracking-[-0.01em] text-lg'>{page === 'dashboard' ? 'Studio' : 'VidZone'}</h1>
+          <h1 className='text-white tracking-[-0.01em] text-lg'>{page === 'dashboard' ? 'VH Studio' : 'VidZone'}</h1>
         </div>
       </Link>
     </div>

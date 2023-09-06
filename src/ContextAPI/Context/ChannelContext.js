@@ -137,8 +137,10 @@ const ChannelContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        setVideoDetails(state.channelDetail.username, 'username');
-    }, [state.channelDetail.username])
+        if (state.channelDetail) {
+            setVideoDetails(state.channelDetail.username, 'username');
+        }
+    }, [state.channelDetail])
 
     return (
         <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadFile, handleListFile, handleGetFileView, handleGetFilePreview, setIsVideoUploaded, setFormikValues, handleDeleteFile, setVideoDetails }}>

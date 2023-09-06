@@ -2,7 +2,7 @@
 import '../globals.css'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header/Header'
-import SideBar from '@/components/Sidebar/Sidebar'
+import SideBar from '@/components/Sidebar'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react';
 import { useAuthContext } from '@/ContextAPI/Context/AuthContext';

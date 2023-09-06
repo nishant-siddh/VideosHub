@@ -8,7 +8,7 @@ export async function POST(req) {
     try {
         const reqBody = await req.json();
         const { values, videoDetails } = reqBody;
-
+        
         const newVideo = new Video({
             title: values.title,
             description: values.description,

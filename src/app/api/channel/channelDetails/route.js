@@ -7,6 +7,8 @@ export async function POST(req) {
     try {
         const reqBody = await req.json();
         const channelDetails = await Channel.findById(reqBody.param);
+        console.log(channelDetails, 'channel details');
+        console.log(channelDetails.username, 'channel details username');
 
         return new Response(JSON.stringify({ message: 'Channel details found', channelData: channelDetails }), { status: 200 });
 

@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <>  
-            <div className='w-full'>
+            <div className='w-full bg-zinc-800'>
                 <DashboardHeader />
                 <div className='flex mt-16 text-white'>
                     <SidebarForDashboard />

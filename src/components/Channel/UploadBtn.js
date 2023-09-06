@@ -1,9 +1,12 @@
-// import { useHomeContext } from '@/ContextAPI/Context/HomeContext';
-// import appwriteStorage from '@/appwrite/config';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsFillCloudUploadFill } from 'react-icons/bs'
 
-const UploadBtn = ({modal}) => {
+const UploadBtn = () => {
+    const [modal, setModal] = useState();
+
+    useEffect(() => {
+        setModal(document.querySelector('[data-modal]'));
+    }, [])
 
     return (
         <div className='flex items-center gap-2 w-fit' onClick={() => modal.showModal()}>

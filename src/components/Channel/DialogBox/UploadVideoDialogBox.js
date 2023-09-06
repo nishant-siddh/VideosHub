@@ -9,7 +9,6 @@ const UploadVideoDialogBox = () => {
   const { setVideoTitle, isVideoUploaded, setIsVideoUploaded, videoDetails, formikValues, setVideoDetails } = useChannelContext();
   const dialogRef = useRef();
 
-
   const handleDialogClose = async () => {
     dialogRef.current.close();
     setVideoTitle('');

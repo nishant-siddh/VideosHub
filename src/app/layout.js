@@ -3,6 +3,7 @@ import './globals.css'
 import { HomeContextProvider } from '@/ContextAPI/Context/HomeContext'
 import { AuthContextProvider } from '@/ContextAPI/Context/AuthContext'
 import { ChannelContextProvider } from '@/ContextAPI/Context/ChannelContext'
+import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
                 <AuthContextProvider>
                     <HomeContextProvider>
                         <ChannelContextProvider>
-                            {children}
+                            <VideoContextProvider>
+                                {children}
+                            </VideoContextProvider>
                         </ChannelContextProvider>
                     </HomeContextProvider>
                 </AuthContextProvider>

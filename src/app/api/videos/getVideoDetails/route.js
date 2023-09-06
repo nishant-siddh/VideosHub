@@ -6,7 +6,7 @@ connect()
 export async function GET(req) {
     try {
         const { searchParams } = new URL(req.url);
-        const param = searchParams.get("_id");
+        const param = searchParams.get("id");
 
         const videos = await Video.findOne({ _id: param });
         console.log(videos, 'videos from get video details');
