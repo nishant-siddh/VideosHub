@@ -42,5 +42,14 @@ export const channelDetailsSchema = yup.object().shape({
 
 export const editVideoSchema = yup.object().shape({
     title: yup.string(),
-    category: yup.string()
+    category: yup.string(),
+    thumbnail: yup.mixed().required('Thumbnail is required')
+        .test("type", "Only the following formats are accepted: .jpeg, .jpg, .png", (value) => {
+            return value && (
+                value.type === "image/jpeg" ||
+                value.type === "image/jpg" ||
+                value.type === "image/png"
+            );
+        }),
+    description: yup.string()
 })

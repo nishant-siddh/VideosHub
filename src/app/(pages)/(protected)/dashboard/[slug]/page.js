@@ -1,5 +1,6 @@
 "use client";
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import UploadVideoDialogBox from '@/components/Channel/DialogBox/UploadVideoDialogBox';
 import UploadBtn from '@/components/Channel/UploadBtn';
 import DashboardVideoListView from '@/components/Dashboard/DashboardVideoListView';
@@ -11,6 +12,7 @@ import { BsFillGridFill } from 'react-icons/bs';
 const Dashboard = ({ params }) => {
   const param = params.slug;
   const { channelDetail, setChannelDetails, setUserDetails } = useChannelContext();
+  const { getVideoDataForView, channelVideos } = useVideoContext();
 
   const videosDetailsHeader = [
     { heading: 'Videos', width: '40%', dbNameForDetail: 'title' },
@@ -36,9 +38,15 @@ const Dashboard = ({ params }) => {
     })()
   }, []);
 
+  useEffect(() => {
+    if (channelDetail.username) {
+      getVideoDataForView(channelDetail.username, 'dashboard');
+    }
+  }, [channelDetail]);
+
   return (
     <>
-      <main className='flex justify-center items-start mt-10 w-[80%] mx-auto'>
+      <main className='relative flex justify-center items-start mt-10 w-[80%] mx-auto'>
         <div className='bg-black w-full mx-3 p-5 rounded-lg'>
           {/* channel content header */}
           <div className='flex justify-between'>
@@ -63,8 +71,8 @@ const Dashboard = ({ params }) => {
           <div className='mt-5 bg-zinc-800 rounded-sm'>
             {/* Videos List view */}
             <table className="w-full">
-              <thead>
-                <tr className='flex justify-between bg-zinc-900 w-full rounded-sm px-3 py-2'>
+              <thead className="sticky top-14">
+                <tr className='flex justify-between bg-zinc-800 border-b-2 w-full rounded-sm px-3 py-2'>
                   {videosDetailsHeader.map((header, index) => (
                     <th key={index} className='text-left' style={{ width: header.width }}>{header.heading}</th>
                   ))}
@@ -73,11 +81,14 @@ const Dashboard = ({ params }) => {
 
               <tbody>
                 {
-                  channelDetail.videosId &&
-                  channelDetail.videosId.map((videoId, index) => (
-                    <DashboardVideoListView key={index} videoId={videoId} videosDetailsHeader={videosDetailsHeader} />
-                    // <DashboardVideoListView param={param} videosDetailsHeader={videosDetailsHeader} />
-                  ))
+                  channelVideos &&
+                  channelVideos.map((video) => {
+                    return (
+                      <>
+                        <DashboardVideoListView key={video._id} video={video} videosDetailsHeader={videosDetailsHeader} />
+                      </>
+                    )
+                  })
                 }
               </tbody>
             </table>

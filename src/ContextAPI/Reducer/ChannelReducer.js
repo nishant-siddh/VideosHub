@@ -6,12 +6,6 @@ const ChannelReducer = (state, action) => {
                 loading: !(state.loading)
             }
 
-        case 'SET_IS_VIDEO_UPLOADED':
-            return {
-                ...state,
-                isVideoUploaded: action.payload
-            }
-
 
         case 'SET_FILE_NAME':
             return {
@@ -46,14 +40,12 @@ const ChannelReducer = (state, action) => {
                 }
             }
 
-        case 'SET_VIDEO_DETAILS':
-            return {
-                ...state,
-                videoDetails: {
-                    ...state.videoDetails,
-                    [action.payload.toChange]: action.payload.videoDetail
-                }
-            }
+        // case 'SET_OPEN_DIALOG_FOR':
+        //     return {
+        //         ...state,
+        //         openDialogFor: action.payload
+        //     }    
+
 
         case 'SET_FORMIK_VALUES':
             return {

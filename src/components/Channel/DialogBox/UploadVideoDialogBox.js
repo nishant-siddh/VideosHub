@@ -1,12 +1,15 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { RxCross1 } from 'react-icons/rx'
-import UploadVideoDetailsFrom from './UploadVideoDetailsFrom';
+import UploadVideoDetailsForm from './UploadVideoDetailsForm';
 import UploadVideoInterface from './UploadVideoInterface';
 import axios from 'axios';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoDialogBox = () => {
-  const { setVideoTitle, isVideoUploaded, setIsVideoUploaded, videoDetails, formikValues, setVideoDetails } = useChannelContext();
+  const { setVideoTitle, formikValues, loading } = useChannelContext();
+  const {isVideoUploaded, setIsVideoUploaded, videoDetails, setVideoDetails } = useVideoContext();
+  const [savingVideo, setSavingVideo] = useState(false);
   const dialogRef = useRef();
 
   const handleDialogClose = async () => {
@@ -33,8 +36,9 @@ const UploadVideoDialogBox = () => {
 
           <button
             data-close-modal
-            className='p-2 text-gray-400 rounded-md hover:text-gray-100 transition duration-300 outline-none focus:outline-none'
+            className='p-2 text-gray-400 rounded-md hover:text-gray-100 transition duration-300 outline-none focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed'
             onClick={handleDialogClose}
+            disabled={savingVideo || loading}
           >
             <RxCross1 />
           </button>
@@ -44,7 +48,7 @@ const UploadVideoDialogBox = () => {
         {
           !isVideoUploaded
             ? <UploadVideoInterface />
-            : <UploadVideoDetailsFrom />
+            : <UploadVideoDetailsForm savingVideo={savingVideo} setSavingVideo={setSavingVideo} />
         }
 
       </dialog>

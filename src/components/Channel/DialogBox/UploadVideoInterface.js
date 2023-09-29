@@ -2,9 +2,11 @@ import React from 'react'
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { MdUpload } from 'react-icons/md';
 import UplaodLoader from '@/components/UplaodLoader';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoInterface = () => {
-    const { setVideoTitle, handleUploadFile, loading, videoTitle } = useChannelContext();
+    const { setVideoTitle, loading, videoTitle } = useChannelContext();
+    const { handleUploadFile } = useVideoContext();
 
     return (
         <>

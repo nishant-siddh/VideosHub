@@ -6,23 +6,26 @@ import React, { useEffect, useState } from 'react'
 import FormCategorySection from './FormSection/FormCategorySection';
 import FormThumbnailInput from './FormSection/FormThumbnailInput';
 import FormTitleDescAndVideo from './FormSection/FormTitleDescAndVideo';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
-const UploadVideoDetailsFrom = () => {
-    const { setVideoDetails, handleGetFileView, videoTitle, videoDetails, setVideoTitle, setIsVideoUploaded, setFormikValues, handleGetFilePreview } = useChannelContext();
-    const [savingVideo, setSavingVideo] = useState(false);
+const UploadVideoDetailsForm = ({savingVideo, setSavingVideo}) => {
+    const { videoTitle, setVideoTitle, setFormikValues } = useChannelContext();
+    const {setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, handleGetFilePreview} = useVideoContext();
+
+    const initialValues = {
+        title: videoTitle,
+        thumbnail: null,
+        description: '',
+        category: 'disabledValue'
+    }   
 
 
     // Formik validation schema for this form
     const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
-        initialValues: {
-            title: videoTitle,
-            thumbnail: null,
-            description: '',
-            category: 'disabledValue'
-        },
+        initialValues: initialValues,
         validationSchema: uploadVideoSchema,
-        onSubmit: async (values, action) => {
-            
+        
+        onSubmit: async (values, action) => {            
             try {
                 setSavingVideo(true);
                 const completedRes = await axios.post('/api/videos/addVideos', { values, videoDetails });
@@ -39,7 +42,9 @@ const UploadVideoDetailsFrom = () => {
                 action.resetForm();
             }
         }
+
     })
+    console.log(values, 'thi is value from formik')
 
 
     useEffect(() => {
@@ -52,13 +57,6 @@ const UploadVideoDetailsFrom = () => {
             handleGetFileView(videoDetails.videoId);
         }
     }, [])
-
-    useEffect(() => {
-        console.log(videoDetails.thumbnailId, videoDetails.thumbnailId, 'video details ka thumbnailUrl');
-        if (videoDetails.thumbnailId) {
-            handleGetFilePreview(videoDetails.thumbnailId);
-        }
-    }, [videoDetails.thumbnailId])
 
     return (
         <>
@@ -100,4 +98,4 @@ const UploadVideoDetailsFrom = () => {
     )
 }
 
-export default UploadVideoDetailsFrom
+export default UploadVideoDetailsForm

@@ -1,9 +1,11 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import { Field, useFormikContext } from 'formik';
 import React, { useRef, useState } from 'react'
 import { IoIosAdd } from 'react-icons/io';
 
-const FormCategorySection = ({handleChange, handleBlur, errors, touched}) => {
+const FormCategorySection = () => {
     const { videosCategories, addVideoCategory, formikValues } = useChannelContext();
+    const { values, errors, touched, meta, handleChange, handleBlur } = useFormikContext();
     const [addBtnToShowInput, setAddBtnToShowInput] = useState(false);
     const newCategoryInputRef = useRef();
 
@@ -19,18 +21,15 @@ const FormCategorySection = ({handleChange, handleBlur, errors, touched}) => {
         }
     }
 
-
     return (
         <div className="my-5 relative">
             <p className='mb-3'>Category</p>
             <div className={`${addBtnToShowInput ? 'hidden' : 'block'} w-fit flex flex-wrap justify-start items-center gap-3`}>
-                <select
+                <Field
+                    as='select'
                     name="category"
                     id="category"
                     className='bg-transparent outline outline-1 rounded-sm outline-gray-400 text-gray-300 p-2 pr-6 cursor-pointer'
-                    value={formikValues.category}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
                 >
                     <option value={'disabledValue'} className='bg-zinc-900 text-gray-300' defaultValue disabled hidden>Select a category</option>
                     {
@@ -38,7 +37,7 @@ const FormCategorySection = ({handleChange, handleBlur, errors, touched}) => {
                             <option key={index} className='bg-zinc-900 text-gray-300' value={category}>{category}</option>
                         ))
                     }
-                </select>
+                </Field>
 
                 {/* Add category button */}
                 <div className={`outline outline-1 text-gray-400 hover:bg-gray-100 hover:text-zinc-900 duration-300 p-1 sm:p-2 rounded-md`} onClick={() => setAddBtnToShowInput(true)}>

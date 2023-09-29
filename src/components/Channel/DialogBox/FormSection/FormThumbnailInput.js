@@ -1,24 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { BiImageAdd } from 'react-icons/bi';
 import Image from 'next/image';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
+import { useFormikContext } from 'formik';
+import { data } from 'autoprefixer';
 
-const FormThumbnailInput = ({ setFieldValue, errors, touched }) => {
-    const { loading, videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile } = useChannelContext();
+const FormThumbnailInput = () => {
+    const { loading } = useChannelContext();
+    const { videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile } = useVideoContext();
+    const { values, errors, touched, meta, handleChange, handleBlur, setFieldValue } = useFormikContext();
 
     const handleUploadAndUpdateThumbnail = (e) => {
         setVideoDetails('', 'thumbnailUrl');
-        console.log('this is handleUploadAndUpdateThumbnail');
         const file = e.target.files[0];
         if (!videoDetails.thumbnailId) {
             handleUploadFile(file);
         }
         else {
+            console.log(videoDetails.thumbnailId, 'thumbnail id');
             handleDeleteFile(videoDetails.thumbnailId);
             handleUploadFile(file);
         }
         setFieldValue('thumbnail', file)
     }
+
+    useEffect(() => {
+        setVideoDetails(values.thumbnail.split('files/')[1].split('/preview')[0], 'thumbnailId');
+    }, [])
 
     return (
         <div className='my-6'>
@@ -27,8 +36,8 @@ const FormThumbnailInput = ({ setFieldValue, errors, touched }) => {
                 ? 'Uploading'
                 : (
                     <div className='mt-3 w-fit'>
-                        <label htmlFor="thumbnail">
-                            {console.log(videoDetails.thumbnailUrl, 'video details ka thumbnailUrl2')}
+
+                        <label htmlFor="thumbnail" className='cursor-pointer'>
                             {videoDetails.thumbnailUrl && !errors.thumbnail
                                 ? (
                                     <div className='outline outline-1 outline-gray-400'>
@@ -50,17 +59,13 @@ const FormThumbnailInput = ({ setFieldValue, errors, touched }) => {
 
                         <input
                             type="file"
-                            name='thumbnail'
-                            id='thumbnail'
+                            name="thumbnail"
+                            id="thumbnail"
                             className='hidden'
                             onChange={handleUploadAndUpdateThumbnail}
                         />
-
                     </div>
                 )}
-            {errors.thumbnail && touched.thumbnail
-                ? (<p className="bg-red-400 text-white">{errors.thumbnail}</p>)
-                : null}
         </div>
     )
 }
