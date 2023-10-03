@@ -16,7 +16,7 @@ const UploadBtn = () => {
     }
 
     return (
-        <div className='flex items-center gap-2 w-fit' onClick={handleShowModel}>
+        <div className='flex items-center gap-2 w-fit cursor-pointer' onClick={handleShowModel}>
             <span><BsFillCloudUploadFill /></span>
             <p>Upload Video</p>
         </div>
