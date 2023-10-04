@@ -1,11 +1,17 @@
+import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import { ErrorMessage, Field, useFormikContext } from 'formik';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const FormTitleDescAndVideo = () => {
     const { videoDetails } = useVideoContext();
+    const { setFormikValues } = useChannelContext();
     const { values, errors, touched, handleChange, handleBlur } = useFormikContext();
     // console.log(videoDetails, 'this is video details');
+
+    useEffect(() => {
+        setFormikValues(values)
+    }, [values])
 
     return (
         <>

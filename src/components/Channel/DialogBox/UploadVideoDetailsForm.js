@@ -9,8 +9,8 @@ import FormTitleDescAndVideo from './FormSection/FormTitleDescAndVideo';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
-    const { videoTitle, setVideoTitle, setFormikValues } = useChannelContext();
-    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, handleGetFilePreview } = useVideoContext();
+    const { videoTitle, setVideoTitle } = useChannelContext();
+    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded } = useVideoContext();
 
     const initialValues = {
         title: videoTitle,
@@ -53,43 +53,30 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
 
                 onSubmit={async (values, action) => await handleSubmit(values, action)}
             >
-                {({ values }) => {
-                    {() => setFormikValues(values)}
-                    return (
-                        <>
-                            <Form className='text-white px-6 py-3 mt-16'>
+                <Form className='text-white px-6 py-3 mt-16'>
+                    {/* ----------------title, description and video container---------------- */}
+                    <FormTitleDescAndVideo />
+                    {/* ----------------thumbnail upload input---------------- */}
+                    <FormThumbnailInput />
+                    {/* ----------------username---------------- */}
+                    <div className="mt-2 w-fit relative">
+                        <p className='mb-3'>Uploaded By</p>
+                        <input type='text' id='username' className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' value={`@${videoDetails.username}`} readOnly />
+                    </div>
+                    {/* ----------------category---------------- */}
+                    <FormCategorySection />
+                    {/* ---------------Save button--------------- */}
+                    <div className='sticky bottom-0 flex justify-end bg-zinc-800 outline outline-zinc-800'>
+                        <button
+                            type='submit'
+                            data-close-modal
+                            className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
+                            disabled={savingVideo}
+                            onClick={() => setVideoDetails('Completed', 'videoCurrentStatus')}
+                        >{!savingVideo ? 'Save' : 'Saving'}</button>
+                    </div>
 
-                                {/* ----------------title, description and video container---------------- */}
-                                <FormTitleDescAndVideo />
-
-                                {/* ----------------thumbnail upload input---------------- */}
-                                <FormThumbnailInput />
-
-                                {/* ----------------username---------------- */}
-                                <div className="mt-2 w-fit relative">
-                                    <p className='mb-3'>Uploaded By</p>
-                                    <input type='text' id='username' className='bg-transparent px-3 py-1 outline outline-1 rounded-md outline-gray-400 text-gray-300' value={`@${videoDetails.username}`} readOnly />
-                                </div>
-
-                                {/* ----------------category---------------- */}
-                                <FormCategorySection />
-
-                                {/* Save button */}
-                                <div className='sticky bottom-0 flex justify-end bg-zinc-800 outline outline-zinc-800'>
-                                    <button
-                                        type='submit'
-                                        data-close-modal
-                                        className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
-                                        disabled={savingVideo}
-                                        onClick={() => setVideoDetails('Completed', 'videoCurrentStatus')}
-                                    >{!savingVideo ? 'Save' : 'Saving'}</button>
-                                </div>
-
-                            </Form>
-                        </>
-                    )
-                }}
-
+                </Form> 
             </Formik>
         </>
     )
