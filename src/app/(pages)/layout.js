@@ -35,9 +35,9 @@ export default function PagesLayout({ children }) {
   return (
     <>
       <div>
-        {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail') && <Header />}
+        {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail' && !pathname.startsWith('/dashboard/')) && <Header />}
         <div className='flex text-white'>
-          {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail') && <SideBar />}
+          {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail'&& !pathname.startsWith('/dashboard/')) && <SideBar />}
           {children}
         </div>
       </div>

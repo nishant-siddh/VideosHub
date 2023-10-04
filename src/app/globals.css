@@ -6,13 +6,36 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  ---p-scrollBar: 144, 144, 144, 0.3;
+  ---p-scrollBar-hover: 144, 144, 144;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background: 15, 15, 15;
+
   }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transarent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(var(---p-scrollBar));
+  border-radius: 70px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(---p-scrollBar-hover));
 }
 
 body {
@@ -28,6 +51,7 @@ body {
 .list li {
   position: relative
 }
+
 .list li::after {
   content: '';
   position: absolute;
@@ -41,6 +65,7 @@ body {
   transform-origin: left;
   transition: transform 0.3s ease-in-out;
 }
+
 .list li:hover::after {
   transform: scaleX(1);
 }

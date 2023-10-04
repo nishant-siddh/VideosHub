@@ -35,9 +35,14 @@ const SideBar = () => {
         { label: 'Saved Videos', icon: { selected: <AiFillSave className="bg-transparent" />, unselected: <AiOutlineSave className="bg-transparent" /> }, key: 'saved', linksTo: '/Playlist/SavedVideos' },
     ]
 
-    const handleClick = async () => {
+    const handleClick = async (e) => {
         const response = await axios.get('/api/channel/channelTokenId')
-        router.push(`/channel/${response.data}`)
+        if(e.target.id === 'channel') {
+            return router.push(`/channel/${response.data}`)
+        }
+        else{
+            router.push(`/dashboard/${response.data}`)
+        }
     }
 
     return (
@@ -65,7 +70,8 @@ const SideBar = () => {
                         })
 
                     }
-                    <div className='cursor-pointer' onClick={handleClick}>Your channel</div>
+                    <div className='cursor-pointer border mb-4' id='channel' onClick={handleClick}>Your channel</div>
+                    <div className='cursor-pointer border' id='dashboard' onClick={handleClick}>Dashboard</div>
                 </div>
             </aside>
         </>

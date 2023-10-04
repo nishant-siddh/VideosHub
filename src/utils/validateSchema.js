@@ -22,7 +22,7 @@ export const resetPasswordSchema = yup.object().shape({
 })
 
 export const uploadVideoSchema = yup.object().shape({
-    title: yup.string().min(20, 'The title must be atleast 20 characters').required('Title is required'),
+    title: yup.string().min(5, 'The title must be atleast 5 characters').required('Title is required'),
     thumbnail: yup.mixed().required('Thumbnail is required')
         .test("type", "Only the following formats are accepted: .jpeg, .jpg, .png", (value) => {
             return value && (
@@ -32,7 +32,7 @@ export const uploadVideoSchema = yup.object().shape({
             );
         }),
     description: yup.string(),
-    category: yup.string().notOneOf(['Select a category'], 'Please select a category').required('Please select a category')
+    category: yup.string().notOneOf(['disabledValue'], 'Please select a category').required('Please select a category')
 })
 
 export const channelDetailsSchema = yup.object().shape({
@@ -42,5 +42,14 @@ export const channelDetailsSchema = yup.object().shape({
 
 export const editVideoSchema = yup.object().shape({
     title: yup.string(),
-    category: yup.string()
+    category: yup.string(),
+    thumbnail: yup.mixed().required('Thumbnail is required')
+        .test("type", "Only the following formats are accepted: .jpeg, .jpg, .png", (value) => {
+            return value && (
+                value.type === "image/jpeg" ||
+                value.type === "image/jpg" ||
+                value.type === "image/png"
+            );
+        }),
+    description: yup.string()
 })

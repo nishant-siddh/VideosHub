@@ -4,14 +4,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import appwriteStorage from '@/appwrite/config';
 import UploadBtn from '@/components/Channel/UploadBtn';
-import ChannelHeader from '@/components/Channel/ChannelHeader';
+import ChannelDetailSection from '@/components/Channel/ChannelDetailSection';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import UploadVideoInterface from '@/components/Channel/UploadVideoInterface';
+import UploadVideoDialogBox from '@/components/Channel/DialogBox/UploadVideoDialogBox';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
   const { videosIndex, isLoading, setIsLoading } = useHomeContext();
-  const {setUserDetails, setChannelDetails } = useChannelContext()
+  const {setUserDetails, setChannelDetails, handleGetVideoView } = useChannelContext()
   const [windowWidth, setWindowWidth] = useState(0);
   const [modal, setModal] = useState();
   const [videos, setVideos] = useState([]);
@@ -43,7 +43,7 @@ const ChannelPage = ({ params }) => {
         setUserDetails(resUser.data.userData);
       }
     })();
-    handleListVideos();
+    // handleListVideos();
   }, []);
 
   // useEffect(() => {
@@ -51,35 +51,20 @@ const ChannelPage = ({ params }) => {
   // }, [])
 
 
-  const handleListVideos = async () => {
-    try {
-      setIsLoading(true);
-      const response = await appwriteStorage.listVideos();
-      // console.log(response);
-      setVideos(response.files);
-      return response;
+  // const handleListVideos = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const response = await appwriteStorage.listVideos();
+  //     // console.log(response);
+  //     setVideos(response.files);
+  //     return response;
 
-    } catch (error) {
-      console.log(error, 'error in listing files');
-    } finally{
-      setIsLoading(false);
-    }
-  }
-
-  const handleGetVideoView = async (fileId) => {
-    try {
-      console.log(fileId, 'this is file id');
-      setIsLoading(true);
-      const response = await appwriteStorage.getVideoView(fileId);
-      // console.log(response);
-      setVideoUrl(response.href);
-    }
-    catch (error) {
-      console.log(error, 'error in getting file view');
-    } finally{
-      setIsLoading(false);
-    }
-  }
+  //   } catch (error) {
+  //     console.log(error, 'error in listing files');
+  //   } finally{
+  //     setIsLoading(false);
+  //   }
+  // }
 
   // const Categories = [
   //   {
@@ -674,9 +659,9 @@ const ChannelPage = ({ params }) => {
 
 
   return (
-    <main className='mt-16 mx-auto px-3 sm:w-3/4 min-w-fit'>
+    <main className='mt-16 mx-auto px-3 sm:w-3/4 min-w-fit border'>
       {/* channel header section  */}
-      <ChannelHeader />
+      <ChannelDetailSection />
 
       <hr className='my-4 bg-red-400' />
 
@@ -685,10 +670,7 @@ const ChannelPage = ({ params }) => {
         {/* {
           videos.length === 0 && ( */}
             <UploadBtn modal={modal} />
-
-            <dialog data-modal className='relative w-1/2 bg-zinc-800'>
-              <UploadVideoInterface />
-            </dialog>
+            <UploadVideoDialogBox />
           {/* )
         } */}
 

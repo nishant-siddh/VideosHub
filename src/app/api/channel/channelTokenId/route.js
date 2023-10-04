@@ -1,7 +1,6 @@
 import getDataFromToken from '@/utils/getDataFromToken'
 
 export async function GET(req) {
-    console.log('channelTokenId route', req);
     try {
         const channelId = await getDataFromToken(req);
 

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export function middleware(req) {
     const path = req.nextUrl.pathname;
     const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyEmail';
-    const isProtectedPath = path.startsWith('/channel') || path === '/dashboard';
+    const isProtectedPath = path.startsWith('/channel') || path.startsWith('/dashboard');
 
     const token = req.cookies.get('token')?.value || "";
 
@@ -26,7 +26,7 @@ export const config = {
     matcher: [
         '/',
         '/channel/:path*',
-        '/dashboard',
+        '/dashboard/:path*',
         '/login',
         '/signup',
         '/verifyEmail'

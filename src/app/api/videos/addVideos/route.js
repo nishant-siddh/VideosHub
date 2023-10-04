@@ -1,4 +1,5 @@
 import { connect } from "@/dbConfig/dbConfig";
+import Channel from "@/models/channelsDetails";
 import Video from "@/models/videosModel";
 
 connect();
@@ -6,27 +7,32 @@ connect();
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const { title, description, duration, thumbnailUrl, videoUrl, uploadedBy, category, videostatus } = reqBody;
-        // console.log(reqBody);
-
+        const { values, videoDetails } = reqBody;
+        console.log(values, videoDetails, 'this is add videos req body')
+        
         const newVideo = new Video({
-            title: title,
-            description: description,
-            duration: duration,
-            thumbnailUrl: thumbnailUrl,
-            videoUrl: videoUrl,
-            uploadedBy: uploadedBy,
-            category: category,
-            videoCurrentStatus: videostatus
+            title: values.title,
+            description: values.description,
+            thumbnailId: videoDetails.thumbnailId,
+            thumbnailUrl: videoDetails.thumbnailUrl,
+            videoId: videoDetails.videoId,
+            videoUrl: videoDetails.videoUrl,
+            uploadedBy: videoDetails.username,
+            category: values.category,
+            videoStatus: videoDetails.videoCurrentStatus
         });
 
+        const videosInChannel = await Channel.findOne({ username: videoDetails.username });
+        videosInChannel.videosId.push(newVideo._id);
+        
         await newVideo.save();
+        await videosInChannel.save();
 
-        return new Response(JSON.stringify({ success: "Success" }), {
-            status: 200,
-        });
+
+        return new Response(JSON.stringify({ message: 'Video added successfully' }), { status: 200 });
 
     } catch (error) {
+        console.log(error, 'error in add videos api');
         return new Response(JSON.stringify({ error: error.message }), { status: 500 });
     }
 }

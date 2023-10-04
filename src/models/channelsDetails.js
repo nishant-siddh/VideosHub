@@ -27,6 +27,10 @@ const Schema = mongoose.Schema({
         type: Number,
         default: 0
     },
+    videosId: {
+        type: Array,
+        default: []
+    },
 }, { timestamps: true })
 
 const Channel = mongoose.models.channels || mongoose.model('channels', Schema);

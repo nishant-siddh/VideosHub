@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "../Reducer/ChannelReducer";
 import appwriteStorage from "@/appwrite/config";
 
@@ -10,59 +10,63 @@ const initialState = {
     channelDetail: {},
     videosCategories: ['Games', 'Fashion', 'Music', 'Movies', 'Entertainment'],
     loading: false,
-    isVideoUploaded: false,
     videoTitle: '',
-    videoCurrentStatus: ''
+    // openDialogFor: '',
+
+    formikValues: {}
 }
+
 
 const ChannelContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const setLoading = () => {
+        dispatch({ type: 'SET_LOADING' })
+    }
+
     const setUserDetails = (userData) => {
         dispatch({ type: 'SET_USER_DETAIL', payload: userData })
+    }
+
+    const setChannelDetails = (channelData) => {
+        dispatch({ type: 'SET_CHANNEL_DETAIL', payload: channelData })
     }
 
     const addVideoCategory = (category) => {
         dispatch({ type: 'ADD_MORE_VIDEO_CATEGORY', payload: category })
     }
 
-    const setChannelDetails = (channelData) => {
-        dispatch({ type: 'SET_CHANNEL_DETAIL', payload: channelData })
-    }
-    const setVideoCurrentStatus = (status) => {
-        dispatch({ type: 'SET_VIDEO_CURRENT_STATUS', payload: status })
-    }
-
     const setVideoTitle = (fileName) => {
         dispatch({ type: 'SET_FILE_NAME', payload: fileName })
     }
 
-    const handleUploadVideo = async (file) => {
-        try {
-            dispatch({ type: 'SET_LOADING' })
-            const response = await appwriteStorage.uploadVideo(file);
-            console.log(response, 'this is response from appwrite');
+    const setFormikValues = (values) => {
+        dispatch({ type: 'SET_FORMIK_VALUES', payload: values })
+    }
 
-            if(file.type === 'video/mp4') {
-                dispatch({ type: 'SET_UPLOAD_FILE_STATUS', payload: true })
-                setVideoCurrentStatus('draft');
-            }
+    // const setOpenDialogFor = (dialog) => {
+    //     dispatch({ type: 'SET_OPEN_DIALOG_FOR', payload: dialog })
+    // }
+
+    const handleListFile = async () => {
+        try {
+            setLoading();
+            const response = await appwriteStorage.listFiles();
+            return response;
 
         } catch (error) {
-            console.log(error, 'error in uploading file');
+            console.log(error, 'error in listing files');
         } finally {
-            console.log('loading', state.loading);
-            dispatch({ type: 'SET_LOADING' })
+            setLoading();
         }
     }
 
     return (
-        <ChannelContext.Provider value={{ ...state, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleUploadVideo, setVideoCurrentStatus }}>
+        <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues }}>
             {children}
         </ChannelContext.Provider>
     )
 }
-
 
 
 const useChannelContext = () => {

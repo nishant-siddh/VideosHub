@@ -1,30 +1,16 @@
 const ChannelReducer = (state, action) => {
     switch (action.type) {
-
         case 'SET_LOADING':
             return {
                 ...state,
                 loading: !(state.loading)
             }
 
-        case 'SET_UPLOAD_FILE_STATUS':
-            return {
-                ...state,
-                isVideoUploaded: action.payload
-            }
 
         case 'SET_FILE_NAME':
             return {
                 ...state,
                 videoTitle: action.payload
-            }
-
-        case 'SET_VIDEO_CURRENT_STATUS':
-            if (state.isVideoUploaded) {
-                return {
-                    ...state,
-                    videoCurrentStatus: action.payload
-                }
             }
 
         case 'SET_USER_DETAIL':
@@ -43,6 +29,28 @@ const ChannelReducer = (state, action) => {
             return {
                 ...state,
                 videosCategories: [...state.videosCategories, action.payload]
+            }
+
+        case 'SET_FORMIK_TITLE':
+            return {
+                ...state,
+                formikValues: {
+                    ...state.formikValues,
+                    title: state.videoTitle
+                }
+            }
+
+        // case 'SET_OPEN_DIALOG_FOR':
+        //     return {
+        //         ...state,
+        //         openDialogFor: action.payload
+        //     }    
+
+
+        case 'SET_FORMIK_VALUES':
+            return {
+                ...state,
+                formikValues: action.payload
             }
 
         default:
