@@ -19,33 +19,6 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
         category: 'disabledValue'
     }
 
-
-    // Formik validation schema for this form
-    // const { values, errors, touched, handleBlur, handleChange, handleSubmit, setFieldValue } = useFormik({
-    //     initialValues: initialValues,
-    //     validationSchema: uploadVideoSchema,
-
-    //     onSubmit: async (values, action) => {
-    //         try {
-    //             setSavingVideo(true);
-    //             const completedRes = await axios.post('/api/videos/addVideos', { values, videoDetails });
-    //             setIsVideoUploaded(false);
-    //             console.log(completedRes.data, 'video added successfully');
-    //         } catch (error) {
-    //             console.log(error, 'error in adding videos');
-    //         } finally {
-    //             setVideoTitle('');
-    //             setVideoDetails('', 'thumbnailId');
-    //             setVideoDetails('', 'thumbnailUrl');
-    //             document.querySelector('[data-modal]').close();
-    //             setSavingVideo(false);
-    //             action.resetForm();
-    //         }
-    //     }
-
-    // })
-    // console.log(values, 'thi is value from formik')
-
     async function handleSubmit(values, action) {
         try {
             setSavingVideo(true);
@@ -81,10 +54,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
                 onSubmit={async (values, action) => await handleSubmit(values, action)}
             >
                 {({ values }) => {
-                    useEffect(() => {
-                        setVideoDetails(values.title, 'title');
-                    }, [values.title])
-
+                    {() => setFormikValues(values)}
                     return (
                         <>
                             <Form className='text-white px-6 py-3 mt-16'>
