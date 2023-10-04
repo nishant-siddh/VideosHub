@@ -8,6 +8,7 @@ export async function POST(req) {
     try {
         const reqBody = await req.json();
         const { values, videoDetails } = reqBody;
+        console.log(values, videoDetails, 'this is add videos req body')
         
         const newVideo = new Video({
             title: values.title,
@@ -23,9 +24,10 @@ export async function POST(req) {
 
         const videosInChannel = await Channel.findOne({ username: videoDetails.username });
         videosInChannel.videosId.push(newVideo._id);
+        
+        await newVideo.save();
         await videosInChannel.save();
 
-        await newVideo.save();
 
         return new Response(JSON.stringify({ message: 'Video added successfully' }), { status: 200 });
 
