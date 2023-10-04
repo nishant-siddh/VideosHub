@@ -3,6 +3,8 @@ import Video from '@/models/videosModel'
 
 connect()
 
+export const dynamic = 'force-static'
+
 export async function GET(req) {
     try {
         const { searchParams } = new URL(req.url);
@@ -21,7 +23,6 @@ export async function GET(req) {
 
     } catch (error) {
         console.log(error, 'error in getting video details');
-
         return new Response(JSON.stringify({ message: 'error in getting video details' }), { status: 500 });
     }
 }
