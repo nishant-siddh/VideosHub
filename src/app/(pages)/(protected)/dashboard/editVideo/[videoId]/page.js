@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import VideoOnEditPage from '@/components/Dashboard/EditPage/VideoOnEditPage';
 import FormTitleDescAndVideo from '@/components/Channel/DialogBox/FormSection/FormTitleDescAndVideo';
@@ -9,7 +9,7 @@ import FormThumbnailInput from '@/components/Channel/DialogBox/FormSection/FormT
 import FormCategorySection from '@/components/Channel/DialogBox/FormSection/FormCategorySection'
 
 const EditVideo = ({ params }) => {
-    const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo } = useVideoContext();
+    const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo, updatedVideoDetails } = useVideoContext();
     const videoId = params.videoId;
 
     const formikInitialValues = {
@@ -35,35 +35,44 @@ const EditVideo = ({ params }) => {
         <>
             {
                 Object.keys(dataForEditVideo).length > 0 ? (
-                    <Formik
-                        initialValues={formikInitialValues}
-                        validationSchema={editVideoSchema}
-                        enableReinitialize
+                    <main className='w-[85%] mx-auto'>
+                        <h2 className=''>Video details form</h2>
+                        <div className='md:grid grid-cols-2 lg:grid-cols-3'>
+                            {/* live update of video details on a video */}
+                            <div>
+                                <VideoOnEditPage />
+                            </div>
 
-                        onSubmit={async (values, action) => {
+                            {/* formik form */}
+                            <Formik
+                                initialValues={formikInitialValues}
+                                validationSchema={editVideoSchema}
+                                enableReinitialize
 
-                        }}
-                    >
-                        <main className='w-[85%] mx-auto'>
-                            <h2 className=''>Video details form</h2>
-                            <div className='md:grid grid-cols-2 lg:grid-cols-3'>
-                                {/* live update of video details on a video */}
-                                <div>
-                                    <VideoOnEditPage />
-                                </div>
+                                onSubmit={async (values, action) => {
+                                    console.log(values, 'values');
+                                    console.log(updatedVideoDetails, 'updated video details');
+                                    action.setSubmitting(false);
+                                }}
+                            >
+                                {props => (
+                                    // {/* video details form */}
 
-                                {/* video details form */}
-
-                                <div className='lg:col-span-2 border-l-2 border-zinc-500'>
-                                    <Form className='lg:w-[75%] px-2'>
+                                    // {/* <div className='lg:col-span-2 border-l-2 border-zinc-500'> */}
+                                    <Form className='lg:w-[75%] px-2 lg:col-span-2 border-l-2 border-zinc-500'>
                                         <FormTitleDescAndVideo />
                                         <FormThumbnailInput />
                                         <FormCategorySection />
+                                        <div className='flex gap-3'>
+                                            <button type='button' className='text-red-400'>Undo changes</button>
+                                            <button type='submit' className='bg-blue-400 px-3 py-2'>{props.isSubmitting ? 'Saving...' : 'Save'}</button>
+                                        </div>
                                     </Form>
-                                </div>
-                            </div>
-                        </main>
-                    </Formik >
+                                    // {/* </div> */}
+                                )}
+                            </Formik >
+                        </div>
+                    </main>
                 ) : (
                     <div>Loading...</div>
                 )

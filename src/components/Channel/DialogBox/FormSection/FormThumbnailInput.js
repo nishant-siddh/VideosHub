@@ -3,31 +3,30 @@ import { BiImageAdd } from 'react-icons/bi';
 import Image from 'next/image';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
-import { useFormikContext } from 'formik';
-import { data } from 'autoprefixer';
+import { useFormikContext } from 'formik'
 
 const FormThumbnailInput = () => {
     const { loading } = useChannelContext();
-    const { videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile } = useVideoContext();
+    const { videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile, dataForEditVideo } = useVideoContext();
     const { values, errors, touched, meta, handleChange, handleBlur, setFieldValue } = useFormikContext();
 
-    const handleUploadAndUpdateThumbnail = (e) => {
-        setVideoDetails('', 'thumbnailUrl');
+    const handleUploadAndUpdateThumbnail = async (e) => {
         const file = e.target.files[0];
         if (!videoDetails.thumbnailId) {
-            handleUploadFile(file);
+            await handleUploadFile(file);
         }
         else {
-            console.log(videoDetails.thumbnailId, 'thumbnail id');
-            handleDeleteFile(videoDetails.thumbnailId);
-            handleUploadFile(file);
+            await handleDeleteFile(videoDetails.thumbnailId);
+            await handleUploadFile(file);
         }
         setFieldValue('thumbnail', file)
     }
 
     useEffect(() => {
-        setVideoDetails(values.thumbnail.split('files/')[1].split('/preview')[0], 'thumbnailId');
-    }, [])
+        if(Object.keys(dataForEditVideo).length > 0) {
+            setVideoDetails(dataForEditVideo.thumbnailId, 'thumbnailId');
+        }
+    }, [touched.thumbnail])
 
     return (
         <div className='my-6'>
@@ -66,6 +65,9 @@ const FormThumbnailInput = () => {
                         />
                     </div>
                 )}
+            {errors.thumbnail && touched.thumbnail
+                ? (<p className="bg-red-400 text-white">{errors.thumbnail}</p>)
+                : null}
         </div>
     )
 }
