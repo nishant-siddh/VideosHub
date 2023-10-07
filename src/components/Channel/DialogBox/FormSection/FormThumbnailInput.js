@@ -3,7 +3,7 @@ import { BiImageAdd } from 'react-icons/bi';
 import Image from 'next/image';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
-import { useFormikContext } from 'formik'
+import { useFormikContext } from 'formik';
 
 const FormThumbnailInput = () => {
     const { loading } = useChannelContext();
@@ -23,10 +23,15 @@ const FormThumbnailInput = () => {
     }
 
     useEffect(() => {
-        if(Object.keys(dataForEditVideo).length > 0) {
+        if (values.thumbnail && dataForEditVideo.thumbnailUrl) {
             setVideoDetails(dataForEditVideo.thumbnailId, 'thumbnailId');
         }
-    }, [touched.thumbnail])
+    }, [dataForEditVideo])
+
+    console.log(values, 'values')
+    console.log(dataForEditVideo, 'dataForEditVideo');
+    console.log(videoDetails, 'videoDetails')
+
 
     return (
         <div className='my-6'>
@@ -35,17 +40,11 @@ const FormThumbnailInput = () => {
                 ? 'Uploading'
                 : (
                     <div className='mt-3 w-fit'>
-
                         <label htmlFor="thumbnail" className='cursor-pointer'>
-                            {videoDetails.thumbnailUrl && !errors.thumbnail
+                            {videoDetails.thumbnailUrl
                                 ? (
                                     <div className='outline outline-1 outline-gray-400'>
-                                        <Image
-                                            src={videoDetails.thumbnailUrl}
-                                            width={100}
-                                            height={100}
-                                            className='w-36 h-24 object-contain bg-black'
-                                            alt="thumbnail image" />
+                                        <Image src={videoDetails.thumbnailUrl} width={100} height={100} alt="thumbnail image" className='w-36 h-24 object-contain bg-black' />
                                     </div>
                                 ) : (
                                     <div className='flex flex-col justify-center items-center w-36 h-24 outline-1 outline-dashed outline-gray-400'>

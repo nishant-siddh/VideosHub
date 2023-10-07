@@ -1,13 +1,14 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import { ErrorMessage, Field, useFormikContext } from 'formik';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 const FormTitleDescAndVideo = () => {
     const { videoDetails } = useVideoContext();
     const { setFormikValues } = useChannelContext();
     const { values, errors, touched, handleChange, handleBlur } = useFormikContext();
-    // console.log(videoDetails, 'this is video details');
+    const pathname = usePathname();
 
     useEffect(() => {
         setFormikValues(values)
@@ -17,7 +18,7 @@ const FormTitleDescAndVideo = () => {
         <>
             {/* title */}
             <div className='relative flex flex-col-reverse lg:flex-row flex-wrap justify-between gap-3'>
-                <div className='w-full lg:w-[50%] mt-2'>
+                <div className={`w-full ${!pathname.startsWith('/dashboard/editVideo') && 'lg:w-[50%]'} mt-2`}>
 
                     <div className={`relative rounded-md outline outline-1 px-3 py-2 mb-3 text-sm text-gray-400`} >
                         <label htmlFor="title">Title (required)</label>
@@ -60,11 +61,11 @@ const FormTitleDescAndVideo = () => {
                 </div>
 
                 {/* ----------------video container---------------- */}
-                <div className='w-full lg:w-[45%] mt-2'>
+                <div className={`w-full lg:w-[45%] mt-2 ${pathname.startsWith('/dashboard/editVideo') && 'hidden'}`}>
                     <video src={videoDetails.videoUrl}
                         controls
                         className='w-full max-h-48'
-                        poster={(videoDetails.thumbnailUrl && !errors.thumbnail) && videoDetails.thumbnailUrl}
+                        poster={(values.thumbnail && !errors.thumbnail) && videoDetails.thumbnailUrl}
                     ></video>
                 </div>
             </div>
