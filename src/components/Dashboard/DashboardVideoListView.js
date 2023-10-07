@@ -1,7 +1,6 @@
 import { useVideoContext } from "@/ContextAPI/Context/VideoContext"
 import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import { AiOutlineYoutube } from "react-icons/ai"
 import { CiEdit } from "react-icons/ci"
 import { MdDeleteOutline, MdOpacity } from "react-icons/md"
