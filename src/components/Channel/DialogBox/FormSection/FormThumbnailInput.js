@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiImageAdd } from 'react-icons/bi';
 import Image from 'next/image';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
@@ -19,18 +19,18 @@ const FormThumbnailInput = () => {
             await handleDeleteFile(videoDetails.thumbnailId);
             await handleUploadFile(file);
         }
-        setFieldValue('thumbnail', file)
+        setFieldValue('thumbnail', file);
     }
 
     useEffect(() => {
-        if (values.thumbnail && dataForEditVideo.thumbnailUrl) {
+        if (values.thumbnail && dataForEditVideo.thumbnailId) {
             setVideoDetails(dataForEditVideo.thumbnailId, 'thumbnailId');
         }
-    }, [dataForEditVideo])
+    }, [dataForEditVideo && dataForEditVideo.thumbnailId])
 
-    console.log(values, 'values')
-    console.log(dataForEditVideo, 'dataForEditVideo');
-    console.log(videoDetails, 'videoDetails')
+    // console.log(values, 'values')
+    // console.log(dataForEditVideo, 'dataForEditVideo');
+    // console.log(videoDetails, 'videoDetails')
 
 
     return (

@@ -1,5 +1,5 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import { uploadVideoSchema } from '@/utils/validateSchema';
+import { videoDetailSchema } from '@/utils/validateSchema';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
     const { videoTitle, setVideoTitle } = useChannelContext();
-    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded } = useVideoContext();
+    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, setDataForEditVideo } = useVideoContext();
 
     const initialValues = {
         title: videoTitle,
@@ -18,6 +18,10 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
         description: '',
         category: 'disabledValue'
     }
+
+    useEffect(() => {
+        setDataForEditVideo(null)
+    }, [])
 
     async function handleSubmit(values, action) {
         try {
@@ -48,7 +52,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
         <>
             <Formik
                 initialValues={initialValues}
-                validationSchema={uploadVideoSchema}
+                validationSchema={videoDetailSchema}
                 enableReinitialize
 
                 onSubmit={async (values, action) => await handleSubmit(values, action)}
