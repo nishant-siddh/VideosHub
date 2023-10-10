@@ -4,12 +4,16 @@ import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import VideoOnEditPage from '@/components/Dashboard/EditPage/VideoOnEditPage';
 import FormTitleDescAndVideo from '@/components/Channel/DialogBox/FormSection/FormTitleDescAndVideo';
 import { Form, Formik } from 'formik';
-import { editVideoSchema } from '@/utils/validateSchema';
+import { videoDetailSchema } from '@/utils/validateSchema';
 import FormThumbnailInput from '@/components/Channel/DialogBox/FormSection/FormThumbnailInput';
 import FormCategorySection from '@/components/Channel/DialogBox/FormSection/FormCategorySection'
+import axios from 'axios';
+// import { redirect } from 'next/navigation';
+import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 
 const EditVideo = ({ params }) => {
-    const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo, updatedVideoDetails } = useVideoContext();
+    const { channelDetail } = useChannelContext();
+    const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo, videoDetails } = useVideoContext();
     const videoId = params.videoId;
 
     const formikInitialValues = {
@@ -19,10 +23,21 @@ const EditVideo = ({ params }) => {
         category: dataForEditVideo.category
     }
 
+    const handleSubmitForm = async (values, action) => {
+        try {
+            const updatedVideoRes = await axios.patch('/api/videos/updateVideoDetails', { id: dataForEditVideo._id, values, videoDetails });
+            // redirect(`/dashboard/${dataForEditVideo.username}`)
+        } catch (error) {
+            console.log(error);
+            throw error;
+
+        }
+    }
+
     useEffect(() => {
         (async () => {
             if (channelVideos.length === 0) {
-                getVideoDataForView(videoId, 'editPage')
+                await getVideoDataForView(videoId, 'editPage')
             }
             else {
                 const res = channelVideos.filter(video => video._id === videoId)[0]
@@ -46,16 +61,12 @@ const EditVideo = ({ params }) => {
                             {/* formik form */}
                             <Formik
                                 initialValues={formikInitialValues}
-                                validationSchema={editVideoSchema}
+                                validationSchema={videoDetailSchema}
                                 enableReinitialize
 
-                                onSubmit={async (values, action) => {
-                                    console.log(values, 'values');
-                                    console.log(updatedVideoDetails, 'updated video details');
-                                    action.setSubmitting(false);
-                                }}
+                                onSubmit={async (values, action) => handleSubmitForm(values, action)}
                             >
-                                {props => (
+                                {({ values, isSubmitting }) => (
                                     // {/* video details form */}
 
                                     // {/* <div className='lg:col-span-2 border-l-2 border-zinc-500'> */}
@@ -64,8 +75,14 @@ const EditVideo = ({ params }) => {
                                         <FormThumbnailInput />
                                         <FormCategorySection />
                                         <div className='flex gap-3'>
-                                            <button type='button' className='text-red-400'>Undo changes</button>
-                                            <button type='submit' className='bg-blue-400 px-3 py-2'>{props.isSubmitting ? 'Saving...' : 'Save'}</button>
+                                            {/* <button type='button' className='text-red-400'>Undo changes</button> */}
+                                            <button
+                                                type='submit'
+                                                disabled={isSubmitting || (values.title === dataForEditVideo.title && values.description === dataForEditVideo.description && values.category === dataForEditVideo.category && videoDetails.thumbnailUrl === dataForEditVideo.thumbnailUrl)}
+                                                className='bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
+                                            >
+                                                {isSubmitting ? 'Saving...' : 'Save'}
+                                            </button>
                                         </div>
                                     </Form>
                                     // {/* </div> */}

@@ -1,5 +1,5 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import { uploadVideoSchema } from '@/utils/validateSchema';
+import { videoDetailSchema } from '@/utils/validateSchema';
 import axios from 'axios';
 import { Formik, Form } from 'formik';
 import React, { useEffect, useState } from 'react'
@@ -10,7 +10,7 @@ import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
     const { videoTitle, setVideoTitle } = useChannelContext();
-    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded } = useVideoContext();
+    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, setDataForEditVideo } = useVideoContext();
 
     const initialValues = {
         title: videoTitle,
@@ -18,6 +18,10 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
         description: '',
         category: 'disabledValue'
     }
+
+    useEffect(() => {
+        setDataForEditVideo(null)
+    }, [])
 
     async function handleSubmit(values, action) {
         try {
@@ -48,7 +52,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
         <>
             <Formik
                 initialValues={initialValues}
-                validationSchema={uploadVideoSchema}
+                validationSchema={videoDetailSchema}
                 enableReinitialize
 
                 onSubmit={async (values, action) => await handleSubmit(values, action)}
@@ -70,7 +74,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
                         <button
                             type='submit'
                             data-close-modal
-                            className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
+                            className='bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
                             disabled={savingVideo}
                             onClick={() => setVideoDetails('Completed', 'videoCurrentStatus')}
                         >{!savingVideo ? 'Save' : 'Saving'}</button>

@@ -1,10 +1,10 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { Field, useFormikContext } from 'formik';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { IoIosAdd } from 'react-icons/io';
 
 const FormCategorySection = () => {
-    const { videosCategories, addVideoCategory, formikValues } = useChannelContext();
+    const { videosCategories, addVideoCategory } = useChannelContext();
     const { values, errors, touched, meta, handleChange, handleBlur } = useFormikContext();
     const [addBtnToShowInput, setAddBtnToShowInput] = useState(false);
     const newCategoryInputRef = useRef();
