@@ -74,7 +74,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
                         <button
                             type='submit'
                             data-close-modal
-                            className=' bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
+                            className='bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
                             disabled={savingVideo}
                             onClick={() => setVideoDetails('Completed', 'videoCurrentStatus')}
                         >{!savingVideo ? 'Save' : 'Saving'}</button>
