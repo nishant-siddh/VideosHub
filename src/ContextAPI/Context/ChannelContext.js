@@ -23,9 +23,7 @@ const ChannelContextProvider = ({ children }) => {
     const getChannelAndUserDetails = async (id) => {
         try {
             const resChannel = await axios.post(`/api/channel/channelDetails`, { id });
-            console.log(resChannel.data.channelData, 'channel data from channel context');
             const resUser = await axios.post(`/api/users/userDetails`, { id: resChannel.data.channelData._id });
-            console.log(resUser.data.userData, 'user data from channel context');
             setChannelDetails(resChannel.data.channelData);
             setUserDetails(resUser.data.userData);
         } catch (error) {

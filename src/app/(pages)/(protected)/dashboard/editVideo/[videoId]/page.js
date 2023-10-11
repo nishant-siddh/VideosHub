@@ -11,20 +11,20 @@ import axios from 'axios';
 // import { redirect } from 'next/navigation';
 
 const EditVideo = ({ params }) => {
-    const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo, videoDetails } = useVideoContext();
+    const { channelVideos, getVideoDataForView, videoDataForView, setVideoDataForView, videoDetails } = useVideoContext();
     const videoId = params.videoId;
 
     const formikInitialValues = {
-        title: dataForEditVideo.title,
-        thumbnail: dataForEditVideo.thumbnailUrl,
-        description: dataForEditVideo.description,
-        category: dataForEditVideo.category
+        title: videoDataForView.title,
+        thumbnail: videoDataForView.thumbnailUrl,
+        description: videoDataForView.description,
+        category: videoDataForView.category
     }
 
     const handleSubmitForm = async (values) => {
         try {
-            await axios.patch('/api/videos/updateVideoDetails', { id: dataForEditVideo._id, values, videoDetails });
-            // redirect(`/dashboard/${dataForEditVideo.username}`)
+            await axios.patch('/api/videos/updateVideoDetails', { id: videoDataForView._id, values, videoDetails });
+            // redirect(`/dashboard/${videoDataForView.username}`)
         } catch (error) {
             console.log(error);
             throw error;
@@ -38,7 +38,7 @@ const EditVideo = ({ params }) => {
             }
             else {
                 const res = channelVideos.filter(video => video._id === videoId)[0]
-                setDataForEditVideo(res);
+                setVideoDataForView(res);
             }
         })()
     }, [])
@@ -46,7 +46,7 @@ const EditVideo = ({ params }) => {
     return (
         <>
             {
-                Object.keys(dataForEditVideo).length > 0 ? (
+                Object.keys(videoDataForView).length > 0 ? (
                     <main className='w-[85%] mx-auto'>
                         <h2 className='text-center my-7 text-xl'>Video details form</h2>
                         <div className='md:grid grid-cols-2 lg:grid-cols-3'>
@@ -75,7 +75,7 @@ const EditVideo = ({ params }) => {
                                             {/* <button type='button' className='text-red-400'>Undo changes</button> */}
                                             <button
                                                 type='submit'
-                                                disabled={isSubmitting || (values.title === dataForEditVideo.title && values.description === dataForEditVideo.description && values.category === dataForEditVideo.category && videoDetails.thumbnailUrl === dataForEditVideo.thumbnailUrl)}
+                                                disabled={isSubmitting || (values.title === videoDataForView.title && values.description === videoDataForView.description && values.category === videoDataForView.category && videoDetails.thumbnailUrl === videoDataForView.thumbnailUrl)}
                                                 className='bg-blue-500 hover:bg-blue-400 text-white px-3 py-2 rounded-md m-2 disabled:cursor-not-allowed disabled:opacity-50'
                                             >
                                                 {isSubmitting ? 'Saving...' : 'Save'}
