@@ -72,7 +72,7 @@ const Dashboard = ({ params }) => {
             {/* Videos List view */}
             <table className="w-full">
               <thead className="sticky top-14">
-                <tr className='flex justify-between bg-zinc-800 border-b-2 w-full rounded-sm px-3 py-2'>
+                <tr className='flex justify-between bg-zinc-900 border-b-2 w-full rounded-sm px-3 py-2'>
                   {videosDetailsHeader.map((header, index) => (
                     <th key={index} className='text-left' style={{ width: header.width }}>{header.heading}</th>
                   ))}

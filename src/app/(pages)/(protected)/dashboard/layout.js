@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <>  
             <div className='w-full bg-zinc-800'>
                 <DashboardHeader />
-                <div className='flex mt-16 text-white'>
+                <div className='flex mt-16 h-[100vh] text-white'>
                     <SidebarForDashboard />
                     {children}
                 </div>

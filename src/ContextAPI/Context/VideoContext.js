@@ -21,7 +21,6 @@ const initialState = {
         username: '',
         videoCurrentStatus: 'Draft',
     },
-
     videoDataForView: null,
 }
 
@@ -102,7 +101,6 @@ const VideoContextProvider = ({ children }) => {
         try {
             setLoading();
             const response = await appwriteStorage.getFileView(fileId);
-            // dispatch({ type: 'SET_VIDEO_URL', payload: response.href })
             setVideoDetails(response.href, 'videoUrl');
         }
         catch (error) {

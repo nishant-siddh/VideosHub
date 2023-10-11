@@ -35,7 +35,7 @@ const DashboardVideoListView = ({ video, videosDetailsHeader }) => {
 
                         <div className="hidden text-zinc-400 group-hover:block mt-3">
                           <Link href={`/dashboard/editVideo/${video._id}`}><button className='text-xl hover:text-zinc-300'><CiEdit /></button></Link>
-                          <button className='text-xl hover:text-zinc-300 mx-3'><AiOutlineYoutube /></button>
+                          <Link href={`/watch?v=${video._id}`}><button className='text-xl hover:text-zinc-300 mx-3'><AiOutlineYoutube /></button></Link>
                           <button className='text-xl hover:text-zinc-300'><MdDeleteOutline /></button>
                         </div>
                       </div>
