@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "../Reducer/ChannelReducer";
 import appwriteStorage from "@/appwrite/config";
+import axios from "axios";
 
 const ChannelContext = createContext();
 
@@ -11,7 +12,6 @@ const initialState = {
     videosCategories: ['Games', 'Fashion', 'Music', 'Movies', 'Entertainment'],
     loading: false,
     videoTitle: '',
-    // openDialogFor: '',
 
     formikValues: {}
 }
@@ -19,6 +19,20 @@ const initialState = {
 
 const ChannelContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
+
+    const getChannelAndUserDetails = async (id) => {
+        try {
+            const resChannel = await axios.post(`/api/channel/channelDetails`, { id });
+            console.log(resChannel.data.channelData, 'channel data from channel context');
+            const resUser = await axios.post(`/api/users/userDetails`, { id: resChannel.data.channelData._id });
+            console.log(resUser.data.userData, 'user data from channel context');
+            setChannelDetails(resChannel.data.channelData);
+            setUserDetails(resUser.data.userData);
+        } catch (error) {
+            console.log(error, 'error in getting channel and user details');
+            throw error;
+        }
+    }
 
     const setLoading = () => {
         dispatch({ type: 'SET_LOADING' })
@@ -44,10 +58,6 @@ const ChannelContextProvider = ({ children }) => {
         dispatch({ type: 'SET_FORMIK_VALUES', payload: values })
     }
 
-    // const setOpenDialogFor = (dialog) => {
-    //     dispatch({ type: 'SET_OPEN_DIALOG_FOR', payload: dialog })
-    // }
-
     const handleListFile = async () => {
         try {
             setLoading();
@@ -62,7 +72,7 @@ const ChannelContextProvider = ({ children }) => {
     }
 
     return (
-        <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues }}>
+        <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues, getChannelAndUserDetails }}>
             {children}
         </ChannelContext.Provider>
     )

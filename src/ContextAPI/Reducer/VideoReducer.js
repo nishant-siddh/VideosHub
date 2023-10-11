@@ -1,11 +1,5 @@
 const VideoReducer = (state, action) => {
     switch (action.type) {
-        case 'Check_Is_Logged_In':
-            return {
-                ...state,
-                isLoggedIn: action.payload
-            }
-
         case 'SET_VIDEO_DETAILS':
             return {
                 ...state,

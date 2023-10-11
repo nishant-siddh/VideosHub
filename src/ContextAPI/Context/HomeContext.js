@@ -25,7 +25,6 @@ const initialState = {
         channelDescription: ""
     },
     authStatus: false,
-    isLoggedIn: false,
 }
 
 const HomeContextProvider = ({ children }) => {
