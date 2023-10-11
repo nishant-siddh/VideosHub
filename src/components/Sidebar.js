@@ -36,12 +36,17 @@ const SideBar = () => {
     ]
 
     const handleClick = async (e) => {
-        const response = await axios.get('/api/channel/channelTokenId')
-        if(e.target.id === 'channel') {
-            return router.push(`/channel/${response.data}`)
-        }
-        else{
-            router.push(`/dashboard/${response.data}`)
+        try {
+            const response = await axios.get('/api/channel/channelTokenId')
+            if (e.target.id === 'channel') {
+                return router.push(`/channel/${response.data}`)
+            }
+            else {
+                router.push(`/dashboard/${response.data}`)
+            }
+        } catch (error) {
+            console.log(error, 'error in getting channel token id');
+            router.push('/login')
         }
     }
 

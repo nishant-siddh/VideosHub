@@ -40,13 +40,6 @@ const ChannelReducer = (state, action) => {
                 }
             }
 
-        // case 'SET_OPEN_DIALOG_FOR':
-        //     return {
-        //         ...state,
-        //         openDialogFor: action.payload
-        //     }    
-
-
         case 'SET_FORMIK_VALUES':
             return {
                 ...state,

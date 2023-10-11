@@ -6,7 +6,7 @@ connect();
 export async function POST(req) {
     try {
         const reqBody = await req.json();
-        const channelDetails = await Channel.findById(reqBody.param);
+        const channelDetails = await Channel.findById(reqBody.id);
         console.log(channelDetails, 'channel details');
         console.log(channelDetails.username, 'channel details username');
 

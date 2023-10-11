@@ -28,7 +28,6 @@ const VideoContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { setLoading, channelDetail } = useChannelContext();
 
-
     const getVideoDataForView = async (detail, reqComingFrom) => {
         try {
             setLoading();

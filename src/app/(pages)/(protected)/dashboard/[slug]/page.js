@@ -11,7 +11,7 @@ import { BsFillGridFill } from 'react-icons/bs';
 
 const Dashboard = ({ params }) => {
   const param = params.slug;
-  const { channelDetail, setChannelDetails, setUserDetails } = useChannelContext();
+  const { channelDetail, getChannelAndUserDetails } = useChannelContext();
   const { getVideoDataForView, channelVideos } = useVideoContext();
 
   const videosDetailsHeader = [
@@ -24,16 +24,8 @@ const Dashboard = ({ params }) => {
 
   useEffect(() => {
     (async () => {
-      try {
-        if (param) {
-          const resChannel = await axios.post(`/api/channel/channelDetails`, { param });
-          const resUser = await axios.post(`/api/users/userDetails`, { id: resChannel.data.channelData._id });
-          setChannelDetails(resChannel.data.channelData);
-          setUserDetails(resUser.data.userData);
-        }
-      } catch (error) {
-        console.log(error, 'error in getting channel details');
-        throw error
+      if (param) {
+        await getChannelAndUserDetails(param);
       }
     })()
   }, []);
@@ -92,11 +84,6 @@ const Dashboard = ({ params }) => {
                 }
               </tbody>
             </table>
-            {/* {
-              channelDetail.videosId ?
-                <DashboardVideoListView param={param} />
-                : <h1>Loading...</h1>
-            } */}
           </div>
         </div>
       </main>
