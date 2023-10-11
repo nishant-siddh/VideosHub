@@ -9,10 +9,8 @@ import FormThumbnailInput from '@/components/Channel/DialogBox/FormSection/FormT
 import FormCategorySection from '@/components/Channel/DialogBox/FormSection/FormCategorySection'
 import axios from 'axios';
 // import { redirect } from 'next/navigation';
-import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 
 const EditVideo = ({ params }) => {
-    const { channelDetail } = useChannelContext();
     const { channelVideos, getVideoDataForView, dataForEditVideo, setDataForEditVideo, videoDetails } = useVideoContext();
     const videoId = params.videoId;
 
@@ -23,14 +21,13 @@ const EditVideo = ({ params }) => {
         category: dataForEditVideo.category
     }
 
-    const handleSubmitForm = async (values, action) => {
+    const handleSubmitForm = async (values) => {
         try {
-            const updatedVideoRes = await axios.patch('/api/videos/updateVideoDetails', { id: dataForEditVideo._id, values, videoDetails });
+            await axios.patch('/api/videos/updateVideoDetails', { id: dataForEditVideo._id, values, videoDetails });
             // redirect(`/dashboard/${dataForEditVideo.username}`)
         } catch (error) {
             console.log(error);
             throw error;
-
         }
     }
 
@@ -51,7 +48,7 @@ const EditVideo = ({ params }) => {
             {
                 Object.keys(dataForEditVideo).length > 0 ? (
                     <main className='w-[85%] mx-auto'>
-                        <h2 className=''>Video details form</h2>
+                        <h2 className='text-center my-7 text-xl'>Video details form</h2>
                         <div className='md:grid grid-cols-2 lg:grid-cols-3'>
                             {/* live update of video details on a video */}
                             <div>
