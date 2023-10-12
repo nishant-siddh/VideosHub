@@ -10,7 +10,7 @@ import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
     const { videoTitle, setVideoTitle } = useChannelContext();
-    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, setDataForEditVideo } = useVideoContext();
+    const { setVideoDetails, handleGetFileView, videoDetails, setIsVideoUploaded, setVideoDataForView } = useVideoContext();
 
     const initialValues = {
         title: videoTitle,
@@ -20,7 +20,7 @@ const UploadVideoDetailsForm = ({ savingVideo, setSavingVideo }) => {
     }
 
     useEffect(() => {
-        setDataForEditVideo(null)
+        setVideoDataForView(null)
     }, [])
 
     async function handleSubmit(values, action) {

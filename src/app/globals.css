@@ -7,7 +7,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   ---p-scrollBar: 144, 144, 144, 0.3;
-  ---p-scrollBar-hover: 144, 144, 144;
+  ---p-scrollBar-hover: 99, 96, 96;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,8 +18,13 @@
   }
 }
 
+* {
+  scrollbar-width: thin;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
+  background: transparent;
 }
 
 /* Track */
@@ -27,15 +32,17 @@
   background: transarent;
 }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(var(---p-scrollBar));
-  border-radius: 70px;
+.scrollbar-hidden::-webkit-scrollbar-thumb {
+  background: transparent;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.scrollbar-hidden:hover::-webkit-scrollbar-thumb {
   background: rgb(var(---p-scrollBar-hover));
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(var(---p-scrollBar));
+  border-radius: 70px;
 }
 
 body {

@@ -11,7 +11,6 @@ const initialState = {
 
     isVideoUploaded: false,
     channelVideos: [],
-    dataForEditVideo: {},
 
     videoDetails: {
         videoId: '',
@@ -21,7 +20,7 @@ const initialState = {
         username: '',
         videoCurrentStatus: 'Draft',
     },
-    videoDataForView: null,
+    videoDataForView: {},
 }
 
 const VideoContextProvider = ({ children }) => {
@@ -35,9 +34,10 @@ const VideoContextProvider = ({ children }) => {
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?username=${detail}`)
                 setChannelVideos(videoRes.data.videos);
             }
-            else if(reqComingFrom === 'editPage'){
+            else if((reqComingFrom === 'editPage') || (reqComingFrom === 'videoViewPage')){
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?id=${detail}`)
-                setDataForEditVideo(videoRes.data.videos);
+                console.log(videoRes, 'videoRes from getVideoDataForView');
+                setVideoDataForView(videoRes.data.videos)
             }
             
         } catch (error) {
@@ -62,8 +62,8 @@ const VideoContextProvider = ({ children }) => {
         dispatch({ type: 'SET_CHANNEL_VIDEOS', payload: videos })
     }
 
-    const setDataForEditVideo = (video) => {
-        dispatch({ type: 'SET_DATA_FOR_EDIT_VIDEO', payload: video })
+    const setVideoDataForView = (video) => {
+        dispatch({ type: 'SET_VIDEO_DATA_FOR_VIEW', payload: video })
     }
 
     const setIsVideoUploaded = (status) => {
@@ -147,7 +147,7 @@ const VideoContextProvider = ({ children }) => {
     }, [state.videoDetails.thumbnailId])
 
     return (
-        <VideoContext.Provider value={{ ...state, formatDate, handleUploadFile, handleGetFileView, handleGetFilePreview, handleDeleteFile, setIsVideoUploaded, setVideoDetails, getVideoDataForView, setChannelVideos, setDataForEditVideo }}>
+        <VideoContext.Provider value={{ ...state, formatDate, handleUploadFile, handleGetFileView, handleGetFilePreview, handleDeleteFile, setIsVideoUploaded, setVideoDetails, getVideoDataForView, setChannelVideos, setVideoDataForView }}>
             {children}
         </VideoContext.Provider>
     )

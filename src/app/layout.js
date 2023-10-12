@@ -4,6 +4,7 @@ import { HomeContextProvider } from '@/ContextAPI/Context/HomeContext'
 import { AuthContextProvider } from '@/ContextAPI/Context/AuthContext'
 import { ChannelContextProvider } from '@/ContextAPI/Context/ChannelContext'
 import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
+import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,15 +17,17 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body className={inter.className}>
-                <AuthContextProvider>
-                    <HomeContextProvider>
-                        <ChannelContextProvider>
-                            <VideoContextProvider>
-                                {children}
-                            </VideoContextProvider>
-                        </ChannelContextProvider>
-                    </HomeContextProvider>
-                </AuthContextProvider>
+                <SidebarContextProvider>
+                    <AuthContextProvider>
+                        <HomeContextProvider>
+                            <ChannelContextProvider>
+                                <VideoContextProvider>
+                                    {children}
+                                </VideoContextProvider>
+                            </ChannelContextProvider>
+                        </HomeContextProvider>
+                    </AuthContextProvider>
+                </SidebarContextProvider>
             </body>
         </html>
     )

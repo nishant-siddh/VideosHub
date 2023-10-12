@@ -4,12 +4,12 @@ import ProfilePicture from '@/Images/profilePicture.jpeg';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import { useHomeContext } from '@/ContextAPI/Context/HomeContext';
 
-const VideoGridView = ({ dataForEditVideo }) => {
+const VideoGridView = ({ videoDataForView }) => {
     const { videosIndex } = useHomeContext();
 
     return (
         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-4'>
-            {dataForEditVideo.slice(videosIndex[lowerCaseCategory], videosIndex[lowerCaseCategory] +
+            {videoDataForView.slice(videosIndex[lowerCaseCategory], videosIndex[lowerCaseCategory] +
                 (windowWidth > 1024
                     ? 4
                     : windowWidth > 768

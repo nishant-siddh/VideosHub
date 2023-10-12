@@ -15,10 +15,10 @@ const VideoReducer = (state, action) => {
                 channelVideos: action.payload
             }
 
-        case 'SET_DATA_FOR_EDIT_VIDEO':
+        case 'SET_VIDEO_DATA_FOR_VIEW':
             return {
                 ...state,
-                dataForEditVideo: action.payload
+                videoDataForView: action.payload
             }
 
         case 'SET_IS_VIDEO_UPLOADED':

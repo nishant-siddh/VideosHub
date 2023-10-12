@@ -4,14 +4,14 @@ import Image from 'next/image'
 import React from 'react'
 
 const VideoOnEditPage = () => {
-    const { formatDate, dataForEditVideo, videoDetails } = useVideoContext();
+    const { formatDate, videoDataForView, videoDetails } = useVideoContext();
     const { formikValues } = useChannelContext();
-    const { meta, createdAt } = dataForEditVideo;
+    const { meta, createdAt } = videoDataForView;
     const { title } = formikValues;
     return (
         <div className='flex justify-center mx-4'>
             <div className="w-fit mx-0">
-                {/* dataForEditVideo thumbnail */}
+                {/* videoDataForView thumbnail */}
                 {videoDetails.thumbnailUrl && <div>
                     <Image src={videoDetails.thumbnailUrl} className='rounded-md hover:rounded-none ease-in duration-300 w-52 md:w-56 lg:w-64' alt={title} width={100} height={100} />
                 </div>}
