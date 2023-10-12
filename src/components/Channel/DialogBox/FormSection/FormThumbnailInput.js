@@ -7,7 +7,7 @@ import { useFormikContext } from 'formik';
 
 const FormThumbnailInput = () => {
     const { loading } = useChannelContext();
-    const { videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile, dataForEditVideo } = useVideoContext();
+    const { videoDetails, setVideoDetails, handleUploadFile, handleDeleteFile, videoDataForView } = useVideoContext();
     const { values, errors, touched, meta, handleChange, handleBlur, setFieldValue } = useFormikContext();
 
     const handleUploadAndUpdateThumbnail = async (e) => {
@@ -23,13 +23,13 @@ const FormThumbnailInput = () => {
     }
 
     useEffect(() => {
-        if (values.thumbnail && dataForEditVideo.thumbnailId) {
-            setVideoDetails(dataForEditVideo.thumbnailId, 'thumbnailId');
+        if (values.thumbnail && videoDataForView.thumbnailId) {
+            setVideoDetails(videoDataForView.thumbnailId, 'thumbnailId');
         }
-    }, [dataForEditVideo && dataForEditVideo.thumbnailId])
+    }, [videoDataForView && videoDataForView.thumbnailId])
 
     // console.log(values, 'values')
-    // console.log(dataForEditVideo, 'dataForEditVideo');
+    // console.log(videoDataForView, 'videoDataForView');
     // console.log(videoDetails, 'videoDetails')
 
 

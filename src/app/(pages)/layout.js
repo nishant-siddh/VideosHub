@@ -2,7 +2,7 @@
 import '../globals.css'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header/Header'
-import SideBar from '@/components/Sidebar'
+import SideBar from '@/components/Sidebar/Sidebar'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react';
 import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
@@ -34,9 +34,10 @@ export default function PagesLayout({ children }) {
 
   return (
     <>
-      <div>
+      <div className='flex flex-col max-h-screen'>
         {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail' && !pathname.startsWith('/dashboard/')) && <Header />}
-        <div className='flex text-white'>
+        <div className='grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto text-white'>
+          {/* <div className='bg-neutral-400'>Sidebar</div> */}
           {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail'&& !pathname.startsWith('/dashboard/')) && <SideBar />}
           {children}
         </div>

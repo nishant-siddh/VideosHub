@@ -34,7 +34,7 @@ const VideoContextProvider = ({ children }) => {
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?username=${detail}`)
                 setChannelVideos(videoRes.data.videos);
             }
-            else if(reqComingFrom === ('editPage' || 'videoViewPage')){
+            else if((reqComingFrom === 'editPage') || (reqComingFrom === 'videoViewPage')){
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?id=${detail}`)
                 console.log(videoRes, 'videoRes from getVideoDataForView');
                 setVideoDataForView(videoRes.data.videos)

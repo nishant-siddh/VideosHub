@@ -5,7 +5,6 @@ import reducer from "../Reducer/HomeReducer";
 const HomeContext = createContext();
 
 const initialState = {
-    isSidebarOpen: true,
     profileCard: false,
     isLoading: false,
     videosIndex: {
@@ -30,8 +29,26 @@ const initialState = {
 const HomeContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const isScreenSmall = () => {
+        return window.innerWidth < 1024;
+    }
+
     const toggleSidebar = () => {
-        dispatch({ type: 'Toggle_Sidebar' })
+        if(isScreenSmall()) {
+            setIsSmallOpen(s => !s);
+        }
+        else{
+            setIsLargeOpen(l => !l)
+        }
+    }
+    
+    const closeSidebar = () => {
+        if(isScreenSmall()) {
+            setIsSmallOpen(false)
+        }
+        else{
+            setIsLargeOpen(false)
+        }
     }
 
     const setIsLoading = (boolValue) => {
@@ -59,7 +76,7 @@ const HomeContextProvider = ({ children }) => {
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, toggleSidebar, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
+        <HomeContext.Provider value={{ ...state, toggleSidebar, closeSidebar, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
             {children}
         </HomeContext.Provider>
     )

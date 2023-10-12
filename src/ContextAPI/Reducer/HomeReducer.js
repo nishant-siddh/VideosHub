@@ -1,11 +1,5 @@
 const HomeReducer = (state, action) => {
     switch (action.type) {
-        case 'Toggle_Sidebar':
-            return {
-                ...state,
-                isSidebarOpen: !(state.isSidebarOpen),
-            }
-
         case 'Set_Is_Loading':
             return {
                 ...state,
