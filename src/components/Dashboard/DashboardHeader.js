@@ -13,7 +13,7 @@ const DashboardHeader = () => {
   }, [])
 
   return (
-    <header className='flex gap-6 sm:gap-16 justify-between sm:justify-normal items-center pl-3 py-2 sm:py-2 w-screen fixed z-50 bg-clip-padding blur-background shadow-lg bg-zinc-800'>
+    <header className='flex gap-6 sm:gap-16 justify-between sm:justify-normal items-center pl-3 py-2 sm:py-2 w-screen z-50 bg-clip-padding blur-background shadow-lg bg-zinc-800'>
     {/* YouTube studio Logo and hamburder menu */}
       <div className='w-40 flex justify-between md:justify-around items-center gap-2'>
         {/* hamburguer menu */}

@@ -8,7 +8,7 @@ const LargeSidebarItems = ({ isActive = false, IconOrImageUrl, title, url }) => 
             {typeof IconOrImageUrl === 'string' ? (
                 <img src={IconOrImageUrl} className='w-6 h-6 rounded-full' />
             ) : (
-                <IconOrImageUrl class='w-5 h-5' />
+                <IconOrImageUrl className='w-5 h-5' />
             )}
             <div className='whitespace-nowrap overflow-hidden text-sm text-ellipsis'>
                 {title}
