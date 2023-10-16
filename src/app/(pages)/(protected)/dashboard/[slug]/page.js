@@ -38,7 +38,7 @@ const Dashboard = ({ params }) => {
 
   return (
     <>
-      <main className='relative flex justify-center items-start mt-10 w-[80%] mx-auto'>
+      <main className='flex justify-center items-start overflow-x-hidden'>
         <div className='bg-black w-full mx-3 p-5 rounded-lg'>
           {/* channel content header */}
           <div className='flex justify-between'>
@@ -63,7 +63,7 @@ const Dashboard = ({ params }) => {
           <div className='mt-5 bg-zinc-800 rounded-sm'>
             {/* Videos List view */}
             <table className="w-full">
-              <thead className="sticky top-14">
+              <thead className="sticky top-0">
                 <tr className='flex justify-between bg-zinc-900 border-b-2 w-full rounded-sm px-3 py-2'>
                   {videosDetailsHeader.map((header, index) => (
                     <th key={index} className='text-left' style={{ width: header.width }}>{header.heading}</th>

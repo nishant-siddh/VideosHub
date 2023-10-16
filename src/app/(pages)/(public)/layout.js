@@ -1,5 +1,5 @@
 "use client";
-import '../globals.css'
+import '@/app/globals.css'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header/Header'
 import SideBar from '@/components/Sidebar/Sidebar'
@@ -37,7 +37,6 @@ export default function PagesLayout({ children }) {
       <div className='flex flex-col max-h-screen'>
         {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail' && !pathname.startsWith('/dashboard/')) && <Header />}
         <div className='grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto text-white'>
-          {/* <div className='bg-neutral-400'>Sidebar</div> */}
           {(pathname !== '/signup' && pathname !== '/login' && pathname !== '/verifyEmail'&& !pathname.startsWith('/dashboard/')) && <SideBar />}
           {children}
         </div>

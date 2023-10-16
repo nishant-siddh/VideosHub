@@ -11,10 +11,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (
-        <>  
-            <div className='w-full bg-zinc-800'>
+        <>
+            <div className='flex flex-col max-h-screen bg-zinc-800'>
                 <DashboardHeader />
-                <div className='flex mt-16 h-[100vh] text-white'>
+                <div className='grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto text-white'>
                     <SidebarForDashboard />
                     {children}
                 </div>
