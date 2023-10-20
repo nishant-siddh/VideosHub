@@ -9,7 +9,7 @@ const AuthHeader = () => {
 
   return (
     <>
-      <header className='flex gap-6 sm:gap-16 justify-between sm:justify-normal items-center pl-3 py-2 sm:py-2 w-screen fixed z-50 bg-clip-padding blur-background border-b-[1px] border-b-primary'>
+      <header className='flex gap-6 sm:gap-16 justify-between sm:justify-normal items-center pl-3 py-2 sm:py-2 w-screen bg-clip-padding blur-background border-b-[1px] border-b-primary'>
           {/* Youtube Logo */}
           <div className='ml-0 sm:ml-6'>
             <YoutubeLogo />

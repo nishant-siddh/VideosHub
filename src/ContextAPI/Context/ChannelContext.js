@@ -32,6 +32,7 @@ const ChannelContextProvider = ({ children }) => {
         }
     }
 
+
     const setLoading = () => {
         dispatch({ type: 'SET_LOADING' })
     }
