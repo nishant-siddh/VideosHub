@@ -29,28 +29,6 @@ const initialState = {
 const HomeContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const isScreenSmall = () => {
-        return window.innerWidth < 1024;
-    }
-
-    const toggleSidebar = () => {
-        if(isScreenSmall()) {
-            setIsSmallOpen(s => !s);
-        }
-        else{
-            setIsLargeOpen(l => !l)
-        }
-    }
-    
-    const closeSidebar = () => {
-        if(isScreenSmall()) {
-            setIsSmallOpen(false)
-        }
-        else{
-            setIsLargeOpen(false)
-        }
-    }
-
     const setIsLoading = (boolValue) => {
         dispatch({ type: 'Set_Is_Loading', payload: boolValue })
     }
@@ -76,7 +54,7 @@ const HomeContextProvider = ({ children }) => {
     }
 
     return (
-        <HomeContext.Provider value={{ ...state, toggleSidebar, closeSidebar, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
+        <HomeContext.Provider value={{ ...state, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
             {children}
         </HomeContext.Provider>
     )

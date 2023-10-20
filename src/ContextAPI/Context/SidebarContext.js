@@ -44,7 +44,7 @@ const SidebarContextProvider = ({ children }) => {
     }
 
     return (
-        <SidebarContext.Provider value={{ isLargeOpen, isSmallOpen, toggleSidebar, closeSidebar }}>
+        <SidebarContext.Provider value={{ isLargeOpen, isSmallOpen, setIsLargeOpen, setIsSmallOpen, toggleSidebar, closeSidebar }}>
             {children}
         </SidebarContext.Provider>
     )

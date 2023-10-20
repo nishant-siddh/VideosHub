@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <>
             <div className='flex flex-col max-h-screen bg-zinc-800'>
                 <DashboardHeader />
-                <div className='grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto text-white'>
+                <div className='grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto h-screen text-white'>
                     <SidebarForDashboard />
                     {children}
                 </div>

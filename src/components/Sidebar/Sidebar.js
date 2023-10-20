@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiFillHome, AiFillLike, AiFillSave, AiOutlineHome, AiOutlineLike, AiOutlineSave } from 'react-icons/ai'
 import { MdExplore, MdOutlineExplore, MdOutlineSubscriptions, MdOutlineVideoLibrary, MdOutlineWatchLater, MdSubscriptions, MdVideoLibrary, MdWatchLater } from 'react-icons/md'
 import { FaHistory } from 'react-icons/fa'
@@ -17,29 +17,9 @@ import LogoAndHamBurgerSection from '../Header/LogoAndHamBurgerSection'
 const SideBar = () => {
     const [selectedIcon, setSelectedIcon] = useState('');
     const [isActive, setIsActive] = useState('');
-    const { isSidebarOpen } = useHomeContext();
+    const [channelId, setChannelId] = useState('');
     const { isLargeOpen, isSmallOpen, closeSidebar } = useSidebarContext();
     const router = useRouter();
-
-    const firstHalf = [
-        { label: 'Home', icon: { selected: <AiFillHome className="bg-transparent" />, unselected: <AiOutlineHome className="bg-transparent" /> }, key: 'home', linksTo: '/' },
-
-        { label: 'Trending', icon: { selected: <MdExplore className="bg-transparent" />, unselected: <MdOutlineExplore className="bg-transparent" /> }, key: 'trending', linksTo: '/Feed/Trending' },
-
-        { label: 'Subscription', icon: { selected: <MdSubscriptions className="bg-transparent" />, unselected: <MdOutlineSubscriptions className="bg-transparent" /> }, key: 'subscription', linksTo: '/Feed/Subscription' },
-
-        { label: 'Library', icon: { selected: <MdVideoLibrary className="bg-transparent" />, unselected: <MdOutlineVideoLibrary className="bg-transparent" /> }, key: 'library', linksTo: '/Feed/Library' },
-
-        { label: 'History', icon: { selected: <FaHistory className="bg-transparent" />, unselected: <FaHistory className="bg-transparent" /> }, key: 'history', linksTo: '/Feed/History' },
-
-        { label: 'Your Videos', icon: { selected: <RiVideoFill className="bg-transparent" />, unselected: <RiVideoLine className="bg-transparent" /> }, key: 'your-videos', linksTo: '/channel' },
-
-        { label: 'Watch Later', icon: { selected: <MdWatchLater className="bg-transparent" />, unselected: <MdOutlineWatchLater className="bg-transparent" /> }, key: 'watch-later', linksTo: '/Playlist/WatchLater' },
-
-        { label: 'Liked Videos', icon: { selected: <AiFillLike className="bg-transparent" />, unselected: <AiOutlineLike className="bg-transparent" /> }, key: 'liked', linksTo: '/Playlist/LikedVideos' },
-
-        { label: 'Saved Videos', icon: { selected: <AiFillSave className="bg-transparent" />, unselected: <AiOutlineSave className="bg-transparent" /> }, key: 'saved', linksTo: '/Playlist/SavedVideos' },
-    ]
 
     const subscriptions = [
         {
@@ -104,20 +84,17 @@ const SideBar = () => {
         },
     ];
 
-    const handleClick = async (e) => {
-        try {
-            const response = await axios.get('/api/channel/channelTokenId')
-            if (e.target.id === 'channel') {
-                return router.push(`/channel/${response.data}`)
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios.get('/api/channel/channelTokenId')
+                setChannelId(response.data)
+            } catch (error) {
+                console.log(error, 'error in getting channel token id');
+                router.push('/login')
             }
-            else {
-                router.push(`/dashboard/${response.data}`)
-            }
-        } catch (error) {
-            console.log(error, 'error in getting channel token id');
-            router.push('/login')
-        }
-    }
+        })()
+    }, [])
 
     return (
         <>
@@ -176,7 +153,7 @@ const SideBar = () => {
                     <LargeSidebarItems IconOrImageUrl={FaHistory} title="History" url='/' />
                     <LargeSidebarItems IconOrImageUrl={MdExplore} title="Trending" url='/' />
                     <LargeSidebarItems IconOrImageUrl={MdWatchLater} title="Watch Later" url='/' />
-                    <LargeSidebarItems IconOrImageUrl={RiVideoFill} title="Your Videos" url='/' />
+                    <LargeSidebarItems IconOrImageUrl={RiVideoFill} title="Your Videos" url={`/dashboard/${channelId}`} />
                     <LargeSidebarItems IconOrImageUrl={AiFillLike} title="Liked Videos" url='/' />
                     <LargeSidebarItems IconOrImageUrl={AiFillSave} title="Saved Videos" url='/' />
                 </LargeSidebarSection>
