@@ -9,7 +9,7 @@ import profilePicture from '@/Images/profile.jpg';
 import thumbnail from '@/Images/thumbnail.jpg'
 import VideoDetailAndComments from '@/components/VideoDetailAndComments'
 
-const page = () => {
+const Watch = () => {
     const { channelVideos, getVideoDataForView, videoDataForView, setVideoDataForView } = useVideoContext();
     const { isLargeOpen, isSmallOpen, setIsLargeOpen, setIsSmallOpen } = useSidebarContext();
     const queryParam = useSearchParams();
@@ -314,4 +314,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Watch
