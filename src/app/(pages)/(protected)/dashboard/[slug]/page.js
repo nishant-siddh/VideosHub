@@ -24,9 +24,7 @@ const Dashboard = ({ params }) => {
 
   useEffect(() => {
     (async () => {
-      if (param) {
-        await getChannelAndUserDetails(param);
-      }
+        await getChannelAndUserDetails();
     })()
   }, []);
 
