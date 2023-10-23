@@ -25,7 +25,7 @@ export async function POST(req) {
             channelId: user.channelId
         }
 
-        const token = await jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '1d' });
+        const token = await jwt.sign(tokenData, process.env.JWT_SECRET, { expiresIn: '3d' });
 
         cookies().set('token', token, {
             httpOnly: true,

@@ -20,9 +20,10 @@ const initialState = {
 const ChannelContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const getChannelAndUserDetails = async (id) => {
+    const getChannelAndUserDetails = async () => {
         try {
-            const resChannel = await axios.post(`/api/channel/channelDetails`, { id });
+            const response = await axios.get('/api/channel/channelTokenId')
+            const resChannel = await axios.post(`/api/channel/channelDetails`, { id: response.data });
             const resUser = await axios.post(`/api/users/userDetails`, { id: resChannel.data.channelData._id });
             setChannelDetails(resChannel.data.channelData);
             setUserDetails(resUser.data.userData);
@@ -69,6 +70,12 @@ const ChannelContextProvider = ({ children }) => {
             setLoading();
         }
     }
+
+    useEffect(() => {
+        (async () => {
+            getChannelAndUserDetails();
+        })()
+    }, [])
 
     return (
         <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues, getChannelAndUserDetails }}>

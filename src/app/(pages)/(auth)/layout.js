@@ -43,10 +43,12 @@ export default function RootLayout({ children }) {
                 </div>
             </div>
             {/* <main> */}
-            <AuthHeader />
-            <main className='mt-24 px-5'>
-                {children}
-            </main>
+            <div className='flex flex-col max-h-screen'>
+                <AuthHeader />
+                <main className='overflow-auto pt-14 px-5'>
+                    {children}
+                </main>
+            </div>
 
             {/* </main> */}
         </div>

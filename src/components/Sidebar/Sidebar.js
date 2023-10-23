@@ -98,7 +98,7 @@ const SideBar = () => {
 
     return (
         <>
-            <aside className={`sticky top-0 overflow-y-auto scrollbar-hidden pb-4 flex flex-col ml-1 ${isLargeOpen ? 'lg:hidden' : 'lg:flex'}`}>
+            <aside className={`sticky top-0 overflow-y-auto scrollbar-hidden pb-4 hidden sm:flex flex-col ml-1 ${isLargeOpen ? 'lg:hidden' : 'lg:flex'}`}>
                 <SmallSidebarItem Icon={AiFillHome} title="Home" url='/' />
                 <SmallSidebarItem Icon={MdExplore} title="Trending" url='/' />
                 <SmallSidebarItem Icon={MdSubscriptions} title="Subscription" url='/' />

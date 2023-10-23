@@ -10,8 +10,7 @@ import UploadVideoDialogBox from '@/components/Channel/DialogBox/UploadVideoDial
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
-  const { videosIndex, isLoading, setIsLoading } = useHomeContext();
-  const {setUserDetails, setChannelDetails, handleGetVideoView } = useChannelContext()
+  const {setUserDetails, setChannelDetails, getChannelAndUserDetails } = useChannelContext()
   const [windowWidth, setWindowWidth] = useState(0);
   const [modal, setModal] = useState();
   const [videos, setVideos] = useState([]);
@@ -36,14 +35,8 @@ const ChannelPage = ({ params }) => {
   // getting the user and the user's channel data
   useEffect(() => {
     (async () => {
-      if (param) {
-        const resChannel = await axios.post(`/api/channel/channelDetails`, { param });
-        const resUser = await axios.post(`/api/users/userDetails`, {id: resChannel.data.channelData._id});
-        setChannelDetails(resChannel.data.channelData);
-        setUserDetails(resUser.data.userData);
-      }
-    })();
-    // handleListVideos();
+        await getChannelAndUserDetails();
+    })()
   }, []);
 
   // useEffect(() => {
