@@ -1,4 +1,4 @@
-import connect from "@/dbConfig/dbConfig";
+import { connect } from "@/dbConfig/dbConfig";
 import Video from "@/models/videosModel";
 
 connect();
