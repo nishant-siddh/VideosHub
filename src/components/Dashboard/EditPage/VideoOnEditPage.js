@@ -1,10 +1,12 @@
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import { useTimeAndDateContext } from '@/ContextAPI/Context/TimeAndDateContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import Image from 'next/image'
 import React from 'react'
 
 const VideoOnEditPage = () => {
-    const { formatDate, videoDataForView, videoDetails } = useVideoContext();
+    const { videoDataForView, videoDetails } = useVideoContext();
+    const { formatDate } = useTimeAndDateContext();
     const { formikValues } = useChannelContext();
     const { meta, createdAt } = videoDataForView;
     const { title } = formikValues;

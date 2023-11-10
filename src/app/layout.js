@@ -5,6 +5,7 @@ import { AuthContextProvider } from '@/ContextAPI/Context/AuthContext'
 import { ChannelContextProvider } from '@/ContextAPI/Context/ChannelContext'
 import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
 import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
+import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,9 +22,11 @@ export default function RootLayout({ children }) {
                     <AuthContextProvider>
                         <HomeContextProvider>
                             <ChannelContextProvider>
-                                <VideoContextProvider>
-                                    {children}
-                                </VideoContextProvider>
+                                <TimeAndDateContextProvider>
+                                    <VideoContextProvider>
+                                        {children}
+                                    </VideoContextProvider>
+                                </TimeAndDateContextProvider>
                             </ChannelContextProvider>
                         </HomeContextProvider>
                     </AuthContextProvider>

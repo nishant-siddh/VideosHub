@@ -53,12 +53,14 @@ const videoSchema = mongoose.Schema({
         trim: true
     },
     comments: [{
-        author: { type: String, $ref: 'Channel' },
+        author: { type: String, required: true },
+        profileImage: { type: String },
         text: { type: String, required: true },
         createdAt: { type: Date, default: Date.now },
-
+        
         replies: [{
-            author: { type: String, $ref: 'Channel' },
+            author: { type: String, required: true },
+            profileImage: { type: String },
             text: { type: String, required: true },
             createdAt: { type: Date, default: Date.now },
         }]
