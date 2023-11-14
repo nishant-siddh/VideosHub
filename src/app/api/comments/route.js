@@ -16,14 +16,14 @@ export async function POST(req) {
     }
 
     if (commentOrReply === 'comment') {
-      video.comments.push({
+      video.comments.unshift({
         author: channelDetail.username,
         profileImage: userDetail.profileImage,
         text: commentText
       });
     }
     else {
-      video.comments[0].replies.push({
+      video.comments[0].replies.unshift({
         author: channelDetail.username,
         profileImage: userDetail.profileImage,
         text: commentText
@@ -32,9 +32,9 @@ export async function POST(req) {
 
     await video.save();
 
-    return new Response(JSON.stringify({ message: "Commented successfully" }), { status: 200 });
-  } catch(error) {
+    return new Response(JSON.stringify({ message: "Commented successfully", videoComments: video.comments }), { status: 200 });
+  } catch (error) {
     console.log(error);
-    return new Response(JSON.stringify({ message: "Something went wrong" }), {status: 500});
-   }
+    return new Response(JSON.stringify({ message: "Something went wrong" }), { status: 500 });
+  }
 }
