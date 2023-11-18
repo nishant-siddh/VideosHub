@@ -38,6 +38,10 @@ const videoSchema = mongoose.Schema({
     videoStatus: {
         type: String,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     uploadedBy: {
         type: String,
         ref: 'Channel',
@@ -49,8 +53,19 @@ const videoSchema = mongoose.Schema({
         trim: true
     },
     comments: [{
-        type: String,
-        ref: 'Comment'
+        author: { type: String, required: true },
+        profileImage: { type: String },
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
+        
+        replies: [{
+            commentId: { type: String },
+            replyToUsername: { type: String },
+            author: { type: String, required: true },
+            profileImage: { type: String },
+            text: { type: String, required: true },
+            createdAt: { type: Date, default: Date.now },
+        }]
     }],
     meta: {
         views: { type: Number, default: 0 },

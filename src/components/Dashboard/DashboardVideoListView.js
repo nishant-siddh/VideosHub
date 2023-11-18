@@ -1,4 +1,4 @@
-import { useVideoContext } from "@/ContextAPI/Context/VideoContext"
+import { useTimeAndDateContext } from "@/ContextAPI/Context/TimeAndDateContext"
 import Image from "next/image"
 import Link from "next/link"
 import { AiOutlineYoutube } from "react-icons/ai"
@@ -6,7 +6,7 @@ import { CiEdit } from "react-icons/ci"
 import { MdDeleteOutline, MdOpacity } from "react-icons/md"
 
 const DashboardVideoListView = ({ video, videosDetailsHeader }) => {
-  const { formatDate } = useVideoContext();
+  const { formatDate } = useTimeAndDateContext();
 
   return (
     <>

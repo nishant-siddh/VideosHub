@@ -49,15 +49,6 @@ const VideoContextProvider = ({ children }) => {
         }
     }
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
-        const year = date.getFullYear();
-
-        return `${day}-${month}-${year}`;
-    };
-
     const setChannelVideos = (videos) => {
         dispatch({ type: 'SET_CHANNEL_VIDEOS', payload: videos })
     }
@@ -147,7 +138,7 @@ const VideoContextProvider = ({ children }) => {
     }, [state.videoDetails.thumbnailId])
 
     return (
-        <VideoContext.Provider value={{ ...state, formatDate, handleUploadFile, handleGetFileView, handleGetFilePreview, handleDeleteFile, setIsVideoUploaded, setVideoDetails, getVideoDataForView, setChannelVideos, setVideoDataForView }}>
+        <VideoContext.Provider value={{ ...state, handleUploadFile, handleGetFileView, handleGetFilePreview, handleDeleteFile, setIsVideoUploaded, setVideoDetails, getVideoDataForView, setChannelVideos, setVideoDataForView }}>
             {children}
         </VideoContext.Provider>
     )

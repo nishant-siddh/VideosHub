@@ -13,13 +13,13 @@ export async function POST(req) {
         const newVideo = new Video({
             title: values.title,
             description: values.description,
-            thumbnailId: videoDetails.thumbnailId,
-            thumbnailUrl: videoDetails.thumbnailUrl,
             videoId: videoDetails.videoId,
             videoUrl: videoDetails.videoUrl,
+            thumbnailId: videoDetails.thumbnailId,
+            thumbnailUrl: videoDetails.thumbnailUrl,
+            videoStatus: videoDetails.videoCurrentStatus,
             uploadedBy: videoDetails.username,
-            category: values.category,
-            videoStatus: videoDetails.videoCurrentStatus
+            category: values.category
         });
 
         const videosInChannel = await Channel.findOne({ username: videoDetails.username });
