@@ -3,10 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { useCommentsContext } from '@/ContextAPI/Context/CommentsContext';
 import CommentsMapping from './CommentsMapping';
 import profileImage from "@/Images/profilePicture.jpeg";
+import { MdExpandLess, MdOutlineExpandMore } from 'react-icons/md';
 
 const VideosCommentSection = () => {
   const { handleComment, comments } = useCommentsContext();
   const [commentInputValue, setCommentInputValue] = useState("");
+  const [showReplies, setShowReplies] = useState({});
+
+  function handleShowReplies(commentId) {
+    const updatedShowReplies = { ...showReplies, [commentId]: !showReplies[commentId] }
+    const filteredObject = Object.entries(updatedShowReplies).filter(([key, value])  => value !==  false);
+    setShowReplies(Object.fromEntries(filteredObject));
+  }
 
   return (
     <div className="mt-5">
@@ -56,25 +64,32 @@ const VideosCommentSection = () => {
             const commentOrReply = 'comment'
             return (
               <>
-                <div key={comment.id} className='flex flex-col gap-2'>
+                <div key={comment._id} className='flex flex-col gap-2'>
                   <CommentsMapping comment={comment} index={index} commentOrReply={commentOrReply} />
+                  <button onClick={() => handleShowReplies(comment._id)} className='w-fit flex items-center rounded-full gap-2 ml-10 p-1 hover:bg-zinc-800'>
+                    {showReplies[comment._id]
+                      ? <MdExpandLess className="w-5 h-5" />
+                      : <MdOutlineExpandMore className="w-5 h-5" />
+                    }
+                    <div className='text-xs'>{comment.replies.length} replies</div>
+                  </button>
                   {
-                    comment.replies.map((reply, index) => {
+                    showReplies[comment._id] && comment.replies.map((reply, index) => {
                       const commentOrReply = 'reply'
                       return (
-                        <div key={reply.id} className='flex flex-col gap-2 ml-10'>
+                        <div key={reply._id} className='flex flex-col gap-2 ml-10'>
                           <CommentsMapping comment={reply} index={index} commentOrReply={commentOrReply} />
                         </div>
                       )
                     })
                   }
-                </div>
+                </div >
               </>
             )
           })
         )}
       </div>
-    </div>
+    </div >
   )
 }
 

@@ -9,7 +9,7 @@ const CommentsContext = createContext();
 
 const initialState = {
     comments: [],
-    replyBtnClickedArray: [],
+    replyBtnClickedObject: {},
 
 }
 
@@ -17,6 +17,9 @@ const CommentsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { channelDetail, userDetail } = useChannelContext();
     const { videoDataForView } = useVideoContext();
+
+
+    console.log(state.replyBtnClickedObject, 'state.replyBtnClickedObject');
 
     async function handleComment({ commentInputValue, setCommentInputValue }) {
         try {
@@ -35,7 +38,7 @@ const CommentsContextProvider = ({ children }) => {
         }
     }
 
-    async function handleReply({ index, replyInputValue, setReplyInputValue }) {
+    async function handleReply(index, commentId, replyInputValue, setReplyInputValue) {
         try {
             const commentRes = await axios.post("/api/comments", {
                 videoId: videoDataForView.videoId,
@@ -47,7 +50,7 @@ const CommentsContextProvider = ({ children }) => {
             });
             setComments(commentRes.data.videoComments);
             setReplyInputValue("");
-            setReplyBtnClickedArray(index, false);
+            setReplyBtnClickedObject(commentId, false);
         } catch (error) {
             console.log(error);
             throw error;
@@ -58,21 +61,29 @@ const CommentsContextProvider = ({ children }) => {
         dispatch({ type: "SET_COMMENTS", payload: comments });
     }
 
-    const setReplyBtnClickedArray = (index, boolValue) => {
-        dispatch({ type: "SET_REPLY_BTN_CLICKED_ARRAY", payload: { index, boolValue } });
+    const setReplyBtnClickedObject = (commentId, boolValue) => {
+        dispatch({ type: "SET_REPLY_BTN_CLICKED_OBJECT", payload: { commentId, boolValue } });
     }
 
 
     useEffect(() => {
         if (videoDataForView.comments) {
             setComments(videoDataForView.comments);
-            setReplyBtnClickedArray('all', false);
+            // setReplyBtnClickedObject('all', false);
         }
     }, [videoDataForView.comments]);
 
+    useEffect(() => {
+        if (state.replyBtnClickedObject) {
+            const filteredEntries = Object.entries(state.replyBtnClickedObject).filter(([key, value]) => value !== false);
+            const filteredObject = Object.fromEntries(filteredEntries);
+            // setReplyBtnClickedObject(filteredObject);
+        }
+    }, [state.replyBtnClickedObject])
+
 
     return (
-        <CommentsContext.Provider value={{ ...state, handleComment, handleReply, setComments, setReplyBtnClickedArray }}>
+        <CommentsContext.Provider value={{ ...state, handleComment, handleReply, setComments, setReplyBtnClickedObject }}>
             {children}
         </CommentsContext.Provider>
     )

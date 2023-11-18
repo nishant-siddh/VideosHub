@@ -13,7 +13,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
     const { videoDataForView } = useVideoContext();
     const { formatTimeAgo } = useTimeAndDateContext();
     const [replyInputValue, setReplyInputValue] = useState("");
-    const { handleReply, replyBtnClickedArray, setReplyBtnClickedArray } = useCommentsContext();
+    const { handleReply, replyBtnClickedObject, setReplyBtnClickedObject } = useCommentsContext();
     const commentedAt = new Date(comment.createdAt);
 
     return (
@@ -48,12 +48,12 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                     <div className='flex items-center gap-1'>
                         <button><AiOutlineDislike /></button>
                     </div>
-                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => setReplyBtnClickedArray(index, true)}>
+                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => setReplyBtnClickedObject(comment._id, true)}>
                         <span>Reply</span>
                     </div>
                 </div>
 
-                <div className={`mt-3 flex gap-3 ${replyBtnClickedArray[index] ? 'flex' : 'hidden'}`}>
+                <div className={`mt-3 flex gap-3 ${replyBtnClickedObject[comment._id] ? 'flex' : 'hidden'}`}>
                     <div className="flex-shrink-0 w-fit">
                         <Image
                             src={profileImage}
@@ -75,7 +75,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                             <button
                                 className="text-white hover:text-zinc-400 transition ease-in-out delay-75 duration-300"
                                 onClick={() => {
-                                    setReplyBtnClickedArray(index, false), setReplyInputValue('')
+                                    setReplyBtnClickedObject(comment._id, false), setReplyInputValue('')
                                 }}
                             >
                                 Cancel
@@ -83,7 +83,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                             <button
                                 className="border px-2 py-1 rounded-full flex items-center gap-1 hover:bg-zinc-800 transition delay-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-800"
                                 disabled={!replyInputValue}
-                                onClick={() => handleReply({ index, replyInputValue, setReplyInputValue })}
+                                onClick={() => handleReply(index, comment._id, replyInputValue, setReplyInputValue)}
                             >
                                 Reply
                             </button>

@@ -6,20 +6,15 @@ const CommentsReducer = (state, action) => {
                 comments: action.payload
             }
 
-        case 'SET_REPLY_BTN_CLICKED_ARRAY':
-            const { index, boolValue } = action.payload;
-            let newArray;
-            if (index === 'all') {
-                newArray = new Array(state.comments.length).fill(boolValue);
-            }
-            else {
-                newArray = [...state.replyBtnClickedArray];
-                newArray[index] = boolValue;
-            }
+        case 'SET_REPLY_BTN_CLICKED_OBJECT':
+            const { commentId, boolValue } = action.payload;
+            const updatedReplyBtnClickedObject = { ...state.replyBtnClickedObject, [commentId]: boolValue }
+            const filteredObject = Object.entries(updatedReplyBtnClickedObject).filter(([key, value])  => value !==  false);
 
             return {
                 ...state,
-                replyBtnClickedArray: newArray
+                replyBtnClickedObject: Object.fromEntries(filteredObject)
+
             }
 
         default:
