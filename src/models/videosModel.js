@@ -59,6 +59,8 @@ const videoSchema = mongoose.Schema({
         createdAt: { type: Date, default: Date.now },
         
         replies: [{
+            commentId: { type: String },
+            replyToUsername: { type: String },
             author: { type: String, required: true },
             profileImage: { type: String },
             text: { type: String, required: true },

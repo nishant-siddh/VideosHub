@@ -6,6 +6,7 @@ import { ChannelContextProvider } from '@/ContextAPI/Context/ChannelContext'
 import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
 import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
+import { CommentsContextProvider } from '@/ContextAPI/Context/CommentsContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
                             <ChannelContextProvider>
                                 <TimeAndDateContextProvider>
                                     <VideoContextProvider>
-                                        {children}
+                                        <CommentsContextProvider>
+                                            {children}
+                                        </CommentsContextProvider>
                                     </VideoContextProvider>
                                 </TimeAndDateContextProvider>
                             </ChannelContextProvider>
