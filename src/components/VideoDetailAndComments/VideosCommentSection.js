@@ -12,7 +12,7 @@ const VideosCommentSection = () => {
 
   function handleShowReplies(commentId) {
     const updatedShowReplies = { ...showReplies, [commentId]: !showReplies[commentId] }
-    const filteredObject = Object.entries(updatedShowReplies).filter(([key, value])  => value !==  false);
+    const filteredObject = Object.entries(updatedShowReplies).filter(([key, value]) => value !== false);
     setShowReplies(Object.fromEntries(filteredObject));
   }
 
@@ -66,15 +66,17 @@ const VideosCommentSection = () => {
               <>
                 <div key={comment._id} className='flex flex-col gap-2'>
                   <CommentsMapping comment={comment} index={index} commentOrReply={commentOrReply} />
-                  <button onClick={() => handleShowReplies(comment._id)} className='w-fit flex items-center rounded-full gap-2 ml-10 p-1 hover:bg-zinc-800'>
-                    {showReplies[comment._id]
-                      ? <MdExpandLess className="w-5 h-5" />
-                      : <MdOutlineExpandMore className="w-5 h-5" />
-                    }
-                    <div className='text-xs'>{comment.replies.length} replies</div>
-                  </button>
+                  {comment.replies.length !== 0 &&
+                    (<button onClick={() => handleShowReplies(comment._id)} className='w-fit flex items-center text-blue-500 rounded-full gap-2 ml-10 p-1 hover:bg-blue-900 hover:bg-opacity-[0.4]'>
+                      {showReplies[comment._id]
+                        ? <MdExpandLess className="w-5 h-5" />
+                        : <MdOutlineExpandMore className="w-5 h-5" />
+                      }
+                      <div className='text-xs'>{comment.replies.length} replies</div>
+                    </button>)
+                  }
                   {
-                    showReplies[comment._id] && comment.replies.map((reply, index) => {
+                    showReplies[comment._id] && comment.replies.map((reply) => {
                       const commentOrReply = 'reply'
                       return (
                         <div key={reply._id} className='flex flex-col gap-2 ml-10'>

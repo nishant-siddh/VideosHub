@@ -3,9 +3,11 @@ import { useCommentsContext } from '@/ContextAPI/Context/CommentsContext';
 import { useTimeAndDateContext } from '@/ContextAPI/Context/TimeAndDateContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
 import profileImage from "@/Images/profilePicture.jpeg";
+import axios from 'axios';
+import Link from 'next/link';
 
 
 const CommentsMapping = ({ comment, index, commentOrReply }) => {
@@ -14,7 +16,20 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
     const { formatTimeAgo } = useTimeAndDateContext();
     const [replyInputValue, setReplyInputValue] = useState("");
     const { handleReply, replyBtnClickedObject, setReplyBtnClickedObject } = useCommentsContext();
+    const [parentCommentUsername, setParentCommentUsername] = useState('')
     const commentedAt = new Date(comment.createdAt);
+
+    const parentComment = videoDataForView.comments.map(comment => comment._id);
+
+    function handleClickedReplyBtn(commentId, boolValue) {
+        setReplyBtnClickedObject(commentId, boolValue)
+        if (parentComment.includes(commentId)) {
+            setParentCommentUsername('replyToMainComment')
+        }
+        else {
+            setParentCommentUsername(comment.author)
+        }
+    }
 
     return (
         <>
@@ -29,10 +44,13 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                         )
                     }
                 </div>
-                <div>
+                <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-2 text-xs'>
                         <h6 className={`${comment.author === videoDataForView.uploadedBy && 'bg-zinc-400 text-white rounded-full px-2'}`}>@{comment.author}</h6>
                         <span className='text-neutral-400'>{formatTimeAgo(commentedAt)}</span>
+                        {(comment.replyToUsername && comment.replyToUsername !== ('self') && comment.replyToUsername !== ('replyToMainComment'))
+                            && <span className='text-white'>Replying to: <Link href='#' className='text-blue-500'>@{comment.replyToUsername}</Link></span>
+                        }
                     </div>
                     <span>{comment.text}</span>
                 </div>
@@ -48,7 +66,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                     <div className='flex items-center gap-1'>
                         <button><AiOutlineDislike /></button>
                     </div>
-                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => setReplyBtnClickedObject(comment._id, true)}>
+                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => handleClickedReplyBtn(comment._id, true)}>
                         <span>Reply</span>
                     </div>
                 </div>
@@ -65,7 +83,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                     </div>
                     <div className='flex-col gap-2 w-full'>
                         <textarea
-                            className="w-full py-1 text-sm border-b-2 bg-transparent border-zinc-700 focus:border-white transition ease-in-out delay-75 duration-300 outline-none resize-none"
+                            className="w-full py-1 text-sm bg-transparent border-b-2 border-zinc-700 focus:border-white transition ease-in-out delay-75 duration-300 outline-none resize-none"
                             rows={2}
                             placeholder="Add a public comment..."
                             value={replyInputValue}
@@ -83,7 +101,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                             <button
                                 className="border px-2 py-1 rounded-full flex items-center gap-1 hover:bg-zinc-800 transition delay-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-800"
                                 disabled={!replyInputValue}
-                                onClick={() => handleReply(index, comment._id, replyInputValue, setReplyInputValue)}
+                                onClick={() => handleReply(index, parentCommentUsername, comment._id, replyInputValue, setReplyInputValue)}
                             >
                                 Reply
                             </button>
