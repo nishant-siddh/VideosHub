@@ -6,7 +6,7 @@ connect();
 
 export async function POST(req) {
   const reqBody = await req.json();
-  const { videoId, commentText, commentOrReply, channelDetail, userDetail, index } = reqBody;
+  const { videoId, commentText, commentOrReply, channelDetail, userDetail, index, parentCommentUsername } = reqBody;
   try {
     const video = await Video.findOne({ videoId });
     if (!video) {
@@ -25,7 +25,11 @@ export async function POST(req) {
     else {
       video.comments[index].replies.push({
         commentId: video.comments[index]._id,
-        replyToUsername: video.comments[index].author === channelDetail.username ? 'self' : video.comments[index].author,
+        replyToUsername: parentCommentUsername === 'replyToMainComment'
+          ? 'replyToMainComment'
+          : parentCommentUsername === channelDetail.username
+            ? 'self'
+            : parentCommentUsername,
         author: channelDetail.username,
         profileImage: userDetail.profileImage,
         text: commentText

@@ -38,15 +38,16 @@ const CommentsContextProvider = ({ children }) => {
         }
     }
 
-    async function handleReply(index, commentId, replyInputValue, setReplyInputValue) {
+    async function handleReply(index, parentCommentUsername, commentId, replyInputValue, setReplyInputValue) {
         try {
             const commentRes = await axios.post("/api/comments", {
                 videoId: videoDataForView.videoId,
                 commentOrReply: "reply",
                 commentText: replyInputValue,
-                channelDetail: channelDetail,
-                userDetail: userDetail,
-                index
+                channelDetail,
+                userDetail,
+                index,
+                parentCommentUsername
             });
             setComments(commentRes.data.videoComments);
             setReplyInputValue("");
