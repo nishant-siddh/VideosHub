@@ -30,16 +30,16 @@ const VideoContextProvider = ({ children }) => {
     const getVideoDataForView = async (detail, reqComingWith) => {
         try {
             setLoading();
-            if(reqComingWith === 'username') {
+            if (reqComingWith === 'username') {
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?username=${detail}`)
                 setChannelVideos(videoRes.data.videos);
             }
-            else if((reqComingWith === 'id')){
+            else if ((reqComingWith === 'id')) {
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?id=${detail}`)
                 console.log(videoRes, 'videoRes from getVideoDataForView');
                 setVideoDataForView(videoRes.data.videos)
             }
-            
+
         } catch (error) {
             console.log(error, 'error in getting video details');
             throw error;
