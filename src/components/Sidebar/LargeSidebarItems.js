@@ -6,7 +6,7 @@ const LargeSidebarItems = ({ isActive = false, IconOrImageUrl, title, url }) => 
         <Link href={url} className={`w-full flex items-center rounded-lg gap-4 p-3 hover:bg-zinc-800 ${isActive ? 'font-bold bg-zinc-900' : undefined}`}>
 
             {typeof IconOrImageUrl === 'string' ? (
-                <img src={IconOrImageUrl} className='w-6 h-6 rounded-full' />
+                <img src={IconOrImageUrl} className='w-6 h-6 rounded-full' alt='image' />
             ) : (
                 <IconOrImageUrl className='w-5 h-5' />
             )}

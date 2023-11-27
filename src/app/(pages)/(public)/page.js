@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useHomeContext } from "@/ContextAPI/Context/HomeContext";
 import Navbar from '@/components/HomePage/Navbar';
 import PreviousAndNextArrows from "@/components/HomePage/PreviousAndNextArrows";
+import Video from "@/components/Video";
 
 export default function Home() {
   const { videosIndex } = useHomeContext();
@@ -654,29 +655,7 @@ export default function Home() {
               {
                 category.videos.map((video, index) => {
                   return (
-                    <div key={index} className="flex flex-col">
-                      {/* video thumbnail */}
-                      <div>
-                        <Image src={thumbnail} className='rounded-md hover:rounded-none ease-in duration-300 w-full' alt='{video.title}' width={200} height={200} />
-                      </div>
-
-                      {/* vidoes title and creator profile picture */}
-                      <div className='flex items-start gap-2 mt-2'>
-                        <div className="w-8 min-w-fit">
-                          <Image src={thumbnail} className='rounded-full w-10 h-10 max-h-10' alt='{video.channel.name}' width={40} height={40} />
-                        </div>
-
-                        <div className='max-w-xs sm:max-w-xs'>
-                          <h4 className='text-sm font-semibold'>{video.title}</h4>
-                          <div>
-                            <p className='text-xs text-gray-400'>{video.channel.name}</p>
-                            <div className="flex text-xs text-gray-400">
-                              <p>{video.views} views • {video.createdAt}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <Video key={index} video={video} />
                   )
                 })
               }

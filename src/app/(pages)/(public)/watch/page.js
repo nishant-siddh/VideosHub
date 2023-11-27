@@ -283,7 +283,7 @@ const Watch = () => {
         setIsSmallOpen(false);
         (async () => {
             if (channelVideos.length === 0) {
-                await getVideoDataForView(videoId, "videoViewPage");
+                await getVideoDataForView(videoId, "id");
             } else {
                 const res = channelVideos.filter((video) => video._id === videoId)[0];
                 setVideoDataForView(res);

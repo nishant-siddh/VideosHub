@@ -10,7 +10,7 @@ const initialState = {
     userDetail: {},
     channelDetail: {},
     videosCategories: ['Games', 'Fashion', 'Music', 'Movies', 'Entertainment'],
-    loading: false,
+    isLoading: false,
     videoTitle: '',
 
     formikValues: {}

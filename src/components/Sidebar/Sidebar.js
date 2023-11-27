@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { AiFillHome, AiFillLike, AiFillSave, AiOutlineHome, AiOutlineLike, AiOutlineSave } from 'react-icons/ai'
 import { MdExplore, MdOutlineExplore, MdOutlineSubscriptions, MdOutlineVideoLibrary, MdOutlineWatchLater, MdSubscriptions, MdVideoLibrary, MdWatchLater } from 'react-icons/md'
 import { FaHistory } from 'react-icons/fa'
+import { FaRegCircleUser } from "react-icons/fa6";
 import { RiVideoFill, RiVideoLine } from 'react-icons/ri'
 import { useHomeContext } from '@/ContextAPI/Context/HomeContext'
 import axios from 'axios'
@@ -148,14 +149,15 @@ const SideBar = () => {
 
                 <hr className='border-spacing-1 border-zinc-400' />
 
-                <LargeSidebarSection visibleItemCount={4}>
+                <LargeSidebarSection visibleItemCount={5}>
+                    <LargeSidebarItems IconOrImageUrl={FaRegCircleUser} title="Your Channel" url={`/channel/${channelId}`} />
                     <LargeSidebarItems IconOrImageUrl={MdVideoLibrary} title="Library" url='/' />
                     <LargeSidebarItems IconOrImageUrl={FaHistory} title="History" url='/' />
+                    <LargeSidebarItems IconOrImageUrl={RiVideoFill} title="Your Videos" url={`/dashboard/${channelId}`} />
+                    <LargeSidebarItems IconOrImageUrl={AiFillSave} title="Saved Videos" url='/' />
                     <LargeSidebarItems IconOrImageUrl={MdExplore} title="Trending" url='/' />
                     <LargeSidebarItems IconOrImageUrl={MdWatchLater} title="Watch Later" url='/' />
-                    <LargeSidebarItems IconOrImageUrl={RiVideoFill} title="Your Videos" url={`/dashboard/${channelId}`} />
                     <LargeSidebarItems IconOrImageUrl={AiFillLike} title="Liked Videos" url='/' />
-                    <LargeSidebarItems IconOrImageUrl={AiFillSave} title="Saved Videos" url='/' />
                 </LargeSidebarSection>
 
                 <hr className='border-spacing-1 border-zinc-400' />

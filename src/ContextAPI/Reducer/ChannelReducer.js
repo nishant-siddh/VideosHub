@@ -3,7 +3,7 @@ const ChannelReducer = (state, action) => {
         case 'SET_LOADING':
             return {
                 ...state,
-                loading: !(state.loading)
+                isLoading: !(state.isLoading)
             }
 
 

@@ -7,7 +7,7 @@ const ListView = ({ video }) => {
             <div className='hidden sm:flex gap-3'>
                 {/* thumbnail */}
                 <div className='w-[40%]'>
-                    <Image src={video.thumbnail} width={100} height={100} className='w-full h-full rounded-md' />
+                    <Image src={video.thumbnail} alt='thumbnail' width={100} height={100} className='w-full h-full rounded-md' />
                 </div >
                 {/* video details */}
                 <div className='w-[50%]'>

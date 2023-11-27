@@ -27,14 +27,14 @@ const VideoContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { setLoading, channelDetail } = useChannelContext();
 
-    const getVideoDataForView = async (detail, reqComingFrom) => {
+    const getVideoDataForView = async (detail, reqComingWith) => {
         try {
             setLoading();
-            if(reqComingFrom === 'dashboard') {
+            if(reqComingWith === 'username') {
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?username=${detail}`)
                 setChannelVideos(videoRes.data.videos);
             }
-            else if((reqComingFrom === 'editPage') || (reqComingFrom === 'videoViewPage')){
+            else if((reqComingWith === 'id')){
                 const videoRes = await axios.get(`/api/videos/getVideoDetails?id=${detail}`)
                 console.log(videoRes, 'videoRes from getVideoDataForView');
                 setVideoDataForView(videoRes.data.videos)
