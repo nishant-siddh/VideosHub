@@ -16,10 +16,7 @@ const initialState = {
 const CommentsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { channelDetail, userDetail } = useChannelContext();
-    const { videoDataForView } = useVideoContext();
-
-
-    console.log(state.replyBtnClickedObject, 'state.replyBtnClickedObject');
+    const {videoDataForView} = useVideoContext();
 
     async function handleComment({ commentInputValue, setCommentInputValue }) {
         try {
@@ -66,13 +63,13 @@ const CommentsContextProvider = ({ children }) => {
         dispatch({ type: "SET_REPLY_BTN_CLICKED_OBJECT", payload: { commentId, boolValue } });
     }
 
-
+    
     useEffect(() => {
-        if (videoDataForView.comments) {
+        if (videoDataForView && videoDataForView.comments) {
             setComments(videoDataForView.comments);
             // setReplyBtnClickedObject('all', false);
         }
-    }, [videoDataForView.comments]);
+    }, [videoDataForView && videoDataForView.comments]);
 
     useEffect(() => {
         if (state.replyBtnClickedObject) {

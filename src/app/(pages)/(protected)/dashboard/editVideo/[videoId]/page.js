@@ -34,7 +34,7 @@ const EditVideo = ({ params }) => {
     useEffect(() => {
         (async () => {
             if (channelVideos.length === 0) {
-                await getVideoDataForView(videoId, 'editPage')
+                await getVideoDataForView(videoId, 'id')
             }
             else {
                 const res = channelVideos.filter(video => video._id === videoId)[0]

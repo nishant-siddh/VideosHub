@@ -5,7 +5,7 @@ import UplaodLoader from '@/components/UplaodLoader';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const UploadVideoInterface = () => {
-    const { setVideoTitle, loading, videoTitle } = useChannelContext();
+    const { setVideoTitle, isLoading, videoTitle } = useChannelContext();
     const { handleUploadFile } = useVideoContext();
 
     return (
@@ -13,7 +13,7 @@ const UploadVideoInterface = () => {
             <div className='py-2 px-3 h-1/2 mt-16'>
                 <div className='flex flex-col justify-center items-center h-full my-8'>
                     <label htmlFor="video" className='bg-zinc-900 p-5 md:p-7 rounded-full cursor-pointer'>
-                        {loading
+                        {isLoading
                             ? <UplaodLoader />
                             : <MdUpload className='text-gray-400 text-4xl md:text-5xl' />
                         }
@@ -28,13 +28,13 @@ const UploadVideoInterface = () => {
 
 
                     <button
-                        disabled={loading || !videoTitle}
+                        disabled={isLoading || !videoTitle}
                         type='button'
                         id='uploadVideo'
                         className='bg-zinc-900 text-gray-100 px-5 py-2 rounded-md mt-5 hover:bg-gray-100 hover:text-zinc-900 transition duration-300 disabled:cursor-not-allowed disabled:opacity-50'
                         onClick={() => handleUploadFile(document.querySelector('#video').files[0])}
                     >
-                        {loading ? 'Uploading' : 'Upload Video'}
+                        {isLoading ? 'UpisLoading' : 'Upload Video'}
                     </button>
                 </div>
             </div>

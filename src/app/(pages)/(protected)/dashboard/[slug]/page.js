@@ -11,7 +11,7 @@ import { BsFillGridFill } from 'react-icons/bs';
 
 const Dashboard = ({ params }) => {
   const param = params.slug;
-  const { channelDetail, getChannelAndUserDetails } = useChannelContext();
+  const { channelDetail, userDetail, getChannelAndUserDetails } = useChannelContext();
   const { getVideoDataForView, channelVideos } = useVideoContext();
 
   const videosDetailsHeader = [
@@ -24,13 +24,15 @@ const Dashboard = ({ params }) => {
 
   useEffect(() => {
     (async () => {
+      if (!userDetail && !channelDetail) {
         await getChannelAndUserDetails();
+      }
     })()
   }, []);
 
   useEffect(() => {
     if (channelDetail.username) {
-      getVideoDataForView(channelDetail.username, 'dashboard');
+      getVideoDataForView(channelDetail.username, 'username');
     }
   }, [channelDetail]);
 
