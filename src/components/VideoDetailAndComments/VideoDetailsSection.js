@@ -10,11 +10,12 @@ import {
 } from "react-icons/ai";
 import { FaFolderPlus } from "react-icons/fa";
 import profileImage from "@/Images/profilePicture.jpeg";
+import { useLikesContext } from '@/ContextAPI/Context/likesContext';
+
 
 const VideoDetailsSection = () => {
     const { userDetail, channelDetail } = useChannelContext();
-    const [liked, setLiked] = useState(false);
-    const [disliked, setDisliked] = useState(false);
+    const { liked, disliked, handleSetLikes } = useLikesContext();
 
     return (
         <div className="flex flex-wrap gap-3 justify-between">
@@ -45,7 +46,7 @@ const VideoDetailsSection = () => {
             {/* likes dislikes and save button */}
             <div className="flex gap-1 md:gap-3 justify-between md:justify-end sm:flex-shrink-0 items-center text-xs w-full sm:w-fit lg:text-sm">
                 <div className="flex rounded-full border">
-                    <button className="px-2 md:px-3 py-1 rounded-l-full border-r-2 flex gap-1 items-center hover:bg-zinc-800 transition delay-75">
+                    <button className="px-2 md:px-3 py-1 rounded-l-full border-r-2 flex gap-1 items-center hover:bg-zinc-800 transition delay-75" onClick={() => handleSetLikes(true)}>
                         {liked ? <AiFillLike /> : <AiOutlineLike />} Like
                     </button>
                     <button className="px-2 md:px-3 py-1 rounded-r-full flex gap-1 items-center hover:bg-zinc-800 transition delay-75">

@@ -4,9 +4,8 @@ import UploadBtn from '@/components/Channel/UploadBtn';
 import ChannelDetailSection from '@/components/Channel/ChannelDetailSection';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import UploadVideoDialogBox from '@/components/Channel/DialogBox/UploadVideoDialogBox';
-import axios from 'axios';
-import Image from 'next/image';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
+import GridView from '@/components/VideoView/GridView';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
@@ -50,6 +49,8 @@ const ChannelPage = ({ params }) => {
   }, [channelDetail]);
 
 
+  console.log(channelVideos);
+
   return (
     <main className='mt-4 mx-auto px-5 w-full'>
       {/* channel header section  */}
@@ -59,23 +60,18 @@ const ChannelPage = ({ params }) => {
 
       {/* channel videos section */}
       <div>
-        {channelVideos.length === 0 && (
-          <>
-            <UploadBtn modal={modal} />
-            <UploadVideoDialogBox />
-          </>
-        )}
-
         {
           isLoading
             ? <p>Loading...</p>
-            : <div className="grid grid-cols-3 gap-4">
-              {channelVideos && channelVideos.map((video) => (
-                <div key={video.$id} className="w-fit h-fit border cursor-pointer" onClick={() => handleGetVideoView(video.$id)}>
-                  <Image src={video.thumbnail} width={300} alt="image" />
-                  <p>{video.name}</p>
-                </div>
-              ))}
+            : <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mx-auto">
+              {channelVideos ? channelVideos.map((video) => (
+                <GridView key={video._id} video={video} />
+              )) : (
+                <>
+                  <UploadBtn modal={modal} />
+                  <UploadVideoDialogBox />
+                </>
+              )}
             </div>
         }
 

@@ -84,7 +84,6 @@ const ChannelContextProvider = ({ children }) => {
     )
 }
 
-
 const useChannelContext = () => {
     return useContext(ChannelContext)
 }

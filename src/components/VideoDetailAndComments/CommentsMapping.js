@@ -6,37 +6,38 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
 import profileImage from "@/Images/profilePicture.jpeg";
-import axios from 'axios';
 import Link from 'next/link';
 
 
-const CommentsMapping = ({ comment, index, commentOrReply }) => {
+const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
     const { userDetail } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { formatTimeAgo } = useTimeAndDateContext();
     const [replyInputValue, setReplyInputValue] = useState("");
-    const { handleReply, replyBtnClickedObject, setReplyBtnClickedObject } = useCommentsContext();
-    const [parentCommentUsername, setParentCommentUsername] = useState('')
+    const { handleReply, replyBtnClickedObject, setReplyBtnClickedObject, handleRepliesOfReply } = useCommentsContext();
     const commentedAt = new Date(comment.createdAt);
-
-    const parentComment = videoDataForView.comments.map(comment => comment._id);
 
     function handleClickedReplyBtn(commentId, boolValue) {
         setReplyBtnClickedObject(commentId, boolValue)
-        if (parentComment.includes(commentId)) {
-            setParentCommentUsername('replyToMainComment')
-        }
-        else {
-            setParentCommentUsername(comment.author)
-        }
     }
+
+    // useEffect(() => {
+    //     if(showReplies) {
+    //       showReplies && Object.entries(showReplies).forEach(([key, value]) => {
+    //         if(value && replies[key] !== key) {
+    //           handleGetReplies(key)
+    //         }
+    //       })
+    //     }
+    //   }, [showReplies])
+
 
     return (
         <>
             <div className='flex gap-3 text-sm'>
                 <div className='rounded-full w-fit'>
-                    {comment.profileImage
-                        ? <Image src={comment.profileImage} className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center rounded-full`} alt="" />
+                    {comment.author.profilePicture
+                        ? <Image src={comment.author.profilePicture} className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center rounded-full`} alt="" />
                         : (
                             <div className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center bg-red-500 rounded-full`}>
                                 {userDetail.name && userDetail.name[0]}
@@ -46,10 +47,10 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                 </div>
                 <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-2 text-xs'>
-                        <h6 className={`${comment.author === videoDataForView.uploadedBy && 'bg-zinc-400 text-white rounded-full px-2'}`}>@{comment.author}</h6>
+                        <h6 className={`${comment.author.username === videoDataForView.uploadedBy && 'bg-zinc-400 text-white rounded-full px-2'}`}>@{comment.author.username}</h6>
                         <span className='text-neutral-400'>{formatTimeAgo(commentedAt)}</span>
-                        {(comment.replyToUsername && comment.replyToUsername !== ('self') && comment.replyToUsername !== ('replyToMainComment'))
-                            && <span className='text-white'>Replying to: <Link href='#' className='text-blue-500'>@{comment.replyToUsername}</Link></span>
+                        {(comment.replyTo && comment.replyTo !== comment.author.username)
+                            && <span className='text-white'>Replying to: <Link href='#' className='text-blue-500'>@{comment.replyTo}</Link></span>
                         }
                     </div>
                     <span>{comment.text}</span>
@@ -71,6 +72,7 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                     </div>
                 </div>
 
+                {/* reply section */}
                 <div className={`mt-3 flex gap-3 ${replyBtnClickedObject[comment._id] ? 'flex' : 'hidden'}`}>
                     <div className="flex-shrink-0 w-fit">
                         <Image
@@ -101,7 +103,11 @@ const CommentsMapping = ({ comment, index, commentOrReply }) => {
                             <button
                                 className="border px-2 py-1 rounded-full flex items-center gap-1 hover:bg-zinc-800 transition delay-75 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-zinc-800"
                                 disabled={!replyInputValue}
-                                onClick={() => handleReply(index, parentCommentUsername, comment._id, replyInputValue, setReplyInputValue)}
+                                onClick={
+                                    () => !originalCommentId
+                                        ? handleReply(comment._id, replyInputValue, setReplyInputValue, commentOrReply)
+                                        : handleRepliesOfReply(comment._id, comment.author.username, originalCommentId, replyInputValue, setReplyInputValue, commentOrReply)
+                                }
                             >
                                 Reply
                             </button>
