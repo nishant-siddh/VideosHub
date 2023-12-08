@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 
 const likesSchema = mongoose.Schema({
     videoId: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'videos',
+        type: mongoose.Schema.Types.ObjectId, ref: 'video',
         require: [true, "Please provide a videoId"]
     },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'users',
+    userChannelId: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'user',
         require: [true, "Please provide a userId"]
     },
     isLike: {

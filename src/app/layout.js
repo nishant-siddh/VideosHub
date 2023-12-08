@@ -7,7 +7,7 @@ import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
 import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
 import { CommentsContextProvider } from '@/ContextAPI/Context/CommentsContext'
-import { LikesContextProvider } from '@/ContextAPI/Context/likesContext'
+import { LikesContextProvider } from '@/ContextAPI/Context/LikesContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,13 +25,13 @@ export default function RootLayout({ children }) {
                         <HomeContextProvider>
                             <ChannelContextProvider>
                                 <TimeAndDateContextProvider>
-                                    <LikesContextProvider>
-                                        <VideoContextProvider>
+                                    <VideoContextProvider>
+                                        <LikesContextProvider>
                                             <CommentsContextProvider>
                                                 {children}
                                             </CommentsContextProvider>
-                                        </VideoContextProvider>
-                                    </LikesContextProvider>
+                                        </LikesContextProvider>
+                                    </VideoContextProvider>
                                 </TimeAndDateContextProvider>
                             </ChannelContextProvider>
                         </HomeContextProvider>

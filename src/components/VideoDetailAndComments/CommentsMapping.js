@@ -10,7 +10,6 @@ import Link from 'next/link';
 
 
 const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
-    const { userDetail } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { formatTimeAgo } = useTimeAndDateContext();
     const [replyInputValue, setReplyInputValue] = useState("");
@@ -40,7 +39,7 @@ const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
                         ? <Image src={comment.author.profilePicture} className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center rounded-full`} alt="" />
                         : (
                             <div className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center bg-red-500 rounded-full`}>
-                                {userDetail.name && userDetail.name[0]}
+                                {comment.author.username && comment.author.username[0].toUpperCase()}
                             </div>
                         )
                     }
