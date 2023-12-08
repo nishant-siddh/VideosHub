@@ -8,16 +8,12 @@ import React, { useEffect } from "react";
 import profilePicture from "@/Images/profile.jpg";
 import thumbnail from "@/Images/thumbnail.jpg";
 import VideoDetailAndComments from "@/components/VideoDetailAndComments/VideoDetailAndComments";
+import { useCommentsContext } from "@/ContextAPI/Context/CommentsContext";
+import axios from "axios";
 
 const Watch = () => {
-    const {
-        channelVideos,
-        getVideoDataForView,
-        videoDataForView,
-        setVideoDataForView,
-    } = useVideoContext();
-    const { isLargeOpen, isSmallOpen, setIsLargeOpen, setIsSmallOpen } =
-        useSidebarContext();
+    const { channelVideos, getVideoDataForView, videoDataForView, setVideoDataForView, } = useVideoContext();
+    const { isLargeOpen, isSmallOpen, setIsLargeOpen, setIsSmallOpen } = useSidebarContext();
     const queryParam = useSearchParams();
     const videoId = queryParam.get("v");
 
@@ -303,7 +299,7 @@ const Watch = () => {
                 ></video>
 
                 <VideoDetailAndComments />
-                
+
             </div>
             {/* suggested video */}
             <div className="sm:flex flex-col gap-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] w-full">

@@ -27,8 +27,6 @@ const AuthContextProvider = ({ children }) => {
     )
 }
 
-
-
 const useAuthContext = () => {
     return useContext(AuthContext)
 }

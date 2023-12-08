@@ -1,5 +1,5 @@
 import { connect } from '@/dbConfig/dbConfig';
-import Channel from '@/models/channelsDetails';
+import Channel from '@/models/channelsDetailsModel';
 
 connect();
 

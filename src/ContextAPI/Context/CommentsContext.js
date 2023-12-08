@@ -9,50 +9,93 @@ const CommentsContext = createContext();
 
 const initialState = {
     comments: [],
+    replies: {},
     replyBtnClickedObject: {},
-
 }
 
 const CommentsContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const { channelDetail, userDetail } = useChannelContext();
-    const {videoDataForView} = useVideoContext();
+    const { videoDataForView } = useVideoContext();
 
     async function handleComment({ commentInputValue, setCommentInputValue }) {
         try {
-            const commentRes = await axios.post("/api/comments", {
-                videoId: videoDataForView.videoId,
-                commentOrReply: "comment",
-                commentText: commentInputValue,
-                channelDetail: channelDetail,
-                userDetail: userDetail,
+            const commentRes = await axios.post("/api/comments/addComments", {
+                videoId: videoDataForView._id,
+                userChannelId: channelDetail._id,
+                commentText: commentInputValue
             });
-            setComments(commentRes.data.videoComments);
+            console.log(commentRes.data);
             setCommentInputValue("");
+            handleGetComments();
         } catch (error) {
             console.log(error);
             throw error;
         }
     }
 
-    async function handleReply(index, parentCommentUsername, commentId, replyInputValue, setReplyInputValue) {
+    async function handleGetComments() {
         try {
-            const commentRes = await axios.post("/api/comments", {
-                videoId: videoDataForView.videoId,
-                commentOrReply: "reply",
-                commentText: replyInputValue,
-                channelDetail,
-                userDetail,
-                index,
-                parentCommentUsername
-            });
-            setComments(commentRes.data.videoComments);
-            setReplyInputValue("");
-            setReplyBtnClickedObject(commentId, false);
+            const commentRes = await axios.post('/api/comments/getComments', {
+                videoId: videoDataForView._id
+            })
+            commentRes.data.comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+            setComments(commentRes.data.comments);
         } catch (error) {
             console.log(error);
             throw error;
         }
+    }
+
+    async function handleReply(commentId, replyInputValue, setReplyInputValue) {
+        try {
+            const commentRes = await axios.post("/api/comments/replies/addReplies", {
+                commentId,
+                userChannelId: channelDetail._id,
+                replyText: replyInputValue
+            });
+            setReplyInputValue("");
+            setReplyBtnClickedObject(commentId, false);
+            handleGetComments();
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async function handleRepliesOfReply(commentId, username, originalCommentId, replyInputValue, setReplyInputValue) {
+        try {
+            const commentRes = await axios.post("/api/comments/replies/addRepliesOfReply", {
+                commentId,
+                username,
+                originalCommentId,
+                userChannelId: channelDetail._id,
+                replyText: replyInputValue
+            });
+            setReplyInputValue("");
+            setReplyBtnClickedObject(commentId, false);
+            handleGetComments();
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async function handleGetReplies(commentId) {
+        try {
+            const repliesRes = await axios.post('/api/comments/replies/getReplies', {
+                commentId
+            })
+            setReplies(commentId, repliesRes.data.replies);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    const setReplies = (commentIdOfReplies, replies) => {
+        dispatch({ type: "SET_REPLIES", payload: { commentIdOfReplies, replies } });
     }
 
     const setComments = (comments) => {
@@ -63,25 +106,24 @@ const CommentsContextProvider = ({ children }) => {
         dispatch({ type: "SET_REPLY_BTN_CLICKED_OBJECT", payload: { commentId, boolValue } });
     }
 
-    
-    useEffect(() => {
-        if (videoDataForView && videoDataForView.comments) {
-            setComments(videoDataForView.comments);
-            // setReplyBtnClickedObject('all', false);
-        }
-    }, [videoDataForView && videoDataForView.comments]);
+    // useEffect(() => {
+    //     if (videoDataForView && videoDataForView.comments) {
+    //         setComments(videoDataForView.comments);
+    //         // setReplyBtnClickedObject('all', false);
+    //     }
+    // }, [videoDataForView && videoDataForView.comments]);
 
-    useEffect(() => {
-        if (state.replyBtnClickedObject) {
-            const filteredEntries = Object.entries(state.replyBtnClickedObject).filter(([key, value]) => value !== false);
-            const filteredObject = Object.fromEntries(filteredEntries);
-            // setReplyBtnClickedObject(filteredObject);
-        }
-    }, [state.replyBtnClickedObject])
+    // useEffect(() => {
+    //     if (state.replyBtnClickedObject) {
+    //         const filteredEntries = Object.entries(state.replyBtnClickedObject).filter(([key, value]) => value !== false);
+    //         const filteredObject = Object.fromEntries(filteredEntries);
+    //         // setReplyBtnClickedObject(filteredObject);
+    //     }
+    // }, [state.replyBtnClickedObject])
 
 
     return (
-        <CommentsContext.Provider value={{ ...state, handleComment, handleReply, setComments, setReplyBtnClickedObject }}>
+        <CommentsContext.Provider value={{ ...state, handleComment, handleReply, handleRepliesOfReply, handleGetComments, handleGetReplies, setComments, setReplyBtnClickedObject }}>
             {children}
         </CommentsContext.Provider>
     )

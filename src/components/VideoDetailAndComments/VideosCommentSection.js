@@ -4,17 +4,29 @@ import { useCommentsContext } from '@/ContextAPI/Context/CommentsContext';
 import CommentsMapping from './CommentsMapping';
 import profileImage from "@/Images/profilePicture.jpeg";
 import { MdExpandLess, MdOutlineExpandMore } from 'react-icons/md';
+import { useVideoContext } from "@/ContextAPI/Context/VideoContext";
 
 const VideosCommentSection = () => {
-  const { handleComment, comments } = useCommentsContext();
+  const { handleComment, comments, handleGetComments, replies, handleGetReplies } = useCommentsContext();
   const [commentInputValue, setCommentInputValue] = useState("");
   const [showReplies, setShowReplies] = useState({});
+  const { videoDataForView } = useVideoContext();
 
   function handleShowReplies(commentId) {
     const updatedShowReplies = { ...showReplies, [commentId]: !showReplies[commentId] }
     const filteredObject = Object.entries(updatedShowReplies).filter(([key, value]) => value !== false);
     setShowReplies(Object.fromEntries(filteredObject));
+    handleGetReplies(commentId);
   }
+
+  console.log(replies, 'this is replies array from useEffect');
+
+  useEffect(() => {
+    if (videoDataForView._id) {
+      console.log('getting comments');
+      handleGetComments()
+    }
+  }, [videoDataForView._id])
 
   return (
     <div className="mt-5">
@@ -59,37 +71,35 @@ const VideosCommentSection = () => {
 
 
       <div className='mt-10 flex flex-col gap-6'>
-        {comments && (
-          comments.map((comment, index) => {
-            const commentOrReply = 'comment'
-            return (
-              <>
-                <div key={comment._id} className='flex flex-col gap-2'>
-                  <CommentsMapping comment={comment} index={index} commentOrReply={commentOrReply} />
-                  {comment.replies.length !== 0 &&
-                    (<button onClick={() => handleShowReplies(comment._id)} className='w-fit flex items-center text-blue-500 rounded-full gap-2 ml-10 p-1 hover:bg-blue-900 hover:bg-opacity-[0.4]'>
-                      {showReplies[comment._id]
-                        ? <MdExpandLess className="w-5 h-5" />
-                        : <MdOutlineExpandMore className="w-5 h-5" />
-                      }
-                      <div className='text-xs'>{comment.replies.length} replies</div>
-                    </button>)
-                  }
-                  {
-                    showReplies[comment._id] && comment.replies.map((reply) => {
-                      const commentOrReply = 'reply'
-                      return (
-                        <div key={reply._id} className='flex flex-col gap-2 ml-10'>
-                          <CommentsMapping comment={reply} index={index} commentOrReply={commentOrReply} />
-                        </div>
-                      )
-                    })
-                  }
-                </div >
-              </>
-            )
-          })
-        )}
+        {comments && comments.map((comment) => {
+          const commentOrReply = 'comment'
+          return (
+            <>
+              <div key={comment._id} className='flex flex-col gap-2'>
+                <CommentsMapping comment={comment} commentOrReply={commentOrReply} />
+                {comment.replies.length !== 0 &&
+                  (<button onClick={() => handleShowReplies(comment._id)} className='w-fit flex items-center text-blue-500 rounded-full gap-2 ml-10 p-1 hover:bg-blue-900 hover:bg-opacity-[0.4]'>
+                    {showReplies[comment._id]
+                      ? <MdExpandLess className="w-5 h-5" />
+                      : <MdOutlineExpandMore className="w-5 h-5" />
+                    }
+                    <div className='text-xs'>{comment.replies.length} replies</div>
+                  </button>)
+                }
+                {
+                  showReplies[comment._id] && replies[comment._id]?.map((reply) => {
+                    const commentOrReply = 'reply'
+                    return (
+                      <div key={reply._id} className='flex flex-col gap-2 ml-10'>
+                        <CommentsMapping comment={reply} originalCommentId={reply.commentId._id} commentOrReply={commentOrReply} />
+                      </div>
+                    )
+                  })
+                }
+              </div >
+            </>
+          )
+        })}
       </div>
     </div >
   )
