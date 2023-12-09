@@ -7,7 +7,8 @@ import { VideoContextProvider } from '@/ContextAPI/Context/VideoContext'
 import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
 import { CommentsContextProvider } from '@/ContextAPI/Context/CommentsContext'
-import { LikesContextProvider } from '@/ContextAPI/Context/likesContext'
+import { LikeReactionContextProvider } from '@/ContextAPI/Context/LikeReactionContext'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,13 +26,14 @@ export default function RootLayout({ children }) {
                         <HomeContextProvider>
                             <ChannelContextProvider>
                                 <TimeAndDateContextProvider>
-                                    <LikesContextProvider>
-                                        <VideoContextProvider>
+                                    <VideoContextProvider>
+                                        <LikeReactionContextProvider>
                                             <CommentsContextProvider>
+                                                <Toaster position="bottom-right" reverseOrder={true} />
                                                 {children}
                                             </CommentsContextProvider>
-                                        </VideoContextProvider>
-                                    </LikesContextProvider>
+                                        </LikeReactionContextProvider>
+                                    </VideoContextProvider>
                                 </TimeAndDateContextProvider>
                             </ChannelContextProvider>
                         </HomeContextProvider>

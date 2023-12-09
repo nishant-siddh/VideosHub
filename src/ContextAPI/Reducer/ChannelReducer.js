@@ -46,6 +46,12 @@ const ChannelReducer = (state, action) => {
                 formikValues: action.payload
             }
 
+        case 'SET_VIDEO_CREATOR_DETAILS':
+            return {
+                ...state,
+                videoCreatorDetails: action.payload
+            }
+
         default:
             return state
     }

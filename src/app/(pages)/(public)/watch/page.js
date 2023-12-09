@@ -10,10 +10,12 @@ import thumbnail from "@/Images/thumbnail.jpg";
 import VideoDetailAndComments from "@/components/VideoDetailAndComments/VideoDetailAndComments";
 import { useCommentsContext } from "@/ContextAPI/Context/CommentsContext";
 import axios from "axios";
+import { useChannelContext } from "@/ContextAPI/Context/ChannelContext";
 
 const Watch = () => {
     const { channelVideos, getVideoDataForView, videoDataForView, setVideoDataForView, } = useVideoContext();
     const { isLargeOpen, isSmallOpen, setIsLargeOpen, setIsSmallOpen } = useSidebarContext();
+    const { handleGetCreatorDetails } = useChannelContext();
     const queryParam = useSearchParams();
     const videoId = queryParam.get("v");
 
@@ -286,6 +288,12 @@ const Watch = () => {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (videoDataForView.uploadedBy) {
+            handleGetCreatorDetails(videoDataForView.uploadedBy);
+        }
+    }, [videoDataForView.uploadedBy])
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-[2fr,minmax(200px,1fr)] lg:grid-cols-[2.5fr,minmax(200px,1fr)] flex-grow-1 overflow-auto gap-6 px-3 mt-3">

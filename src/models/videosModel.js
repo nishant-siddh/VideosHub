@@ -52,21 +52,6 @@ const videoSchema = mongoose.Schema({
         required: true,
         trim: true
     },
-    comments: [{
-        author: { type: String, required: true },
-        profileImage: { type: String },
-        text: { type: String, required: true },
-        createdAt: { type: Date, default: Date.now },
-        
-        replies: [{
-            commentId: { type: String },
-            replyToUsername: { type: String },
-            author: { type: String, required: true },
-            profileImage: { type: String },
-            text: { type: String, required: true },
-            createdAt: { type: Date, default: Date.now },
-        }]
-    }],
     meta: {
         views: { type: Number, default: 0 },
         likes: { type: Number, default: 0 }
