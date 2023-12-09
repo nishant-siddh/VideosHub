@@ -7,7 +7,6 @@ import { useChannelContext } from "./ChannelContext";
 const LikesContext = createContext();
 
 const LikesContextProvider = ({ children }) => {
-
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const { channelDetail } = useChannelContext();

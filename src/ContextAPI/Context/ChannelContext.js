@@ -12,8 +12,8 @@ const initialState = {
     videosCategories: ['Games', 'Fashion', 'Music', 'Movies', 'Entertainment'],
     isLoading: false,
     videoTitle: '',
-
-    formikValues: {}
+    formikValues: {},
+    videoCreatorDetails: {}
 }
 
 
@@ -31,6 +31,20 @@ const ChannelContextProvider = ({ children }) => {
             console.log(error, 'error in getting channel and user details');
             throw error;
         }
+    }
+
+    const handleGetCreatorDetails = async (creatorUsername) => {
+        try {
+            const response = await axios.post('/api/getCreatorDetails', { creatorUsername });
+            setVideoCreatorDetails(response.data.creatorDetails);
+        } catch (error) {
+            console.log(error, 'error in getting creator details');
+            throw error;
+        }
+    }
+
+    const setVideoCreatorDetails = (details) => {
+        dispatch({ type: 'SET_VIDEO_CREATOR_DETAILS', payload: details })
     }
 
 
@@ -78,7 +92,7 @@ const ChannelContextProvider = ({ children }) => {
     }, [])
 
     return (
-        <ChannelContext.Provider value={{ ...state, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues, getChannelAndUserDetails }}>
+        <ChannelContext.Provider value={{ ...state, handleGetCreatorDetails, setLoading, setUserDetails, setChannelDetails, addVideoCategory, setVideoTitle, handleListFile, setFormikValues, getChannelAndUserDetails }}>
             {children}
         </ChannelContext.Provider>
     )

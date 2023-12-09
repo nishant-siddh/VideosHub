@@ -10,16 +10,58 @@ import {
 } from "react-icons/ai";
 import { FaFolderPlus } from "react-icons/fa";
 import profileImage from "@/Images/profilePicture.jpeg";
-import { useLikesContext } from '@/ContextAPI/Context/LikesContext';
 import axios from 'axios';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
+import { useLikesContext } from '@/ContextAPI/Context/LikesContext';
+import { IoMdCheckmark } from "react-icons/io";
+import toast from 'react-hot-toast';
 
 
 const VideoDetailsSection = () => {
-    const { userDetail, channelDetail } = useChannelContext();
+    const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes } = useLikesContext();
-    const [isSubscribed, setIsSubscribed] = useState(false)
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [subscribersCount, setSubscriberCount] = useState(videoCreatorDetails.totalSubscribers);
+
+    async function handleSubscriberCount() {
+        try {
+            // setIsSubscribed(prev => !prev)
+            const subscriberData = await axios.post('/api/subscription', {
+                creatorChannel: videoCreatorDetails._id,
+                subscriberChannel: channelDetail._id
+            })
+            toast.success(subscriberData.data.message)
+            setIsSubscribed(subscriberData.data.subscriptionStatus)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        if (channelDetail._id && videoDataForView.uploadedBy) {
+            try {
+                (async () => {
+                    const subscriberData = await axios.post('/api/subscription/getSubscription', {
+                        creatorChannel: videoCreatorDetails._id,
+                        subscriberChannel: channelDetail._id
+                    })
+                    setIsSubscribed(subscriberData.data.subscriptionStatus)
+                })()
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    }, [channelDetail._id && videoDataForView.uploadedBy])
+
+    useEffect(() => {
+        if (isSubscribed) {
+            setSubscriberCount(prev => prev + 1)
+        }
+        if (subscribersCount > 0 && !isSubscribed) {
+            setSubscriberCount(prev => prev - 1)
+        }
+    }, [isSubscribed])
 
     function handleLikeReaction() {
         setLiked(prev => !prev)
@@ -73,16 +115,17 @@ const VideoDetailsSection = () => {
                     <div className="flex flex-col">
                         <h6>{userDetail.name}</h6>
                         <span className="text-xs text-zinc-400">
-                            {channelDetail.totalSubscribers} subscribers
+                            {/* {channelDetail.totalSubscribers} subscribers */}
+                            {subscribersCount} subscribers
                         </span>
                     </div>
                     <button
-                        className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 bg-white hover:text-gray-400
-                        ${!isSubscribed && 'shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]'}`}
-                        onClick={() => setIsSubscribed(prev => !prev)}
+                        className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
+                        ${!isSubscribed && ' bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-2 -translate-y-2 active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}
+                        onClick={handleSubscriberCount}
                     >
-                        <AiOutlineUserAdd />
-                        {isSubscribed ? 'Subscribed' : 'Subscribe'}
+                        <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
+                        <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>
                     </button>
                 </div>
             </div>

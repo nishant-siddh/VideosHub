@@ -8,6 +8,7 @@ import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
 import { CommentsContextProvider } from '@/ContextAPI/Context/CommentsContext'
 import { LikesContextProvider } from '@/ContextAPI/Context/LikesContext'
+import toast, { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
                                     <VideoContextProvider>
                                         <LikesContextProvider>
                                             <CommentsContextProvider>
+                                                <Toaster position="bottom-right" reverseOrder={true} />
                                                 {children}
                                             </CommentsContextProvider>
                                         </LikesContextProvider>
