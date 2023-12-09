@@ -12,7 +12,7 @@ import { FaFolderPlus } from "react-icons/fa";
 import profileImage from "@/Images/profilePicture.jpeg";
 import axios from 'axios';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
-import { useLikesContext } from '@/ContextAPI/Context/LikesContext';
+import { useLikeReactionContext } from '@/ContextAPI/Context/LikeReactionContext';
 import { IoMdCheckmark } from "react-icons/io";
 import toast from 'react-hot-toast';
 
@@ -20,7 +20,7 @@ import toast from 'react-hot-toast';
 const VideoDetailsSection = () => {
     const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
-    const { liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes } = useLikesContext();
+    const { liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes } = useLikeReactionContext();
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [subscribersCount, setSubscriberCount] = useState(videoCreatorDetails.totalSubscribers);
 

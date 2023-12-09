@@ -4,9 +4,9 @@ import { createContext, useContext, useReducer, useState } from "react";
 import { useVideoContext } from "./VideoContext";
 import { useChannelContext } from "./ChannelContext";
 
-const LikesContext = createContext();
+const LikeReactionContext = createContext();
 
-const LikesContextProvider = ({ children }) => {
+const LikeReactionContextProvider = ({ children }) => {
     const [liked, setLiked] = useState(false);
     const [disliked, setDisliked] = useState(false);
     const { channelDetail } = useChannelContext();
@@ -39,14 +39,14 @@ const LikesContextProvider = ({ children }) => {
     }
 
     return (
-        <LikesContext.Provider value={{ liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes }}>
+        <LikeReactionContext.Provider value={{ liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes }}>
             {children}
-        </LikesContext.Provider>
+        </LikeReactionContext.Provider>
     )
 }
 
-const useLikesContext = () => {
-    return useContext(LikesContext)
+const useLikeReactionContext = () => {
+    return useContext(LikeReactionContext)
 }
 
-export { LikesContext, LikesContextProvider, useLikesContext }
+export { LikeReactionContext, LikeReactionContextProvider, useLikeReactionContext }
