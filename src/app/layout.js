@@ -8,6 +8,7 @@ import { SidebarContextProvider } from '@/ContextAPI/Context/SidebarContext'
 import { TimeAndDateContextProvider } from '@/ContextAPI/Context/TimeAndDateContext'
 import { CommentsContextProvider } from '@/ContextAPI/Context/CommentsContext'
 import { LikeReactionContextProvider } from '@/ContextAPI/Context/LikeReactionContext'
+import { SubscriptionContextProvider } from '@/ContextAPI/Context/SubscriptionContext'
 import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -26,14 +27,16 @@ export default function RootLayout({ children }) {
                         <HomeContextProvider>
                             <ChannelContextProvider>
                                 <TimeAndDateContextProvider>
-                                    <VideoContextProvider>
-                                        <LikeReactionContextProvider>
-                                            <CommentsContextProvider>
-                                                <Toaster position="bottom-right" reverseOrder={true} />
-                                                {children}
-                                            </CommentsContextProvider>
-                                        </LikeReactionContextProvider>
-                                    </VideoContextProvider>
+                                    <SubscriptionContextProvider>
+                                        <VideoContextProvider>
+                                            <LikeReactionContextProvider>
+                                                <CommentsContextProvider>
+                                                    <Toaster position="bottom-right" reverseOrder={true} />
+                                                    {children}
+                                                </CommentsContextProvider>
+                                            </LikeReactionContextProvider>
+                                        </VideoContextProvider>
+                                    </SubscriptionContextProvider>
                                 </TimeAndDateContextProvider>
                             </ChannelContextProvider>
                         </HomeContextProvider>
