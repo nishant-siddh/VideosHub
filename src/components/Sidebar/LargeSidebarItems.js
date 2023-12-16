@@ -7,7 +7,7 @@ const LargeSidebarItems = ({ isActive = false, IconOrImageUrl, title, url }) => 
 
             {typeof IconOrImageUrl === 'string' ? (
                 IconOrImageUrl.length > 0 ? (
-                    <img src={IconOrImageUrl} className='w-7 h-7 rounded-full' alt='image' />
+                    <img src={IconOrImageUrl} className='w-7 h-7 rounded-full' alt='image' /> 
                 ) : (
                     <div className='w-7 h-7 flex justify-center items-center bg-red-500 rounded-full text-white'>
                         {title[0].toUpperCase()}
