@@ -9,7 +9,7 @@ import GridView from '@/components/VideoView/GridView';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
-  const { channelDetail, userDetail, getChannelAndUserDetails, isLoading } = useChannelContext()
+  const { channelDetail, userDetail, getChannelAndUserDetails, isLoading, handleGetCreatorDetails, videoCreatorDetails } = useChannelContext()
   const [windowWidth, setWindowWidth] = useState(0);
   const [modal, setModal] = useState();
   const { getVideoDataForView, channelVideos } = useVideoContext();
@@ -42,17 +42,20 @@ const ChannelPage = ({ params }) => {
   }, []);
 
   useEffect(() => {
-    if (channelDetail.username) {
-      getVideoDataForView(channelDetail.username, 'username');
-
+    if (param) {
+      handleGetCreatorDetails(param, 'id');
     }
-  }, [channelDetail]);
+  }, [param])
 
+  useEffect(() => {
+    if (videoCreatorDetails.username) {
+      getVideoDataForView(videoCreatorDetails.username, 'username');
+    }
+  }, [videoCreatorDetails]);
 
-  console.log(channelVideos);
 
   return (
-    <main className='mt-4 mx-auto px-5 w-full'>
+    <main className='mt-4 mx-auto w-full overflow-x-hidden px-5 pb-4'>
       {/* channel header section  */}
       <ChannelDetailSection />
 
@@ -63,9 +66,9 @@ const ChannelPage = ({ params }) => {
         {
           isLoading
             ? <p>Loading...</p>
-            : <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mx-auto">
+            : <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-10">
               {channelVideos ? channelVideos.map((video) => (
-                <GridView key={video._id} video={video} />
+                <GridView key={video._id} video={video} param={param} />
               )) : (
                 <>
                   <UploadBtn modal={modal} />

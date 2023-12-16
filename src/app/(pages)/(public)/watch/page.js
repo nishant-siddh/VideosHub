@@ -291,7 +291,7 @@ const Watch = () => {
 
     useEffect(() => {
         if (videoDataForView.uploadedBy) {
-            handleGetCreatorDetails(videoDataForView.uploadedBy);
+            handleGetCreatorDetails(videoDataForView.uploadedBy, 'username');
         }
     }, [videoDataForView.uploadedBy])
 

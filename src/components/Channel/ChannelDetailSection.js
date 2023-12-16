@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
+import { IoMdCheckmark } from "react-icons/io";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import ProfilePicture from './ProfilePicture';
+import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext';
+import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 
 const ChannelHeader = () => {
-    const {userDetail, channelDetail} = useChannelContext();
+    const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
+    const { videoDataForView } = useVideoContext();
+    const { subscribersCount, isSubscribed, handleIsChannelSubscribed, handleSubscribe } = useSubscriptionContext();
+
+    useEffect(() => {
+        if (channelDetail._id && videoDataForView) {
+            handleIsChannelSubscribed();
+        }
+    }, [channelDetail._id && videoDataForView])
 
     return (
         <div className='w-full flex flex-col sm:flex-row items-center gap-3'>
@@ -20,7 +32,7 @@ const ChannelHeader = () => {
                     {/* username and subscribers count and videos count */}
                     <div className='flex flex-wrap justify-center text-xs sm:text-sm gap-1'>
                         <p>@{`${channelDetail.username}`.toLowerCase()}</p>
-                        <p>{channelDetail.totalSubscribers} Subscribers</p>
+                        <p>{subscribersCount} Subscribers</p>
                         <p>805 videos</p>
                     </div>
 
@@ -29,7 +41,22 @@ const ChannelHeader = () => {
                 </div>
 
                 {/* subscribe button */}
-                <button className='bg-primary hover:bg-primary/80 text-white text-xs md:text-sm rounded-lg px-2 py-1' >Subscribe</button>
+                {channelDetail._id !== videoCreatorDetails._id ? (
+                    <button
+                        className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
+                        ${!isSubscribed && 'bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-[5px] -translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}
+                        onClick={handleSubscribe}
+                    >
+                        <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
+                        <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>
+                    </button>
+                ) : (
+                    <button
+                        className='text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]'
+                    >
+                        <p>Manage Videos</p>
+                    </button>
+                )}
             </div>
         </div>
     )
