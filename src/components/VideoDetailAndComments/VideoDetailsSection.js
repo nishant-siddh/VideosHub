@@ -18,14 +18,14 @@ import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext
 
 
 const VideoDetailsSection = () => {
-    const { userDetail, channelDetail } = useChannelContext();
+    const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes } = useLikeReactionContext();
-    const { subscribersCount, setSubscriberCount, isSubscribed, handleGetSubscriptions, handleSubscribe } = useSubscriptionContext();
+    const { subscribersCount, isSubscribed, handleIsChannelSubscribed, handleSubscribe } = useSubscriptionContext();
 
     useEffect(() => {
         if (channelDetail._id && videoDataForView.uploadedBy) {
-            handleGetSubscriptions();
+            handleIsChannelSubscribed();
         }
     }, [channelDetail._id && videoDataForView.uploadedBy])
 
@@ -94,14 +94,23 @@ const VideoDetailsSection = () => {
                             {subscribersCount} subscribers
                         </span>
                     </div>
-                    <button
-                        className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
+                    {channelDetail._id !== videoCreatorDetails._id ? (
+                        <button
+                            className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
                         ${!isSubscribed && ' bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-2 -translate-y-2 active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}
-                        onClick={handleSubscribe}
-                    >
-                        <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
-                        <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>
-                    </button>
+                            onClick={handleSubscribe}
+                        >
+                            <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
+                            <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>
+                        </button>
+                    ) : (
+                        <button
+                            className='text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-2 -translate-y-2 active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'
+                            onClick={handleSubscribe}
+                        >
+                            <p>Manage Videos</p>
+                        </button>
+                    )}
                 </div>
             </div>
 

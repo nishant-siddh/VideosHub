@@ -14,6 +14,7 @@ import LargeSidebarSection from './LargeSidebarSection'
 import LargeSidebarItems from './LargeSidebarItems'
 import { useSidebarContext } from '@/ContextAPI/Context/SidebarContext'
 import LogoAndHamBurgerSection from '../Header/LogoAndHamBurgerSection'
+import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext'
 
 const SideBar = () => {
     const [selectedIcon, setSelectedIcon] = useState('');
@@ -21,69 +22,9 @@ const SideBar = () => {
     const [channelId, setChannelId] = useState('');
     const { isLargeOpen, isSmallOpen, closeSidebar } = useSidebarContext();
     const router = useRouter();
+    const { allSubscribedChannelsByUser } = useSubscriptionContext();
 
-    const subscriptions = [
-        {
-            id: 1,
-            channelName: 'Fireship',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'fireship'
-        },
-        {
-            id: 2,
-            channelName: 'Code with harry',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'codeWithHarry'
-        },
-        {
-            id: 3,
-            channelName: 'Kevin Powell',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'kevinPowell'
-        },
-        {
-            id: 4,
-            channelName: 'Web dev simplified',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevSimplified'
-        },
-        {
-            id: 5,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-        {
-            id: 6,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-        {
-            id: 7,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-        {
-            id: 8,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-        {
-            id: 9,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-        {
-            id: 10,
-            channelName: 'Web development',
-            imageUrl: 'https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=',
-            username: 'webDevelopment'
-        },
-    ];
+    console.log(allSubscribedChannelsByUser, 'allSubscribedChannelsByUser');
 
     useEffect(() => {
         (async () => {
@@ -163,12 +104,12 @@ const SideBar = () => {
                 <hr className='border-spacing-1 border-zinc-400' />
 
                 <LargeSidebarSection title='Subscriptions' visibleItemCount={6}>
-                    {subscriptions.map(subscription => (
+                    {allSubscribedChannelsByUser.map(subscription => (
                         <LargeSidebarItems
-                            key={subscription.id}
-                            IconOrImageUrl={subscription.imageUrl}
-                            title={subscription.channelName}
-                            url={`/@${subscription.username}`}
+                            key={subscription._id}
+                            IconOrImageUrl={subscription.channelId.profilePicture}
+                            title={subscription.name}
+                            url={`/@${subscription.channelId.username}`}
                         />
                     ))}
                 </LargeSidebarSection>

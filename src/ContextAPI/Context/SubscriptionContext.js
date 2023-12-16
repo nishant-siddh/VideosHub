@@ -9,6 +9,7 @@ const SubscriptionContext = createContext();
 
 const initialState = {
     isSubscribed: false,
+    allSubscribedChannelsByUser: [],
 }
 
 const SubscriptionContextProvider = ({ children }) => {
@@ -21,6 +22,12 @@ const SubscriptionContextProvider = ({ children }) => {
             setSubscriberCount(videoCreatorDetails.totalSubscribers)
         }
     }, [videoCreatorDetails.totalSubscribers])
+
+    useEffect(() => {
+        if(channelDetail._id){
+            handleGetSubscriptions();
+        }
+    }, [channelDetail._id])
 
     async function handleSubscribe() {
         try {
@@ -42,7 +49,7 @@ const SubscriptionContextProvider = ({ children }) => {
         }
     }
 
-    async function handleGetSubscriptions() {
+    const handleIsChannelSubscribed = () => {
         try {
             (async () => {
                 const subscriberData = await axios.post('/api/subscription/getSubscription', {
@@ -56,12 +63,29 @@ const SubscriptionContextProvider = ({ children }) => {
         }
     }
 
+    const handleGetSubscriptions = () => {
+        try {
+            (async () => {
+                const subscriberData = await axios.post('/api/subscription/getAllSubscribedChannelsOfUser', {
+                    subscriberChannel: channelDetail._id
+                })
+                setAllSubscribedChannelsByUser(subscriberData.data.subscribedChannelsByUser)
+            })()
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const setIsSubscribed = (status) => {
         dispatch({ type: 'SET_SUBSCRIPTION_STATUS', payload: status })
     }
 
+    const setAllSubscribedChannelsByUser = (subscribedChannels) => {
+        dispatch({ type: 'SET_ALL_SUBSCRIBED_CHANNELS_BY_USER', payload: subscribedChannels })
+    }
+
     return (
-        <SubscriptionContext.Provider value={{ ...state, subscribersCount, setSubscriberCount, handleGetSubscriptions, handleSubscribe }}>
+        <SubscriptionContext.Provider value={{ ...state, subscribersCount, setSubscriberCount, handleIsChannelSubscribed, handleSubscribe }}>
             {children}
         </SubscriptionContext.Provider>
     )

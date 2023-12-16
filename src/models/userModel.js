@@ -15,7 +15,8 @@ const userSchema = mongoose.Schema({
         require: [true, "Please provide a password"]
     },
     channelId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'channel',
         require: [true, "Please provide a channelId"],
         unique: true
     },

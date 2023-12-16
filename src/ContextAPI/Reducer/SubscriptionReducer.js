@@ -7,6 +7,12 @@ const SubscriptionReducer = (state, action) => {
                 isSubscribed: action.payload
             }
 
+        case 'SET_ALL_SUBSCRIBED_CHANNELS_BY_USER':
+            return {
+                ...state,
+                allSubscribedChannelsByUser: action.payload
+            }
+
         default:
             return state
     }
