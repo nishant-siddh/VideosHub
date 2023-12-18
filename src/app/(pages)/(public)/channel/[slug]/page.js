@@ -3,23 +3,19 @@ import React, { useState, useEffect } from 'react';
 import UploadBtn from '@/components/Channel/UploadBtn';
 import ChannelDetailSection from '@/components/Channel/ChannelDetailSection';
 import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
-import UploadVideoDialogBox from '@/components/Channel/DialogBox/UploadVideoDialogBox';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
-import GridView from '@/components/VideoView/GridView';
+import GridView from '@/components/ChannelPageVideoView/GridView';
+import Link from 'next/link';
 
 const ChannelPage = ({ params }) => {
   const param = params.slug;
   const { channelDetail, userDetail, getChannelAndUserDetails, isLoading, handleGetCreatorDetails, videoCreatorDetails } = useChannelContext()
   const [windowWidth, setWindowWidth] = useState(0);
-  const [modal, setModal] = useState();
   const { getVideoDataForView, channelVideos } = useVideoContext();
-  const [videos, setVideos] = useState([]);
-  const [videoUrl, setVideoUrl] = useState(null);
 
   // change window width on resize
   useEffect(() => {
     setWindowWidth(window.innerWidth);
-    setModal(document.querySelector('[data-modal]'));
     window.addEventListener('resize', handleResize);
 
     // Clean up the event listener on component unmount
@@ -57,7 +53,7 @@ const ChannelPage = ({ params }) => {
   return (
     <main className='mt-4 mx-auto w-full overflow-x-hidden px-5 pb-4'>
       {/* channel header section  */}
-      <ChannelDetailSection />
+      <ChannelDetailSection param={param} />
 
       <hr className='my-4 bg-red-400' />
 
@@ -66,23 +62,27 @@ const ChannelPage = ({ params }) => {
         {
           isLoading
             ? <p>Loading...</p>
-            : <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-10">
-              {channelVideos ? channelVideos.map((video) => (
-                <GridView key={video._id} video={video} param={param} />
-              )) : (
-                <>
-                  <UploadBtn modal={modal} />
-                  <UploadVideoDialogBox />
-                </>
+            : <div>
+              {channelVideos ? (
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-10">
+                  {channelVideos.map((video) => (
+                    <GridView key={video._id} video={video} param={param} />
+                  ))}
+                </div>
+              ) : (
+                <Link href={`/dashboard/${param}`} >
+                  <div className='flex flex-col items-center justify-center gap-3 mt-28'>
+                    <p>
+                      There are no videos yet. Click the button below to upload videos
+                    </p>
+                    <div className='py-1 px-2 mr-3 sm:mr-0 bg-primary hover:bg-primary/80 rounded-md w-fit'>
+                      <UploadBtn />
+                    </div>
+                  </div>
+                </Link>
               )}
             </div>
         }
-
-        {/* {videoUrl && (
-          <video src={videoUrl} width="320" height="240" controls autoPlay>
-            Your browser does not support the video tag.
-          </video>
-        )} */}
 
       </div>
     </main>

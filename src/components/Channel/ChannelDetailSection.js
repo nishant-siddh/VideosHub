@@ -5,8 +5,9 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import ProfilePicture from './ProfilePicture';
 import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
+import Link from 'next/link';
 
-const ChannelHeader = () => {
+const ChannelHeader = ({param}) => {
     const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { subscribersCount, isSubscribed, handleIsChannelSubscribed, handleSubscribe } = useSubscriptionContext();
@@ -51,14 +52,16 @@ const ChannelHeader = () => {
                         <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>
                     </button>
                 ) : (
-                    <button
-                        className='text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]'
-                    >
-                        <p>Manage Videos</p>
-                    </button>
+                    <Link href={`/dashboard/${param}`}>
+                        <button
+                            className='text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out active:translate-x-[5px] active:translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e]'
+                        >
+                            <p>Manage Videos</p>
+                        </button>
+                    </Link>
                 )}
             </div>
-        </div>
+        </div >
     )
 }
 

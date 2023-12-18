@@ -1,8 +1,8 @@
 "use client";
 import { useSidebarContext } from "@/ContextAPI/Context/SidebarContext";
 import { useVideoContext } from "@/ContextAPI/Context/VideoContext";
-import GridView from "@/components/VideoView/GridView";
-import ListView from "@/components/VideoView/ListView";
+import GridView from "@/components/ChannelPageVideoView/GridView";
+import ListView from "@/components/ChannelPageVideoView/ListView";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
 import profilePicture from "@/Images/profile.jpg";
