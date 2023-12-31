@@ -27,22 +27,22 @@ const ChannelHeader = ({param}) => {
                 <div className='flex flex-col items-center sm:items-start text-zinc-400'>
                     {/* creator name */}
                     <div className='text-white tracking-wider'>
-                        <h1 className='text-xl sm:text-2xl'>{userDetail.name}</h1>
+                        <h1 className='text-xl sm:text-2xl'>{videoCreatorDetails.name}</h1>
                     </div>
 
                     {/* username and subscribers count and videos count */}
                     <div className='flex flex-wrap justify-center text-xs sm:text-sm gap-1'>
-                        <p>@{`${channelDetail.username}`.toLowerCase()}</p>
+                        <p>@{`${videoCreatorDetails.channelId?.username}`.toLowerCase()}</p>
                         <p>{subscribersCount} Subscribers</p>
-                        <p>805 videos</p>
+                        <p> {videoCreatorDetails.channelId?.videosId.length} videos</p>
                     </div>
 
                     {/* channel description */}
-                    <p className='text-xs sm:text-sm mt-1'>{channelDetail.channelDescription}</p>
+                    <p className='text-xs sm:text-sm mt-1'>{videoCreatorDetails.channelId?.channelDescription}</p>
                 </div>
 
                 {/* subscribe button */}
-                {channelDetail._id !== videoCreatorDetails._id ? (
+                {channelDetail._id !== videoCreatorDetails.channelId?._id ? (
                     <button
                         className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
                         ${!isSubscribed && 'bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-[5px] -translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}

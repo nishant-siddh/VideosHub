@@ -44,10 +44,10 @@ const ChannelPage = ({ params }) => {
   }, [param])
 
   useEffect(() => {
-    if (videoCreatorDetails.username) {
-      getVideoDataForView(videoCreatorDetails.username, 'username');
+    if (videoCreatorDetails.channelId?.username) {
+      getVideoDataForView(videoCreatorDetails.channelId.username, 'username');
     }
-  }, [videoCreatorDetails]);
+  }, [videoCreatorDetails.channelId]);
 
 
   return (
@@ -65,9 +65,10 @@ const ChannelPage = ({ params }) => {
             : <div>
               {channelVideos ? (
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-10">
-                  {channelVideos.map((video) => (
-                    <GridView key={video._id} video={video} param={param} />
-                  ))}
+                  {channelVideos.filter(video => video.videoStatus === "Completed")
+                    .map((video) => (
+                      <GridView key={video._id} video={video} param={param} />
+                    ))}
                 </div>
               ) : (
                 <Link href={`/dashboard/${param}`} >

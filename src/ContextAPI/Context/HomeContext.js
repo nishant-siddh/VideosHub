@@ -1,6 +1,7 @@
 "use client"
 import { createContext, useContext, useEffect, useReducer } from "react";
 import reducer from "../Reducer/HomeReducer";
+import axios from "axios";
 
 const HomeContext = createContext();
 
@@ -15,6 +16,7 @@ const initialState = {
         programming: 0,
         technology: 0,
     },
+    videoCategories: [],
     formData: {
         name: "",
         username: "",
@@ -53,8 +55,23 @@ const HomeContextProvider = ({ children }) => {
         dispatch({ type: 'Toggle_Profile_Card' })
     }
 
+    const setVideoCategories = (categories) => {
+        dispatch({ type: 'Set_Video_Categories', payload: categories })
+    }
+
+    useEffect(() => {
+        (async() => {
+            try {
+                const allCategories = await axios.get('/api/getAllCategories');
+                setVideoCategories(allCategories.data.categories);
+            } catch (error) {
+                console.log(error.message);
+            }
+        })()
+    }, [])
+
     return (
-        <HomeContext.Provider value={{ ...state, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard }}>
+        <HomeContext.Provider value={{ ...state, setIsLoading, arrowBtns, formDataChange, setAuthStatus, toggleProfileCard, setVideoCategories }}>
             {children}
         </HomeContext.Provider>
     )

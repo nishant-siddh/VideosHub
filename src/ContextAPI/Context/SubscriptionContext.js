@@ -18,10 +18,10 @@ const SubscriptionContextProvider = ({ children }) => {
     const [subscribersCount, setSubscriberCount] = useState(0);
 
     useEffect(() => {
-        if (videoCreatorDetails.totalSubscribers) {
-            setSubscriberCount(videoCreatorDetails.totalSubscribers)
+        if (videoCreatorDetails.channelId?.totalSubscribers) {
+            setSubscriberCount(videoCreatorDetails.channelId.totalSubscribers)
         }
-    }, [videoCreatorDetails.totalSubscribers])
+    }, [videoCreatorDetails.channelId?.totalSubscribers])
 
     useEffect(() => {
         if(channelDetail._id){
@@ -33,7 +33,7 @@ const SubscriptionContextProvider = ({ children }) => {
         try {
             // setIsSubscribed(prev => !prev)
             const subscriberData = await axios.post('/api/subscription', {
-                creatorChannel: videoCreatorDetails._id,
+                creatorChannel: videoCreatorDetails.channelId?.channelId._id,
                 subscriberChannel: channelDetail._id
             })
             toast.success(subscriberData.data.message)
@@ -53,7 +53,7 @@ const SubscriptionContextProvider = ({ children }) => {
         try {
             (async () => {
                 const subscriberData = await axios.post('/api/subscription/getSubscription', {
-                    creatorChannel: videoCreatorDetails._id,
+                    creatorChannel: videoCreatorDetails.channelId?._id,
                     subscriberChannel: channelDetail._id
                 })
                 setIsSubscribed(subscriberData.data.subscriptionStatus)
