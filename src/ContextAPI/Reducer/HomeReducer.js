@@ -33,6 +33,12 @@ const HomeReducer = (state, action) => {
                 }
             }
 
+        case 'Set_Video_Categories':
+            return {
+                ...state,
+                videoCategories: action.payload
+            }
+
         case 'Form_Data_Change':
             const {name, value} = action.payload;
             

@@ -24,17 +24,10 @@ const SideBar = () => {
     const router = useRouter();
     const { allSubscribedChannelsByUser } = useSubscriptionContext();
 
-    console.log(allSubscribedChannelsByUser, 'allSubscribedChannelsByUser');
-
     useEffect(() => {
         (async () => {
-            try {
-                const response = await axios.get('/api/channel/channelTokenId')
-                setChannelId(response.data)
-            } catch (error) {
-                console.log(error, 'error in getting channel token id');
-                router.push('/login')
-            }
+            const response = await axios.get('/api/channel/channelTokenId')
+            setChannelId(response.data)
         })()
     }, [])
 
@@ -45,30 +38,6 @@ const SideBar = () => {
                 <SmallSidebarItem Icon={MdExplore} title="Trending" url='/' />
                 <SmallSidebarItem Icon={MdSubscriptions} title="Subscription" url='/' />
                 <SmallSidebarItem Icon={MdVideoLibrary} title="Library" url='/' />
-                {/* <div className="text-white sm:text-[0.7rem] md:text-xs px-3 py-2">
-                    {
-                        firstHalf.map((link, index) => {
-                            return (
-                                <Link key={index} href='#' className='flex' onClick={() => setSelectedIcon(link.key)}>
-                                    <div className={`${isSidebarOpen && 'flex items-center'} px-3 py-2 hover:bg-zinc-800 hover:border-b-[1px] hover:border-b-primary rounded-lg w-full ${isActive === link.label && 'bg-zinc-700 border-b-[1px] border-b-primary'}`} onClick={() => setIsActive(link.label)} >
-                                        <div className='mr-4 md:mr-6 sm:text-sm md:text-lg'>
-                                            {selectedIcon === link.key
-                                                ? link.icon.selected
-                                                : link.icon.unselected
-                                            }
-                                        </div>
-                                        <div className='bg-transparent pr-8'>
-                                            {link.label}
-                                        </div>
-                                    </div>
-                                </Link>
-                            )
-                        })
-
-                    }
-                    <div className='cursor-pointer border mb-4' id='channel' onClick={handleClick}>Your channel</div>
-                    <div className='cursor-pointer border' id='dashboard' onClick={handleClick}>Dashboard</div>
-                </div> */}
             </aside>
 
             {isSmallOpen && (
