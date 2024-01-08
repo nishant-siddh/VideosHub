@@ -23,7 +23,6 @@ export default function Home() {
 
   async function getVideosForCategory() {
     const videoBasedOnCategory = await axios.get(`/api/videos/getAllCategoryVideos`)
-    console.log(videoBasedOnCategory);
     setCategoryVideos(videoBasedOnCategory.data.videos);
   }
 
@@ -76,14 +75,16 @@ export default function Home() {
       {
         videoCategories.map(category => {
           return (
-            <>
-              <h3 key={category._id} className='mt-4 mb-3'>{category.categoryName}</h3>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-2">
+            <div key={category._id}>
+              <h3 className='mt-6 mb-5 text-lg'>{category.categoryName}</h3>
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mx-auto mt-2">
                 {categoryVideos.map(video => (
-                  category.categoryName === video.category && <GridView key={video._id} video={video} />
+                  category.categoryName === video.category && (
+                    <GridView key={video._id} video={video} />
+                  )
                 ))}
               </div>
-            </>
+            </div>
           )
         })
       }

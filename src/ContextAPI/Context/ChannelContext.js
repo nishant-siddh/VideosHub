@@ -37,6 +37,7 @@ const ChannelContextProvider = ({ children }) => {
         try {
             const response = await axios.post('/api/getCreatorDetails', { creatorUsernameOrId, reqWith });
             setVideoCreatorDetails(response.data.creatorDetails);
+            return response.data.creatorDetails.name;
         } catch (error) {
             console.log(error, 'error in getting creator details');
             throw error;

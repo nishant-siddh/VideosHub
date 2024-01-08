@@ -3,7 +3,7 @@ import React from 'react'
 import Link from 'next/link'
 import { useHomeContext } from '@/ContextAPI/Context/HomeContext'
 
-const Navbar = () => {
+const   Navbar = () => {
     const { videoCategories } = useHomeContext();
     // const [videoCategories, setVideoCategories] = useState([]);
     // const categoryNames = Object.keys(videosIndex);

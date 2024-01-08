@@ -1,13 +1,19 @@
+import { useChannelContext } from '@/ContextAPI/Context/ChannelContext';
 import { useTimeAndDateContext } from '@/ContextAPI/Context/TimeAndDateContext';
 import Image from 'next/image'
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiMore2Fill } from "react-icons/ri";
 
 const GridView = ({ video, param }) => {
     const { formatTimeAgo } = useTimeAndDateContext();
+    const { handleGetCreatorDetails, videoCreatorDetails } = useChannelContext();
     const [isHovered, setIsHovered] = useState(false);
     const videoCreatedAt = new Date(video.createdAt);
+    let videoCreatorName = '';
+
+    // console.log(video.title, 'inside grid view');
+
     // const [dialogPosition, setDialogPosition] = useState({ top: 0, left: 0 });
     // const dialog = document.querySelector("dialog")
 
@@ -24,9 +30,16 @@ const GridView = ({ video, param }) => {
     //     dialog.close()
     // }
 
+    useEffect(() => {
+        videoCreatorName = handleGetCreatorDetails(video.uploadedBy, 'username')
+        // console.log(videoCreatorName, 'upper inside video creator details');
+        // console.log(videoCreatorDetails.name, 'inside video creator details');
+    }, [video.uploadedBy])
+    // console.log(videoCreatorDetails.name, 'outside video creator details');
+
     return (
         <Link href={`/watch?v=${video._id}`}>
-            <div className="flex flex-col z-10">
+            <div className="flex flex-col z-10 bg-zinc-900 rounded-md px-1 pt-1 pb-2 hover:scale-95 hover:shadow-sm shadow-white transition-all delay-100 duration-100">
                 {/* video thumbnail */}
                 <div>
                     <Image src={video.thumbnailUrl} className='rounded-md hover:rounded-none ease-in duration-300 w-full sm:h-[12.5rem]' alt='{video.title}' width={100} height={100} />
@@ -43,13 +56,16 @@ const GridView = ({ video, param }) => {
                             <h4 className='text-sm font-semibold line-clamp-2'>{video.title}</h4>
                             <div>
                                 {/* <p className='text-xs text-gray-400'>{video.channel.name}</p> */}
-                                <div className="flex text-xs text-gray-400">
+                                <div className="flex flex-col text-xs text-gray-400">
+                                    {/* {console.log(videoCreatorDetails.name, 'inside video creator details')}
+                                    {console.log(videoCreatorName, 'inside video creator details')} */}
+                                    {!param && <p>{videoCreatorName}</p>}
                                     <p><span>{video.meta && video.meta.views}</span> views • <span>{formatTimeAgo(videoCreatedAt)}</span></p>
                                 </div>
                             </div>
                         </div>
                         <div>
-                            {isHovered && <div className='hover:border border-gray-700 rounded-full w-7 h-7 flex justify-center items-center'>
+                            {isHovered && <div className='hover:bg-zinc-800 rounded-full w-7 h-7 flex justify-center items-center'>
                                 <RiMore2Fill />
                             </div>}
 
