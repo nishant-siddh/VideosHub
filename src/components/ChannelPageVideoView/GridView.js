@@ -10,7 +10,7 @@ const GridView = ({ video, param }) => {
     const { handleGetCreatorDetails, videoCreatorDetails } = useChannelContext();
     const [isHovered, setIsHovered] = useState(false);
     const videoCreatedAt = new Date(video.createdAt);
-    let videoCreatorName = '';
+    const [videoCreatorName, setVideoCreatorName] = useState('')
 
     // console.log(video.title, 'inside grid view');
 
@@ -31,15 +31,18 @@ const GridView = ({ video, param }) => {
     // }
 
     useEffect(() => {
-        videoCreatorName = handleGetCreatorDetails(video.uploadedBy, 'username')
-        // console.log(videoCreatorName, 'upper inside video creator details');
-        // console.log(videoCreatorDetails.name, 'inside video creator details');
-    }, [video.uploadedBy])
-    // console.log(videoCreatorDetails.name, 'outside video creator details');
+        (
+            async () => {
+                const data = await handleGetCreatorDetails(video.uploadedBy, 'username')
+                setVideoCreatorName(data);
+            }
+        )()
+    }, [video])
+    console.log(videoCreatorName, 'outside video creator details');
 
     return (
         <Link href={`/watch?v=${video._id}`}>
-            <div className="flex flex-col z-10 bg-zinc-900 rounded-md px-1 pt-1 pb-2 hover:scale-95 hover:shadow-sm shadow-white transition-all delay-100 duration-100">
+            <div className="flex flex-col z-10 bg-zinc-900 rounded-md px-1 pt-1 pb-2 hover:scale-105 hover:shadow-sm shadow-white transition-all delay-100 duration-100">
                 {/* video thumbnail */}
                 <div>
                     <Image src={video.thumbnailUrl} className='rounded-md hover:rounded-none ease-in duration-300 w-full sm:h-[12.5rem]' alt='{video.title}' width={100} height={100} />
