@@ -80,6 +80,7 @@ export default function Home() {
               <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 mx-auto mt-2">
                 {categoryVideos.map(video => (
                   category.categoryName === video.category && (
+                    // console.log(video)
                     <GridView key={video._id} video={video} />
                   )
                 ))}

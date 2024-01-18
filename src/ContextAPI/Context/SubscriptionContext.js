@@ -33,8 +33,8 @@ const SubscriptionContextProvider = ({ children }) => {
         try {
             // setIsSubscribed(prev => !prev)
             const subscriberData = await axios.post('/api/subscription', {
-                creatorChannel: videoCreatorDetails.channelId?.channelId._id,
-                subscriberChannel: channelDetail._id
+                creatorChannel: videoCreatorDetails?.channelId?._id,
+                subscriberChannel: channelDetail?._id
             })
             toast.success(subscriberData.data.message)
             setIsSubscribed(subscriberData.data.subscriptionStatus)
@@ -53,8 +53,8 @@ const SubscriptionContextProvider = ({ children }) => {
         try {
             (async () => {
                 const subscriberData = await axios.post('/api/subscription/getSubscription', {
-                    creatorChannel: videoCreatorDetails.channelId?._id,
-                    subscriberChannel: channelDetail._id
+                    creatorChannel: videoCreatorDetails?.channelId?._id,
+                    subscriberChannel: channelDetail?._id
                 })
                 setIsSubscribed(subscriberData.data.subscriptionStatus)
             })()

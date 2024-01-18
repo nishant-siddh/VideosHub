@@ -6,8 +6,12 @@ import ProfilePicture from './ProfilePicture';
 import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext';
 import { useVideoContext } from '@/ContextAPI/Context/VideoContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
-const ChannelHeader = ({param}) => {
+const ChannelHeader = ({ param }) => {
+    const router = useRouter();
+    const { isLoggedIn } = useAuthContext();
     const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
     const { subscribersCount, isSubscribed, handleIsChannelSubscribed, handleSubscribe } = useSubscriptionContext();
@@ -17,6 +21,10 @@ const ChannelHeader = ({param}) => {
             handleIsChannelSubscribed();
         }
     }, [channelDetail._id && videoDataForView])
+
+    function handleRedirectToLogin() {
+        router.push("/login");
+    }
 
     return (
         <div className='w-full flex flex-col sm:flex-row items-center gap-3'>
@@ -46,7 +54,7 @@ const ChannelHeader = ({param}) => {
                     <button
                         className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
                         ${!isSubscribed && 'bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-[5px] -translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}
-                        onClick={handleSubscribe}
+                        onClick={isLoggedIn ? handleSubscribe : handleRedirectToLogin}
                     >
                         <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
                         <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>

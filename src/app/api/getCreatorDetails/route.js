@@ -20,6 +20,7 @@ export async function POST(req) {
         }
 
         const creatorUserDetails = await User.findOne({ channelId: creatorChannelDetails._id }).populate('channelId');
+        // console.log(creatorUserDetails, 'creator user details');
 
         return new Response(JSON.stringify({ message: 'Channel found', creatorDetails: creatorUserDetails }), { status: 200 })
     } catch (error) {

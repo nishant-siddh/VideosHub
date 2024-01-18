@@ -29,16 +29,20 @@ const GridView = ({ video, param }) => {
     //     e.preventDefault();
     //     dialog.close()
     // }
-
+    
     useEffect(() => {
-        (
-            async () => {
-                const data = await handleGetCreatorDetails(video.uploadedBy, 'username')
-                setVideoCreatorName(data);
-            }
-        )()
-    }, [video])
-    console.log(videoCreatorName, 'outside video creator details');
+        console.log(videoCreatorDetails, 'video creator details');
+        console.log(video.uploadedBy);
+        if (videoCreatorDetails?.channelId?.username !== video.uploadedBy) {
+            (
+                async () => {
+                    const data = await handleGetCreatorDetails(video.uploadedBy, 'username')
+                    console.log(data, 'data');
+                    setVideoCreatorName(data);
+                }
+            )()
+        }
+    }, [])
 
     return (
         <Link href={`/watch?v=${video._id}`}>
@@ -58,12 +62,9 @@ const GridView = ({ video, param }) => {
                         <div>
                             <h4 className='text-sm font-semibold line-clamp-2'>{video.title}</h4>
                             <div>
-                                {/* <p className='text-xs text-gray-400'>{video.channel.name}</p> */}
                                 <div className="flex flex-col text-xs text-gray-400">
-                                    {/* {console.log(videoCreatorDetails.name, 'inside video creator details')}
-                                    {console.log(videoCreatorName, 'inside video creator details')} */}
-                                    {!param && <p>{videoCreatorName}</p>}
-                                    <p><span>{video.meta && video.meta.views}</span> views • <span>{formatTimeAgo(videoCreatedAt)}</span></p>
+                                    {!param && <Link href={`/channel/${videoCreatorDetails._id}`}><p className='hover:text-white w-fit'>{videoCreatorName}</p></Link>}
+                                    <p><span>{video.meta && video.meta.views}</span> views • <span>{() => formatTimeAgo(videoCreatedAt)}</span></p>
                                 </div>
                             </div>
                         </div>
