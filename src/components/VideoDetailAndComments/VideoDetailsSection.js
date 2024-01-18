@@ -16,11 +16,15 @@ import { useLikeReactionContext } from '@/ContextAPI/Context/LikeReactionContext
 import { IoMdCheckmark } from "react-icons/io";
 import { useSubscriptionContext } from '@/ContextAPI/Context/SubscriptionContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
 
 const VideoDetailsSection = () => {
+    const router = useRouter();
     const { userDetail, channelDetail, videoCreatorDetails } = useChannelContext();
     const { videoDataForView } = useVideoContext();
+    const { isLoggedIn } = useAuthContext();
     const { liked, setLiked, disliked, setDisliked, handleSetLikes, handleSetDisLikes } = useLikeReactionContext();
     const { subscribersCount, isSubscribed, handleIsChannelSubscribed, handleSubscribe } = useSubscriptionContext();
 
@@ -75,6 +79,13 @@ const VideoDetailsSection = () => {
         }
     }, [videoDataForView._id, channelDetail._id])
 
+    function handleRedirectToLogin() {
+        console.log(isLoggedIn, 'isLoggedIn');
+        if(!isLoggedIn) {
+            router.push("/login");
+        }
+    }
+
     return (
         <div className="flex flex-wrap gap-3 justify-between">
             <div className="flex items-start gap-2">
@@ -99,7 +110,7 @@ const VideoDetailsSection = () => {
                         <button
                             className={`text-xs lg:text-sm text-gray-500 px-2 md:px-3 py-1 rounded-full flex items-center gap-1 hover:text-gray-400 ${isSubscribed && 'bg-green-500 text-white hover:bg-green-600 hover:text-white'}
                         ${!isSubscribed && 'bg-white shadow-[5px_5px_0px_0px_#4f4e4e] transition-all duration-150 ease-in-out -translate-x-[5px] -translate-y-[5px] active:shadow-[0px_0px_0px_0px_#4f4e4e] delay-75'}`}
-                            onClick={handleSubscribe}
+                            onClick={() => isLoggedIn ? handleSubscribe() : handleRedirectToLogin()}
                         >
                             <span>{isSubscribed ? <IoMdCheckmark /> : <AiOutlineUserAdd />}</span>
                             <p>{isSubscribed ? 'Subscribed' : 'Subscribe'}</p>

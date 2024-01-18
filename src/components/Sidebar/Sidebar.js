@@ -78,7 +78,7 @@ const SideBar = () => {
                             key={subscription._id}
                             IconOrImageUrl={subscription.channelId.profilePicture}
                             title={subscription.name}
-                            url={`/@${subscription.channelId.username}`}
+                            url={`/channel/${subscription.channelId._id}`}
                         />
                     ))}
                 </LargeSidebarSection>

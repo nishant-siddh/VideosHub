@@ -5,12 +5,16 @@ import CommentsMapping from './CommentsMapping';
 import profileImage from "@/Images/profilePicture.jpeg";
 import { MdExpandLess, MdOutlineExpandMore } from 'react-icons/md';
 import { useVideoContext } from "@/ContextAPI/Context/VideoContext";
+import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/ContextAPI/Context/AuthContext";
 
 const VideosCommentSection = () => {
+  const router = useRouter();
   const { handleComment, comments, handleGetComments, replies, handleGetReplies } = useCommentsContext();
   const [commentInputValue, setCommentInputValue] = useState("");
   const [showReplies, setShowReplies] = useState({});
   const { videoDataForView } = useVideoContext();
+  const { isLoggedIn } = useAuthContext();
 
   function handleShowReplies(commentId) {
     const updatedShowReplies = { ...showReplies, [commentId]: !showReplies[commentId] }
@@ -27,6 +31,10 @@ const VideosCommentSection = () => {
       handleGetComments()
     }
   }, [videoDataForView._id])
+
+  function handleRedirectToLogin() {
+    router.push("/login");
+  }
 
   return (
     <div className="mt-5">
@@ -61,7 +69,7 @@ const VideosCommentSection = () => {
             </button>
             <button
               className="border px-2 py-1 rounded-full flex items-center gap-1 hover:bg-zinc-800 transition delay-75"
-              onClick={() => handleComment({ commentInputValue, setCommentInputValue })}
+              onClick={() => isLoggedIn ? handleComment({ commentInputValue, setCommentInputValue }) : handleRedirectToLogin()}
             >
               Comment
             </button>

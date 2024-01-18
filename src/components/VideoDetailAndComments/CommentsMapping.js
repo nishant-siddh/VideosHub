@@ -7,9 +7,13 @@ import React, { useEffect, useState } from 'react'
 import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "react-icons/ai";
 import profileImage from "@/Images/profilePicture.jpeg";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuthContext } from '@/ContextAPI/Context/AuthContext';
 
 
 const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
+    const router = useRouter();
+    const {isLoggedIn} = useAuthContext();
     const { videoDataForView } = useVideoContext();
     const { formatTimeAgo } = useTimeAndDateContext();
     const [replyInputValue, setReplyInputValue] = useState("");
@@ -30,13 +34,16 @@ const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
     //     }
     //   }, [showReplies])
 
+    function handleRedirectToLogin() {
+        router.push("/login");
+    }
 
     return (
         <>
             <div className='flex gap-3 text-sm'>
                 <div className='rounded-full w-fit'>
                     {comment.author.profilePicture
-                        ? <Image src={comment.author.profilePicture} className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center rounded-full`} alt="" />
+                        ? <Image src={comment.author.profilePicture} width={50} height={50} className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center rounded-full`} alt="" />
                         : (
                             <div className={`${commentOrReply === 'comment' ? 'w-8 h-8' : 'w-6 h-6'} flex justify-center items-center bg-red-500 rounded-full`}>
                                 {comment.author.username && comment.author.username[0].toUpperCase()}
@@ -66,7 +73,7 @@ const CommentsMapping = ({ comment, originalCommentId, commentOrReply }) => {
                     <div className='flex items-center gap-1'>
                         <button><AiOutlineDislike /></button>
                     </div>
-                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => handleClickedReplyBtn(comment._id, true)}>
+                    <div className='flex text-xs items-center gap-1 cursor-pointer' onClick={() => isLoggedIn ? handleClickedReplyBtn(comment._id, true) : handleRedirectToLogin()}>
                         <span>Reply</span>
                     </div>
                 </div>

@@ -39,13 +39,14 @@ const ChannelPage = ({ params }) => {
 
   useEffect(() => {
     if (param) {
+      console.log(param, 'param');
       handleGetCreatorDetails(param, 'id');
     }
   }, [param])
 
   useEffect(() => {
-    if (videoCreatorDetails.channelId?.username) {
-      getVideoDataForView(videoCreatorDetails.channelId.username, 'username');
+    if (videoCreatorDetails?.channelId?.username) {
+      getVideoDataForView(videoCreatorDetails?.channelId?.username, 'username');
     }
   }, [videoCreatorDetails.channelId]);
 
@@ -67,6 +68,7 @@ const ChannelPage = ({ params }) => {
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-7 mx-auto mt-10">
                   {channelVideos.filter(video => video.videoStatus === "Completed")
                     .map((video) => (
+                      // console.log(video)
                       <GridView key={video._id} video={video} param={param} />
                     ))}
                 </div>
@@ -84,7 +86,6 @@ const ChannelPage = ({ params }) => {
               )}
             </div>
         }
-
       </div>
     </main>
   )
