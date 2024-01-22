@@ -100,7 +100,7 @@ const VideoDetailsSection = () => {
                 </div>
                 <div className="flex sm:justify-between items-center gap-3 sm:w-fit w-full sm:flex-shrink-0">
                     <div className="flex flex-col">
-                        <h6>{userDetail.name}</h6>
+                        <h6>{videoCreatorDetails.name}</h6>
                         <span className="text-xs text-zinc-400">
                             {/* {channelDetail.totalSubscribers} subscribers */}
                             {subscribersCount} subscribers

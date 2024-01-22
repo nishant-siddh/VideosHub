@@ -32,7 +32,7 @@ const GridView = ({ video, param }) => {
     
     useEffect(() => {
         console.log(videoCreatorDetails, 'video creator details');
-        console.log(video.uploadedBy);
+        console.log(video.uploadedBy, 'this is creator username');
         if (videoCreatorDetails?.channelId?.username !== video.uploadedBy) {
             (
                 async () => {
@@ -44,8 +44,10 @@ const GridView = ({ video, param }) => {
         }
     }, [])
 
+    console.log(videoCreatorDetails, 'video creator details');
+
     return (
-        <Link href={`/watch?v=${video._id}`}>
+        <Link href={`/watch?v=${video._id}`} onClick={() => console.log(videoCreatorDetails, videoCreatorName)}>
             <div className="flex flex-col z-10 bg-zinc-900 rounded-md px-1 pt-1 pb-2 hover:scale-105 hover:shadow-sm shadow-white transition-all delay-100 duration-100">
                 {/* video thumbnail */}
                 <div>
@@ -63,7 +65,7 @@ const GridView = ({ video, param }) => {
                             <h4 className='text-sm font-semibold line-clamp-2'>{video.title}</h4>
                             <div>
                                 <div className="flex flex-col text-xs text-gray-400">
-                                    {!param && <Link href={`/channel/${videoCreatorDetails._id}`}><p className='hover:text-white w-fit'>{videoCreatorName}</p></Link>}
+                                    {!param && <Link href={`/@${videoCreatorDetails?.channelId?.username}`}><p className='hover:text-white w-fit'>{videoCreatorName}</p></Link>}
                                     <p><span>{video.meta && video.meta.views}</span> views • <span>{() => formatTimeAgo(videoCreatedAt)}</span></p>
                                 </div>
                             </div>
